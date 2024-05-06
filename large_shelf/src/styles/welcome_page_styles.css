@@ -1,0 +1,19 @@
+.cover-part {
+    flex-direction: column;
+    width: 62.5%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #E29675;
+}
+
+.cover-title {
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    font-size: 32px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #FFE9C5;
+}
