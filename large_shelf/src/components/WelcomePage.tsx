@@ -1,12 +1,15 @@
 import { Fragment } from "react";
 import { MouseEvent } from "react";
 import { useState } from "react";
-import "./../styles/welcome_page_styles.css";
+import logo from "../assets/large_shelf_logo.svg";
+import "../styles/welcome_page_styles.css";
 
 function CoverLogo() {
     return (<img 
         className = "cover-logo"
-        src = "./../assets/large_shelf_logo.svg"
+        //src = "../assets/large_shelf_logo.svg"
+        // https://stackoverflow.com/questions/34582405/react-wont-load-local-images
+        src = {logo}
         alt = "Large Shelf Logo"
     />);
 }
@@ -24,8 +27,8 @@ function CoverPart() {
     return (<div 
         className = "cover-part"
     >
-        {CoverLogo()}
-        {CoverTitle()}
+        <CoverLogo />
+        <CoverTitle />
     </div>);
 }
 
@@ -34,7 +37,7 @@ function WelcomePage() {
         <div
             className = "welcome-page"
         >
-            {CoverPart()}
+            <CoverPart />
         </div>
     )
 }
