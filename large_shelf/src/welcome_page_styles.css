@@ -1,0 +1,8 @@
+.cover-part {
+    width: 62.5%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #E29675;
+}

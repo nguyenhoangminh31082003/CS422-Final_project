@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import WelcomePage from './components/WelcomePage';
 
 function App() {
-
-  return <div>
-    I am tired and I want to sleep
-  </div>;
+  return (
+    <>
+      <WelcomePage />
+    </>
+  );
 }
 
 export default App;
