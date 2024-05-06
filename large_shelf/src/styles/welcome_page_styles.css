@@ -50,3 +50,80 @@
     margin-top: auto;
     margin-bottom: calc(100% * 20 / 1000);
 }
+
+.application-name {
+    font-family: "Inter", sans-serif;
+    font-weight: bold;
+    font-size: 400%;
+    color: #7D4230;
+}
+
+.welcome-message {
+    font-family: "Inter", sans-serif;
+    font-weight: thin;
+    font-size: 200%;
+    color: #7D4230;
+}
+
+.login-title {
+    margin-bottom: 10%;
+}
+
+::placeholder {
+    color: #7D4230;;
+    opacity: 0.8;
+}  
+
+.input-box {
+    width: calc(100% * 480 / 600);
+    height: calc(100% * 48 / 900);
+    font-size: 120%;
+    background-color: #FFE9C5;
+    color:#7D4230;
+    border-color: #7D4230;
+    border-radius: 8px;
+    border-width: 2px;
+    padding: 4px;
+    margin: 4px;
+}
+
+#password-input-box {
+    margin-top: 5%;
+}
+
+#forgot-password-button {
+    width: calc(100% * 480 / 600);
+    height: calc(100% * 48 / 900);
+    font-size: 120%;
+    background-color: #FFE9C5;
+    text-align: left;
+    font-weight: 1px;
+    color:#7D4230;
+    opacity: 0.8;
+    border-width: 0px;
+    padding: 4px;
+    margin: 4px;
+}
+
+.noticeable-button {
+    width: calc(100% * 480 / 600);
+    height: calc(100% * 48 / 900);
+    font-size: 120%;
+    background-color: #7D4230;
+    text-align: center;
+    font-weight: 1px;
+    color:#FFE9C5;
+    border-width: 0px;
+    border-radius: 8px;
+    padding: 4px;
+    margin: 4px;
+}
+
+#login-button {
+    background-color: #166EEB;
+}
+
+#sign-up-button {
+    margin-top: 5%;
+    background-color: #42B72A;
+}

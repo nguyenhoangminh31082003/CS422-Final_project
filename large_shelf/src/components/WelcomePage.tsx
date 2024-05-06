@@ -47,7 +47,58 @@ function LoginPart() {
         <div 
             className = "login-part"
         >
-            I am so tired!!!
+            <div
+                className = "login-title"
+            >
+                <h1
+                    className = "application-name"
+                >
+                    Large Shelf
+                </h1>
+                <h2
+                    className = "welcome-message"
+                >
+                    Welcome to Large Shelf! <br/>
+                </h2>
+            </div>
+
+            <input
+                id = "email-input-box"
+                className = "input-box"
+                placeholder = "Email"
+                type = "email"
+            />
+
+            <input
+                id = "password-input-box"
+                className = "input-box"
+                placeholder = "Password"
+                type = "password"
+            />
+
+            <button 
+                type="button"
+                id = "forgot-password-button"
+            >
+                Forgot your password?
+            </button>
+
+            <button 
+                type="button"
+                id = "login-button"
+                className = "noticeable-button"
+            >
+                Login
+            </button>
+
+            <button 
+                type="button"
+                id = "sign-up-button"
+                className = "noticeable-button"
+            >
+                Sign up
+            </button>
+            
         </div>
     );
 }
