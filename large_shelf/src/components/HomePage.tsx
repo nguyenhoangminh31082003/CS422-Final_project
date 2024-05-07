@@ -4,6 +4,7 @@ import { MouseEvent } from "react";
 import VerticalPageBar from "./VerticalPageBar";
 import "../styles/home_page_styles.css";
 import TopHorizontalBar from "./TopHorizontalBar";
+import PAGE_ID from "../PageID";
 
 function HomePage() {
     return (
@@ -16,7 +17,11 @@ function HomePage() {
             <div
                 id = "content-part"
             >
-                <VerticalPageBar/>
+                <VerticalPageBar
+                    chosenPageID = {
+                        PAGE_ID.HOME_PAGE
+                    }
+                />
                 <div
                     id = "shelf-list-part"
                 >

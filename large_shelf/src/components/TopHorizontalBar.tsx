@@ -3,14 +3,28 @@ import { useState } from "react";
 import { MouseEvent } from "react";
 import "../styles/top_horizontal_bar_styles.css";
 import logo from "../assets/large_shelf_logo.svg";
+import searchIcon from "../assets/normal_search_icon.svg";
 
 function SearchBar() {
     return (
-        <input
+        <div
             id = "search-bar"
-            type = "text"
-            placeholder = "Search books"
-        />
+        >
+            <button
+                id = "search-icon-button"
+            >
+                <img
+                    id = "search-icon"
+                    src = {searchIcon}
+                    alt = "Search icon"
+                />
+            </button>
+            <input
+                id = "search-bar-input"
+                type = "text"
+                placeholder = "Search books"
+            />
+        </div>
     );
 }
 

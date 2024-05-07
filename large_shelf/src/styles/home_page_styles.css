@@ -4,6 +4,8 @@
 }
 
 #content-part {
+    position: fixed;
+    top: calc(100% * 80 / 900);
     width: 100%;
     height: 100%;
     display: flex;
