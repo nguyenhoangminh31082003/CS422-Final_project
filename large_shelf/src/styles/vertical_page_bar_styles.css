@@ -13,15 +13,33 @@
 .vertical-page-bar-cell {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     height: calc(100% * 100 / 900);
     width: 100%;
     background: #FFE9C5;
     box-shadow: inset 0 0 4px #7D4230;
+    border-style: solid;
+    border-width: 0px;
+}
+.vertical-page-bar-cell:focus {
+    outline: none;
 }
 
 .option-name {
     text-align: center;
+    margin-bottom: 0px;
     font-size: large;
+}
+
+.option-name:hover {
+    opacity: 0.8;
+}
+
+.option-icon {
+    height: calc(100% * 60 / 100);
+}
+
+.option-icon:hover {
+    opacity: 0.8;
 }

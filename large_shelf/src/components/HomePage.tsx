@@ -6,7 +6,15 @@ import "../styles/home_page_styles.css";
 import TopHorizontalBar from "./TopHorizontalBar";
 import PAGE_ID from "../PageID";
 
-function HomePage() {
+interface HomePageProps {
+    onPageOptionClick: (pageID: number) => void;
+}
+
+function HomePage(
+    {
+        onPageOptionClick
+    }: HomePageProps
+) {
     return (
         <div
             id = "home-page"
@@ -20,6 +28,9 @@ function HomePage() {
                 <VerticalPageBar
                     chosenPageID = {
                         PAGE_ID.HOME_PAGE
+                    }
+                    onOptionClick = {
+                        onPageOptionClick    
                     }
                 />
                 <div
