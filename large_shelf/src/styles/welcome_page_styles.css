@@ -69,11 +69,6 @@
     margin-bottom: 10%;
 }
 
-::placeholder {
-    color: #7D4230;
-    opacity: 0.8;
-}  
-
 .input-box {
     width: calc(100% * 500 / 600);
     height: calc(100% * 48 / 900);
@@ -92,7 +87,7 @@
     outline: none;
 }
 
-::input-box::placeholder {
+.input-box::placeholder {
     font-family: "Inter", sans-serif;
     color: #7D4230;
     opacity: 0.8;

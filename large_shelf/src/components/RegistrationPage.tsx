@@ -60,42 +60,74 @@ function RegistrationPart(
 ) {
     return (
         <div 
-            className = "login-part"
+            id = "registration-part"
         >
             <div
-                className = "login-title"
+                id = "registration-title"
             >
                 <h1
-                    className = "application-name"
+                    id = "application-name"
                 >
                     Large Shelf
                 </h1>
                 <h2
-                    className = "welcome-message"
+                    id = "title-message"
                 >
-                    Welcome to Large Shelf! <br/>
+                    Let create your account!
                 </h2>
             </div>
 
-            <input
-                id = "email-input-box"
-                className = "input-box"
-                placeholder = "Email"
-                type = "email"
-            />
+            <form
+                id = "registration-form"
+            >
+                <label
+                    className = "registration-fill-label"
+                >
+                    Please enter your email 
+                </label><br/>
+                <input
+                    id = "user-email-input-box"
+                    className = "registration-input-box"
+                    placeholder = "Email"
+                    type = "email"
+                />
 
-            <input
-                id = "password-input-box"
-                className = "input-box"
-                placeholder = "Password"
-                type = "password"
-            />
+                <label
+                    className = "registration-fill-label"
+                >
+                    Please create your password 
+                </label><br/>
+                <input
+                    id = "first-password-input-box"
+                    className = "registration-input-box"
+                    placeholder = "Password"
+                    type = "password"
+                />
+
+                <label
+                    className = "registration-fill-label"
+                >
+                    Please re-enter your password 
+                </label><br/>
+                <input
+                    id = "second-password-input-box"
+                    className = "registration-input-box"
+                    placeholder = "Password"
+                    type = "password"
+                />
+            
+            </form>
 
             <button 
                 type="button"
-                id = "forgot-password-button"
+                id = "register-button"
+                className = "noticeable-button"
+                onClick={
+                    (event : MouseEvent<HTMLButtonElement>) => {
+                    }
+                }
             >
-                Forgot your password?
+                Register
             </button>
 
             <button 
@@ -104,22 +136,11 @@ function RegistrationPart(
                 className = "noticeable-button"
                 onClick = {
                     (event : MouseEvent<HTMLButtonElement>) => {
+                        onLoginRequest();
                     }
                 }
             >
-                Login
-            </button>
-
-            <button 
-                type="button"
-                id = "sign-up-button"
-                className = "noticeable-button"
-                onClick={
-                    (event : MouseEvent<HTMLButtonElement>) => {
-                    }
-                }
-            >
-                Sign up
+                Already have an account? Let log in!
             </button>
             
         </div>
@@ -134,7 +155,7 @@ function RegistrationPage(
 ) {
     return (
         <div
-            className = "welcome-page"
+            id = "registration-page"
         >
             <CoverPart />
             <RegistrationPart 

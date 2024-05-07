@@ -5,6 +5,7 @@ import HomePage from './components/HomePage';
 import VoicePage from './components/VoicePage';
 import LibraryPage from './components/LibraryPage';
 import BookPage from './components/BookPage';
+import AccountPage from './components/AccountPage';
 import PAGE_ID from './PageID';
 
 function App() {
@@ -66,6 +67,16 @@ function App() {
     } else if (pageID == PAGE_ID["BOOK_PAGE"]) {
         return (
             <BookPage />
+        );
+    } else if (pageID == PAGE_ID["ACCOUNT_PAGE"]) {
+        return (
+            <AccountPage 
+                onPageOptionClick = {
+                    (pageID: number) => {
+                        setPageID(pageID);
+                    }
+                }
+            />
         );
     }
 }
