@@ -3,6 +3,10 @@ import { useState } from "react";
 import { MouseEvent } from "react";
 import "../styles/vertical_page_bar_styles.css";
 
+interface VerticalPageBarProps {
+    chosenPageID: number;
+}
+
 function VerticalPageBarCell() {
     return (
         <Fragment>

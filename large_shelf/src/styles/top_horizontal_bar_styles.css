@@ -1,5 +1,21 @@
 #top-horizontal-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
     background: #E29675;
     width: 100%;
     height: calc(100% * 80 / 900);
+    color: #FFE9C5;
+    font-weight: 600;
+}
+
+#large-shelf-logo {
+    height: calc(100% * 60 / 80);
+    margin-left: 1%;
+}
+
+#website-title {
+    margin-left: 4%;
+    text-align: center;
 }
