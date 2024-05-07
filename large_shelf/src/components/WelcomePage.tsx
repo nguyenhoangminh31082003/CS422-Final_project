@@ -5,6 +5,14 @@ import logo from "../assets/large_shelf_logo.svg";
 import decoration from "../assets/decoration_of_cover_of_books.svg";
 import "../styles/welcome_page_styles.css";
 
+interface HomePageProps {
+    onSucessfullLogin: (userID : string) => void;
+}
+
+interface LoginPartProps {
+    onSucessfullLogin: (userID : string) => void;
+}
+
 function CoverLogo() {
     return (<img 
         className = "cover-logo"
@@ -42,7 +50,11 @@ function CoverPart() {
     </div>);
 }
 
-function LoginPart() {
+function LoginPart(
+    {
+        onSucessfullLogin
+    } : LoginPartProps
+) {
     return (
         <div 
             className = "login-part"
@@ -87,6 +99,22 @@ function LoginPart() {
                 type="button"
                 id = "login-button"
                 className = "noticeable-button"
+                onClick = {
+                    (event : MouseEvent<HTMLButtonElement>) => {
+                        var email = (document.getElementById("email-input-box") as HTMLInputElement).value;
+                        var password = (document.getElementById("password-input-box") as HTMLInputElement).value;
+                        /*
+                        
+                        Ask server to check email and password
+                        If password is correct, then 
+                            ask server to return the user ID of the email account  
+                            the current page than becomes home page 
+                        */
+                        console.log("Email: " + email);
+                        console.log("Password: " + password);
+                        onSucessfullLogin("1");
+                    }
+                }
             >
                 Login
             </button>
@@ -95,6 +123,13 @@ function LoginPart() {
                 type="button"
                 id = "sign-up-button"
                 className = "noticeable-button"
+                onClick={
+                    (event : MouseEvent<HTMLButtonElement>) => {
+                        /*
+                        The current page than becomes sign up page
+                        */
+                    }
+                }
             >
                 Sign up
             </button>
@@ -103,13 +138,19 @@ function LoginPart() {
     );
 }
 
-function WelcomePage() {
+function WelcomePage(
+    {
+        onSucessfullLogin
+    } : HomePageProps
+) {
     return (
         <div
             className = "welcome-page"
         >
             <CoverPart />
-            <LoginPart />
+            <LoginPart 
+                onSucessfullLogin = {onSucessfullLogin}
+            />
         </div>
     )
 }
