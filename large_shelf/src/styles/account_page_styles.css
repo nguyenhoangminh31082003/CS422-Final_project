@@ -63,8 +63,8 @@
     background-color: #7D4230;
     color: #FFE9C5;
     margin: 1%;
-    width: calc(100% * 200 / (1600 - 320 - 100));
-    height: calc(100% * 50 / (900 - 80));
+    width: calc(100% * 280 / 1600);
+    height: calc(100% * 50 / 900);
     border-style: solid;
     border-width: 0px;
     border-radius: 4%;
@@ -81,17 +81,37 @@
 .editable-profile-box {
     color: #7D4230;
     background-color: #FFE9C5;
-    border-radius: 4%;
-    font-size: medium;
+    border-radius: 8%;
+    font-size: 140%;
     width: 100%;
-    height: 100%;
+    height: 50%;
+    border-color: #7D4230;
     border-style: solid;
-    border-width: 4%;
+    border-width: 8%;
+    padding-left: 1%;
+    padding-right: 1%;
+}
+
+.editable-profile-box:focus {
+    outline: none;
+}
+
+.editable-profile-box::placeholder {
+    color: #7D4230;
+    font-size: 100%;
+}
+
+.profile-information-label {
+    height: 50%;
+    /*background-color: #E29675;*/
+    align-items: center;
+    font-size: 140%;
 }
 
 .profile-information-container {
     color: #7D4230;
-    font-size: 200%;
+    padding-left: 1%;
+    padding-right: 1%;
 }
 
 #first-name-container {
@@ -100,12 +120,97 @@
     height: 100%;
 }
 
+#last-name-container {
+    /*background-color: aqua;*/
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    top: 0%;
+    right: 0%;
+}
+
 #name-information-row {
     position: absolute;
     width: calc(100% * (1600 - 100 - 320) / 1600);
     height: calc(100% * 100 / 900);
     /*background-color: #732150;*/
-    padding: 1%;
     top: 8%;
     right: 0%;;
+}
+
+#contact-information-row {
+    position: absolute;
+    width: calc(100% * (1600 - 100 - 320) / 1600);
+    height: calc(100% * 100 / 900);
+    /*background-color: #732150;*/
+    top: 20%;
+    right: 0%;;
+}
+
+#email-container {
+    /*background-color: aqua;*/
+    width: 50%;
+    height: 100%;
+}
+
+#phone-number-container {
+    /*background-color: aqua;*/
+    width: 50%;
+    height: 100%;
+    position: absolute;
+    top: 0%;
+    right: 0%;
+}
+
+#password-container {
+    /*background-color: aqua;*/
+    width: 50%;
+    height: 100%;
+    position: absolute;
+    top: 0%;
+    right: 50%;
+}
+
+#password-information-row {
+    position: absolute;
+    width: calc(100% * (1600 - 100 - 320) / 1600);
+    height: calc(100% * 100 / 900);
+    /*background-color: #732150;*/
+    top: 32%;
+    right: 0%;
+}
+
+#displayed-password-field {
+    color: #7D4230;
+    /*background-color: aqua;*/
+    background-color: #FFE9C5;
+    border-radius: 8%;
+    font-size: 140%;
+    width: 100%;
+    height: 50%;
+    border-color: #7D4230;
+    border-style: solid;
+    border-width: 8%;
+    padding-left: 1%;
+    padding-right: 1%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+#password-field-text-part {
+    /*background-color: aqua;*/
+    width: 90%;
+}
+
+#password-visibility-button {
+    background-color: aqua;
+    width: 10%;
+    height: 100%;
+    background-color: #FFE9C5;
+    border-width: 0px;
+    border-style: solid;
+    align-items: center;
+    justify-content: center;
+    display: flex;
 }

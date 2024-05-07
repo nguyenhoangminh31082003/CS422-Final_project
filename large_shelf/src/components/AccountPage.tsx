@@ -6,6 +6,8 @@ import "../styles/account_page_styles.css";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
 import defaultProfilePicture from "../assets/default_profile_picture.png";
+import openedEyeIcon from "../assets/opened_eye_icon.svg";
+import closedEyeIcon from "../assets/closed_eye_icon.svg";
 
 interface AccountPageProps {
     onPageOptionClick: (pageID: number) => void;
@@ -14,6 +16,14 @@ interface AccountPageProps {
 interface BriefProfileInformationPartProps {
     profilePicture: string;
     fullName: string;
+}
+
+interface DetailedProfileInformationPartProps {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phoneNumber: string;
+    biography: string;
 }
 
 function BriefProfileInformationPart(
@@ -40,7 +50,29 @@ function BriefProfileInformationPart(
     );
 }
 
-function DetailedProfileInformationPart() {
+function DetailedProfileInformationPart(
+    {
+        firstName,
+        lastName,
+        email,
+        phoneNumber,
+        biography
+    }: DetailedProfileInformationPartProps
+) {
+
+    var [passwordVisibility, setPasswordVisibility] = useState<boolean>(false);
+
+    var password: null | string = null;
+
+    if (passwordVisibility) {
+        /*
+        
+            Request server to get plaintext password
+        
+        */
+       password = "I am the one who knocks!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
+    }
+
     return (
         <div
             id = "detailed-information-part"
@@ -68,6 +100,27 @@ function DetailedProfileInformationPart() {
                         type = "text"
                         id = "editable-first-name-box"
                         className = "editable-profile-box"
+                        placeholder={firstName}
+                    />
+
+                </div>
+
+
+                <div
+                    id = "last-name-container"
+                    className = "profile-information-container"
+                >
+                    <div
+                        className = "profile-information-label"
+                    >
+                        Last name
+                    </div>
+
+                    <input
+                        type = "text"
+                        id = "editable-last-name-box"
+                        className = "editable-profile-box"
+                        placeholder={lastName}
                     />
 
                 </div>
@@ -76,12 +129,89 @@ function DetailedProfileInformationPart() {
             <div
                 id = "contact-information-row"
             >
+                <div
+                    id = "email-container"
+                    className = "profile-information-container"
+                >
+                    <div
+                        className = "profile-information-label"
+                    >
+                        Email
+                    </div>
 
+                    <input
+                        type = "text"
+                        id = "editable-email-box"
+                        className = "editable-profile-box"
+                        placeholder={email}
+                    />
+
+                </div>
+
+
+                <div
+                    id = "phone-number-container"
+                    className = "profile-information-container"
+                >
+                    <div
+                        className = "profile-information-label"
+                    >
+                        Phone number
+                    </div>
+
+                    <input
+                        type = "text"
+                        id = "editable-phone-number-box"
+                        className = "editable-profile-box"
+                        placeholder={phoneNumber}
+                    />
+
+                </div>
             </div>
 
             <div
                 id = "password-information-row"
             >
+                
+                <div
+                    id = "password-container"
+                    className = "profile-information-container"
+                >
+                    <div
+                        className = "profile-information-label"
+                    >
+                        Password
+                    </div>
+
+                    <div
+                        id = "displayed-password-field"
+                        style = {{
+                            fontStyle: passwordVisibility ? "normal" : "italic"
+                        }}
+                    >
+                        <p
+                            id = "password-field-text-part"
+                        >
+                            {passwordVisibility ? password : "Hidden"}
+                        </p>
+
+                        <button
+                            id = "password-visibility-button"
+                            onClick = {
+                                (event: MouseEvent<HTMLButtonElement>) => {
+                                    setPasswordVisibility(!passwordVisibility);
+                                }
+                            }
+                        >
+                            <img
+                                src = {passwordVisibility ? openedEyeIcon : closedEyeIcon}
+                                alt = "Password Visibility"
+                            />
+                        </button>
+                        
+                    </div>
+
+                </div>
 
             </div>
 
@@ -109,7 +239,6 @@ function ProfileInformationPart() {
         lastName: "Nakahara",
         email: "deadlinesarecommingfromeverydirections@gmail.com",
         phoneNumber: "0123456789",
-        password: null,
         biography: "I am not in danger. I am the danger. I am the one who knocks!!!"
     };
 
@@ -122,7 +251,13 @@ function ProfileInformationPart() {
                 profilePicture = {information.profilePicture}
                 fullName = {information.fullName}
             />
-            <DetailedProfileInformationPart/>
+            <DetailedProfileInformationPart
+                firstName = {information.firstName}
+                lastName = {information.lastName}
+                email = {information.email}
+                phoneNumber = {information.phoneNumber}
+                biography = {information.biography}
+            />
         </div>
     );
 }
