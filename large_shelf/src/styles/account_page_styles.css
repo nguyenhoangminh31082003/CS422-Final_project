@@ -81,7 +81,7 @@
 .editable-profile-box {
     color: #7D4230;
     background-color: #FFE9C5;
-    border-radius: 8%;
+    /*border-radius: 8%;*/
     font-size: 140%;
     width: 100%;
     height: 50%;
@@ -99,6 +99,7 @@
 .editable-profile-box::placeholder {
     color: #7D4230;
     font-size: 100%;
+    opacity: 0.8;
 }
 
 .profile-information-label {
@@ -184,7 +185,7 @@
     color: #7D4230;
     /*background-color: aqua;*/
     background-color: #FFE9C5;
-    border-radius: 8%;
+    /*border-radius: 8%;*/
     font-size: 140%;
     width: 100%;
     height: 50%;
@@ -201,10 +202,19 @@
 #password-field-text-part {
     /*background-color: aqua;*/
     width: 90%;
+    background-color: #FFE9C5;
+    border-color: #7D4230;
+    border-width: 0px;
+    border-style: solid;
+    color:#7D4230;
+}
+
+#password-field-text-part:focus {
+    outline: none;
 }
 
 #password-visibility-button {
-    background-color: aqua;
+    /*background-color: aqua;*/
     width: 10%;
     height: 100%;
     background-color: #FFE9C5;
@@ -213,4 +223,78 @@
     align-items: center;
     justify-content: center;
     display: flex;
+}
+/*
+#password-visibility-button::placeholder {
+    background-color: #FFE9C5;
+    border-color: #7D4230;
+}
+*/
+#change-password-button {
+    background-color: #7D4230;
+    color: #FFE9C5;
+    margin-right: 1%;
+    width: 24%;
+    height: 50%;
+    border-style: solid;
+    border-width: 0px;
+    border-radius: 4%;
+    position: absolute;
+    right: 0%;
+    bottom: 0%;
+    transition: color 1s, background-color 1s;
+}
+
+#change-password-button:hover {
+    background-color: #E29675;
+    color: #FFE9C5;
+}
+
+#biography-information-row {
+    position: absolute;
+    width: calc(100% * (1600 - 100 - 320) / 1600);
+    height: calc(100% * 360 / 900);
+    /*background-color: #732150;*/
+    top: 44%;
+    right: 0%;
+}
+
+#editable-biography-box {
+    color: #7D4230;
+    background-color: #FFE9C5;
+    /*border-radius: 8%;*/
+    font-size: 140%;
+    width: 100%;
+    height: calc(100% * 300 / 360);
+    border-color: #7D4230;
+    border-style: solid;
+    border-width: 8%;
+    padding-left: 1%;
+    padding-right: 1%;
+}
+
+#editable-biography-box:focus {
+    outline: none;
+}
+
+#editable-biography-box::placeholder {
+    color: #7D4230;
+    font-size: 100%;
+    opacity: 0.8;
+}
+
+#biography-information-label {
+    height: calc(100% * 60 / 360);
+    /*background-color: #E29675;*/
+    align-items: center;
+    font-size: 140%;
+}
+
+#biography-container {
+    /*background-color: aqua;*/
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0%;
+    right: 0%;
 }

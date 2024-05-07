@@ -62,7 +62,7 @@ function DetailedProfileInformationPart(
 
     var [passwordVisibility, setPasswordVisibility] = useState<boolean>(false);
 
-    var password: null | string = null;
+    var password: string = "This is not a password";
 
     if (passwordVisibility) {
         /*
@@ -189,11 +189,15 @@ function DetailedProfileInformationPart(
                             fontStyle: passwordVisibility ? "normal" : "italic"
                         }}
                     >
-                        <p
+                        <input
                             id = "password-field-text-part"
-                        >
-                            {passwordVisibility ? password : "Hidden"}
-                        </p>
+                            type = "text"
+                            readOnly = {true}
+                            style = {{
+                                fontStyle: passwordVisibility ? "normal" : "italic"
+                            }}
+                            value = {passwordVisibility ? password : "Hidden"}
+                        />
 
                         <button
                             id = "password-visibility-button"
@@ -213,12 +217,34 @@ function DetailedProfileInformationPart(
 
                 </div>
 
+                <button
+                    id = "change-password-button"
+                >
+                    Change password
+                </button>
+
             </div>
 
             <div
                 id = "biography-information-row"
             >
+                <div
+                    id = "biography-container"
+                    className = "profile-information-container"
+                >
+                    <div
+                        id = "biography-information-label"
+                    >
+                        Biography
+                    </div>
 
+                    <textarea
+                        id = "editable-biography-box"
+                        placeholder={biography}
+                    >
+                    </textarea>
+
+                </div>
             </div>
         </div>
     )
