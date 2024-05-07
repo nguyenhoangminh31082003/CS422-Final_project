@@ -40,7 +40,20 @@ function App() {
         );
     } else if (pageID == PAGE_ID["REGISTRATION_PAGE"]) {
         return (
-            <RegistrationPage />
+            <RegistrationPage 
+                onSucessfullRegistration = {
+                    (currentUserID : string) => {
+                    setPageID(PAGE_ID["HOME_PAGE"]);
+                    setUserID(currentUserID);
+                    }
+                }
+    
+                onLoginRequest = {
+                    () => {
+                    setPageID(PAGE_ID["WELCOME_PAGE"]);
+                    }
+                }
+            />
         );
     } else if (pageID == PAGE_ID["VOICE_PAGE"]) {
         return (
