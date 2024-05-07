@@ -70,7 +70,7 @@
 }
 
 ::placeholder {
-    color: #7D4230;;
+    color: #7D4230;
     opacity: 0.8;
 }  
 
@@ -85,6 +85,17 @@
     border-width: 2px;
     padding: 4px;
     margin: 4px;
+    border-style: solid;
+}
+
+.input-box:focus {
+    outline: none;
+}
+
+::input-box::placeholder {
+    font-family: "Inter", sans-serif;
+    color: #7D4230;
+    opacity: 0.8;
 }
 
 #password-input-box {

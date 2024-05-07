@@ -4,6 +4,16 @@ import { MouseEvent } from "react";
 import "../styles/top_horizontal_bar_styles.css";
 import logo from "../assets/large_shelf_logo.svg";
 
+function SearchBar() {
+    return (
+        <input
+            id = "search-bar"
+            type = "text"
+            placeholder = "Search books"
+        />
+    );
+}
+
 function TopHorizontalBar() {
     return (
         <div
@@ -19,6 +29,7 @@ function TopHorizontalBar() {
             >
                 Large Shelf
             </h1>
+            <SearchBar />
         </div>
     );
 }
