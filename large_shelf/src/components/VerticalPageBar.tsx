@@ -1,6 +1,7 @@
 import { Fragment } from "react";
-import { MouseEvent } from "react";
 import { useState } from "react";
+import { MouseEvent } from "react";
+import "../styles/vertical_page_bar_styles.css";
 
 function VerticalPageBarCell() {
     return (

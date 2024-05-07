@@ -1,0 +1,9 @@
+.vertical-page-bar {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% * 100 / 1600);
+    height: 100vh;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #FFE9C5;
+}

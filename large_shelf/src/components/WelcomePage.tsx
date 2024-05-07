@@ -1,9 +1,9 @@
 import { Fragment } from "react";
 import { MouseEvent } from "react";
 import { useState } from "react";
+import "../styles/welcome_page_styles.css";
 import logo from "../assets/large_shelf_logo.svg";
 import decoration from "../assets/decoration_of_cover_of_books.svg";
-import "../styles/welcome_page_styles.css";
 
 interface HomePageProps {
     onSucessfullLogin: (userID : string) => void;
