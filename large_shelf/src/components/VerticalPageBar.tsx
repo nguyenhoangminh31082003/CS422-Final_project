@@ -13,9 +13,11 @@ function VerticalPageBarCell() {
 
 function VerticalPageBar() {
     return (
-        <Fragment>
+        <div
+            id = "vertical-page-bar"
+        >
             <h1>Vertical Page Bar</h1>
-        </Fragment>
+        </div>
     );
 }
 

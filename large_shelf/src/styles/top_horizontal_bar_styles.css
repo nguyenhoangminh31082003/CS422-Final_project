@@ -1,0 +1,5 @@
+#top-horizontal-bar {
+    background: #E29675;
+    width: 100%;
+    height: calc(100% * 80 / 900);
+}

@@ -3,16 +3,20 @@ import { useState } from "react";
 import { MouseEvent } from "react";
 import VerticalPageBar from "./VerticalPageBar";
 import "../styles/home_page_styles.css";
+import TopHorizontalBar from "./TopHorizontalBar";
 
 function HomePage() {
     return (
         <div
             id = "home-page"
         >
+            <TopHorizontalBar 
+        
+            />
             <div
                 id = "content-part"
             >
-                <VerticalPageBar />
+                <VerticalPageBar/>
                 <div
                     id = "shelf-list-part"
                 >
