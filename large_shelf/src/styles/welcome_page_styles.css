@@ -27,7 +27,7 @@
 
 .cover-title {
     font-family: "Inter", sans-serif;
-    font-weight: 540;
+    font-weight: 600;
     font-size: 160%;
     justify-content: center;
     align-items: center;
@@ -75,9 +75,9 @@
 }  
 
 .input-box {
-    width: calc(100% * 480 / 600);
+    width: calc(100% * 500 / 600);
     height: calc(100% * 48 / 900);
-    font-size: 120%;
+    font-size: 140%;
     background-color: #FFE9C5;
     color:#7D4230;
     border-color: #7D4230;
@@ -92,12 +92,12 @@
 }
 
 #forgot-password-button {
-    width: calc(100% * 480 / 600);
+    width: calc(100% * 500 / 600);
     height: calc(100% * 48 / 900);
-    font-size: 120%;
+    font-size: 140%;
     background-color: #FFE9C5;
     text-align: left;
-    font-weight: 1px;
+    font-weight: thin;
     color:#7D4230;
     opacity: 0.8;
     border-width: 0px;
@@ -106,9 +106,9 @@
 }
 
 .noticeable-button {
-    width: calc(100% * 480 / 600);
+    width: calc(100% * 500 / 600);
     height: calc(100% * 48 / 900);
-    font-size: 120%;
+    font-size: 140%;
     background-color: #7D4230;
     text-align: center;
     font-weight: 1px;
