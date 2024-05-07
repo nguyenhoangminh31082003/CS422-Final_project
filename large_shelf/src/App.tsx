@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import WelcomePage from './components/WelcomePage';
-import RegistrationPage from './components/RegistrationPage';
+import PAGE_ID from './PageID';
+import BookPage from './components/BookPage';
 import HomePage from './components/HomePage';
 import VoicePage from './components/VoicePage';
 import LibraryPage from './components/LibraryPage';
-import BookPage from './components/BookPage';
 import AccountPage from './components/AccountPage';
-import PAGE_ID from './PageID';
+import WelcomePage from './components/WelcomePage';
+import RegistrationPage from './components/RegistrationPage';
 
 function App() {
     const [pageID, setPageID] = useState(PAGE_ID["WELCOME_PAGE"]);

@@ -1,10 +1,10 @@
 import { Fragment } from "react";
 import { useState } from "react";
 import { MouseEvent } from "react";
-import VerticalPageBar from "./VerticalPageBar";
-import "../styles/home_page_styles.css";
-import TopHorizontalBar from "./TopHorizontalBar";
 import PAGE_ID from "../PageID";
+import "../styles/account_page_styles.css";
+import VerticalPageBar from "./VerticalPageBar";
+import TopHorizontalBar from "./TopHorizontalBar";
 
 interface AccountPageProps {
     onPageOptionClick: (pageID: number) => void;
@@ -17,7 +17,7 @@ function AccountPage(
 ) {
     return (
         <div
-            id = "home-page"
+            id = "account-page"
         >
             <TopHorizontalBar 
         
@@ -27,7 +27,7 @@ function AccountPage(
             >
                 <VerticalPageBar
                     chosenPageID = {
-                        PAGE_ID.HOME_PAGE
+                        PAGE_ID.ACCOUNT_PAGE
                     }
                     onOptionClick = {
                         onPageOptionClick    

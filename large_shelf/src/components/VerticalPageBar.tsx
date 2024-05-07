@@ -44,6 +44,9 @@ function VerticalPageBarCell(
         onOptionClick
     }: VerticalPageBarCellProps
 ) {
+
+    const optionIconID = `${htmlID}-icon-image`;
+
     return (
         <button
             id = {htmlID}
@@ -54,12 +57,33 @@ function VerticalPageBarCell(
                     console.log(pageID);
                 }
             }
+
             style = { {
                 backgroundColor: chosen ? "#7D4230" : "#FFE9C5",
                 color: chosen ? "#FFE9C5" : "#7D4230"
             } }
+
+            onMouseOver = { 
+                (event: MouseEvent<HTMLButtonElement>) => {
+                    var icon = document.getElementById(optionIconID) as HTMLImageElement;
+                    icon.src = highlightedIcon;
+                    event.currentTarget.style.backgroundColor = "#E29675";
+                    event.currentTarget.style.color = "#FFE9C5";
+                }
+            }
+
+            onMouseLeave = {
+                (event: MouseEvent<HTMLButtonElement>) => {
+                    var icon = document.getElementById(optionIconID) as HTMLImageElement;
+                    icon.src = chosen ? highlightedIcon : normalIcon;
+                    event.currentTarget.style.backgroundColor = chosen ? "#7D4230" : "#FFE9C5";
+                    event.currentTarget.style.color = chosen ? "#FFE9C5" : "#7D4230";
+                }
+            }
+
         >
             <img
+                id = {optionIconID}
                 className = "option-icon"
                 src = {
                     chosen ? highlightedIcon : normalIcon

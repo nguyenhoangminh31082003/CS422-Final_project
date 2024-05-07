@@ -21,7 +21,9 @@
     box-shadow: inset 0 0 4px #7D4230;
     border-style: solid;
     border-width: 0px;
+    transition: background-color 1s;
 }
+
 .vertical-page-bar-cell:focus {
     outline: none;
 }
@@ -32,14 +34,6 @@
     font-size: large;
 }
 
-.option-name:hover {
-    opacity: 0.8;
-}
-
 .option-icon {
     height: calc(100% * 60 / 100);
-}
-
-.option-icon:hover {
-    opacity: 0.8;
 }
