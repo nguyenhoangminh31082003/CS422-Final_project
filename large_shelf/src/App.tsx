@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import WelcomePage from './components/WelcomePage';
+import RegistrationPage from './components/RegistrationPage';
 import HomePage from './components/HomePage';
 import PAGE_ID from './PageID';
 
@@ -16,11 +17,21 @@ function App() {
                 setUserID(currentUserID);
               }
             }
+
+            onRegistrationRequest = {
+              () => {
+                setPageID(PAGE_ID["REGISTRATION_PAGE"]);
+              }
+            }
           />
         );
     } else if (pageID == PAGE_ID["HOME_PAGE"]) {
         return (
             <HomePage />
+        );
+    } else if (pageID == PAGE_ID["REGISTRATION_PAGE"]) {
+        return (
+            <RegistrationPage />
         );
     }
 }

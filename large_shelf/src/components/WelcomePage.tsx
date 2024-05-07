@@ -7,10 +7,12 @@ import "../styles/welcome_page_styles.css";
 
 interface HomePageProps {
     onSucessfullLogin: (userID : string) => void;
+    onRegistrationRequest: () => void;
 }
 
 interface LoginPartProps {
     onSucessfullLogin: (userID : string) => void;
+    onRegistrationRequest: () => void;
 }
 
 function CoverLogo() {
@@ -52,7 +54,8 @@ function CoverPart() {
 
 function LoginPart(
     {
-        onSucessfullLogin
+        onSucessfullLogin,
+        onRegistrationRequest
     } : LoginPartProps
 ) {
     return (
@@ -128,6 +131,7 @@ function LoginPart(
                         /*
                         The current page than becomes sign up page
                         */
+                        onRegistrationRequest();
                     }
                 }
             >
@@ -140,7 +144,8 @@ function LoginPart(
 
 function WelcomePage(
     {
-        onSucessfullLogin
+        onSucessfullLogin,
+        onRegistrationRequest
     } : HomePageProps
 ) {
     return (
@@ -150,6 +155,7 @@ function WelcomePage(
             <CoverPart />
             <LoginPart 
                 onSucessfullLogin = {onSucessfullLogin}
+                onRegistrationRequest = {onRegistrationRequest}
             />
         </div>
     )
