@@ -91,14 +91,30 @@ function App() {
     } else if (pageID == PAGE_ID["SHELF_PAGE"]) {
         return (
                 <ShelfPage 
+
                     onPageOptionClick = {
                         (pageID: number) => {
                             setPageID(pageID);
                         }
                     }
 
+                    onShelfBookOptionClick={
+                        (bookID: string) => {
+                            setPageID(PAGE_ID["BOOK_INFORMATION_PAGE"]);
+                            setOtherData({
+                                bookID: bookID
+                            });
+                        }
+                    }
+
                     shelfID = {otherData.shelfID}
                 />
+        );
+    } else if (pageID == PAGE_ID["BOOK_INFORMATION_PAGE"]) {
+        return (
+            <div>
+                Comming soon
+            </div>
         );
     }
 }

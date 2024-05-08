@@ -41,12 +41,12 @@ function ShelfOption(
     }: ShelfOptionProps
 ) {
     return (
-        <button
+        <div
             className = "shelf-option-in-home-page"
-            onClick = {onClick}
         >    
-            <div
+            <button
                 className = "shelf-option-detail-in-home-page"
+                onClick = {onClick}
             >
                 <img
                     className = "image-of-a-book-in-shelf"
@@ -136,8 +136,8 @@ function ShelfOption(
                     </p>
                 </div>
 
-            </div>
-        </button>
+            </button>
+        </div>
     );
 }
 

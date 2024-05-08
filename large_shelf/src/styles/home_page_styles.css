@@ -37,26 +37,9 @@
 }
 
 .shelf-option-in-home-page {
-    /*
-    width: calc(100% * 1480 / 1500);
-    */
     width: 100%;
-    /*
-    width: calc(100% * 1500 / 1600);
-    */
     height: calc(100% * 180 / (900 - 80));
-    
-    /*
-    margin: 4%;
-    */
-    /*
-    margin-top: 1%;
-    margin-bottom: 1%;
-    */
     padding: 1%;
-    /*
-    background-color: aqua;
-    */
     background-color: #FFE9C5;
     border-width: 0px;
 }
@@ -71,6 +54,7 @@
     border-color:#7D4230;
     box-shadow: 4px 4px 12px #888888;
     transition: background-color 1s, color 1s, margin-top 1s, box-shadow 1s;
+    background-color: #FFE9C5;
 }
 
 .shelf-option-detail-in-home-page:hover {

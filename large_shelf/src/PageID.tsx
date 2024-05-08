@@ -6,7 +6,8 @@ const PAGE_ID = {
     VOICE_PAGE: 4,
     ACCOUNT_PAGE: 5,
     LIBRARY_PAGE: 6,
-    SHELF_PAGE: 7
+    SHELF_PAGE: 7,
+    BOOK_INFORMATION_PAGE: 8
 };
 
 export default PAGE_ID;

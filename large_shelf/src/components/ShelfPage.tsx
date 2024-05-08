@@ -9,6 +9,7 @@ import DuneCoverImage from "../assets/dune_cover_image.png";
 
 interface ShelfPageProps {
     onPageOptionClick: (pageID: number) => void;
+    onShelfBookOptionClick: (bookID: string) => void;
     shelfID: string;
 }
 
@@ -20,6 +21,12 @@ interface ShelfBookOptionProps {
     averageRating: number;
     userRating: number;
     genre: string;
+    onClick: (event: MouseEvent) => void;
+}
+
+interface ShelfBookListPartProps {
+    shelfID: string;
+    onShelfBookOptionClick: (shelfID: string) => void;
 }
 
 function ShelfBookOption(
@@ -30,117 +37,36 @@ function ShelfBookOption(
         date,
         averageRating,
         userRating,
-        genre
+        genre,
+        onClick
     }: ShelfBookOptionProps
 ) {
-    /*
     return (
-        <button
-            className = "shelf-option-in-home-page"
-        >    
-            <div
-                className = "shelf-option-detail-in-home-page"
+        <div
+            className = "shelf-book-option-in-shelf-page"
+        >
+            <button
+                className = "shelf-book-option-detail-in-shelf-page"
+                onClick = {onClick}
             >
-                <img
-                    className = "image-of-a-book-in-shelf"
-                    src = {imageLinkOfBookInShelf}
-                    alt = "Book in shelf"
-                />
-
                 <div
-                    className = "text-information-of-shelf-option-in-home-page"
-                >   
-                    <h1
-                        className = "shelf-name-in-home-page"
-                    >
-                        {shelfName}
-                    </h1>
-                    <p>
-                        {"Most recent book: "} 
-                        <p
-                            style = {
-                                {
-                                    display: "inline",
-                                    fontStyle: "italic"
-                                }
-                            }
-                        >
-                            {mostRecentBookInformation.bookName}
-                        </p>
-                        {" by "}
-
-                        <p
-                            style = {
-                                {
-                                    display: "inline",
-                                    fontStyle: "italic"
-                                }
-                            }
-                        >
-                            {mostRecentBookInformation.authorName}
-                        </p>
-                    </p>
-                    <p>
-                        {"Last update at "}
-                        <p
-                            style = {
-                                {
-                                    display: "inline",
-                                    fontStyle: "italic"
-                                }
-                            }
-                        >
-                            {
-                                `${lastUpdateDate.getFullYear()} ${lastUpdateDate.toLocaleString('default', { month: 'long' })} ${
-                                    (() => {
-                                        const date = lastUpdateDate.getDate();
-                                        const lastDigit = date % 10;
-                                        if ((3 <= date) || (date <= 20)) {
-                                            return `${date}-th`;
-                                        }
-                                        if (lastDigit === 1) {
-                                            return `${date}-st`;
-                                        }
-                                        if (lastDigit === 2) {
-                                            return `${date}-nd`;
-                                        }
-                                        if (lastDigit === 3) {
-                                            return `${date}-rd`;
-                                        }
-                                        return `${date}-th`;
-                                    })()
-                                }`
-                            }
-                        </p> 
-                    </p>
-                    <p>
-                        <p 
-                            style = {
-                                {
-                                    display: "inline",
-                                    fontStyle: "italic"
-                                }
-                            }
-                        >
-                            {bookCount}
-                        </p>
-                            
-                        {bookCount > 1 ? " books" : " book"}
-                    </p>
+                    className = "detail-cell-in-shelf-page"
+                >
+                    <img
+                        className = "image-of-a-book-in-shelf-in-shelf-page"
+                        src = {imageLinkOfBookCover}
+                        alt = "Book in shelf"
+                    />
                 </div>
 
-            </div>
-        </button>
-    );*/
-    return (
-        <div>
-            {title}
+            </button>
         </div>
     )
 }
 
 const demoShelfBookOptionList = [
     {
+        bookID: "1",
         imageLinkOfBookCover: DuneCoverImage,
         title: "Dune",
         authorName: "Frank Herbert",
@@ -151,11 +77,22 @@ const demoShelfBookOptionList = [
     }
 ]
 
-function ShelfBookListPart() {
+function ShelfBookListPart(
+    {
+        shelfID,
+        onShelfBookOptionClick
+    }: ShelfBookListPartProps
+) {
     /*
         Request the number of books in the shelve from the server
     */
     const numberOfBooks = demoShelfBookOptionList.length;
+    /*
+    
+        Request from the server to get the shelf name given shelf ID
+    
+    */
+    const shelfName = "Current reading";
 
     var [shelfBookOptionList, setShelfBookOptionList] = useState(demoShelfBookOptionList);
     var [hasMore, setHasMore] = useState(true);
@@ -164,54 +101,72 @@ function ShelfBookListPart() {
         <div
             id = "shelf-book-list-part"
         >
-            <InfinieScroll
-                
-                dataLength = {
-                    shelfBookOptionList.length 
-                }
+            <div 
+                id = "title-bar-in-shelf-page"
+            >
+                <h1
+                    id = "shelf-name-title-in-shelf-page"
+                > 
+                    {`"${shelfName}" Shelf`} 
+                </h1>
+            </div>
+            <div
+                id = "shelf-book-option-list"
+            >
+                <InfinieScroll
+                        
+                    dataLength = {
+                        shelfBookOptionList.length 
+                    }
 
-                next = {
-                    () => {
-                        if (shelfBookOptionList.length < numberOfBooks) {
-                            setTimeout(() => {
-                                /*
-                                
-                                    Request from server to get more books
-                
-                                */
-                            }, 100); 
-                        } else {
-                            setHasMore(false);
+                    next = {
+                        () => {
+                            if (shelfBookOptionList.length < numberOfBooks) {
+                                setTimeout(() => {
+                                    /*
+                                    
+                                        Request from server to get more books
+                    
+                                    */
+                                }, 100); 
+                            } else {
+                                setHasMore(false);
+                            }
                         }
                     }
-                }
 
-                hasMore = {hasMore}
+                    hasMore = {hasMore}
 
-                loader = {<p> Loading ... </p>}
+                    loader = {<p> Loading ... </p>}
 
-                endMessage = {
-                    <p> End of the list </p>
-                }
+                    endMessage = {
+                        <p> End of the list </p>
+                    }
 
-                scrollableTarget = "shelf-list-part"
-            >   
-                {
-                    shelfBookOptionList.map((item, index) => {
-                        return (
-                            <ShelfBookOption
-                                imageLinkOfBookCover = {item.imageLinkOfBookCover}
-                                title = {item.title}
-                                authorName = {item.authorName}
-                                date = {item.date}
-                                averageRating = {item.averageRating}
-                                userRating = {item.userRating}
-                                genre = {item.genre}
-                            />
-                        )
-                    })
-                }
-            </InfinieScroll>
+                    scrollableTarget = "shelf-book-option-list"
+                >   
+                    {
+                        shelfBookOptionList.map((item, index) => {
+                            return (
+                                <ShelfBookOption
+                                    imageLinkOfBookCover = {item.imageLinkOfBookCover}
+                                    title = {item.title}
+                                    authorName = {item.authorName}
+                                    date = {item.date}
+                                    averageRating = {item.averageRating}
+                                    userRating = {item.userRating}
+                                    genre = {item.genre}
+                                    onClick = {
+                                        (event: MouseEvent) => {
+                                            onShelfBookOptionClick(item.bookID);
+                                        }
+                                    }
+                                />
+                            )
+                        })
+                    }
+                </InfinieScroll>
+            </div>
         </div>
     );
 }
@@ -219,6 +174,7 @@ function ShelfBookListPart() {
 function ShelfPage(
     {
         onPageOptionClick,
+        onShelfBookOptionClick,
         shelfID
     }: ShelfPageProps
 ) {
@@ -240,7 +196,13 @@ function ShelfPage(
                         onPageOptionClick    
                     }
                 />
-                <ShelfBookListPart/>
+                <ShelfBookListPart
+                    shelfID = {shelfID}
+
+                    onShelfBookOptionClick = {
+                        onShelfBookOptionClick
+                    }
+                />
             </div>
         </div>
     );
