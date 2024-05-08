@@ -3,6 +3,7 @@ import PAGE_ID from './PageID';
 import BookPage from './components/BookPage';
 import HomePage from './components/HomePage';
 import VoicePage from './components/VoicePage';
+import ShelfPage from './components/ShelfPage';
 import LibraryPage from './components/LibraryPage';
 import AccountPage from './components/AccountPage';
 import WelcomePage from './components/WelcomePage';
@@ -11,6 +12,7 @@ import RegistrationPage from './components/RegistrationPage';
 function App() {
     const [pageID, setPageID] = useState(PAGE_ID["WELCOME_PAGE"]);
     const [userID, setUserID] = useState(null as string | null);
+    const [otherData, setOtherData] = useState(null as any | null);
     
     if (pageID === PAGE_ID["WELCOME_PAGE"]) {
         return (
@@ -77,6 +79,14 @@ function App() {
                         }
                     }
                 />
+        );
+    } else if (pageID == PAGE_ID["SHELF_PAGE"]) {
+        return (
+                <ShelfPage onPageOptionClick = {
+                    (pageID: number) => {
+                        setPageID(pageID);
+                    }
+                }/>
         );
     }
 }
