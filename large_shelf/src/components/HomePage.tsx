@@ -1,18 +1,16 @@
 "use client";
 
-import { Fragment, useEffect } from "react";
+import { Fragment } from "react";
 import { useState } from "react";
 import { MouseEvent } from "react";
 import PAGE_ID from "../PageID";
 import "../styles/home_page_styles.css";
-import { useInfiniteQuery } from "@tanstack/react-query";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
-import currentReadingShelfDemoBookCoverImage from "../assets/current_reading_shelf_demo_book_cover_image.png";
-import wantToReadShelfDemoBookCoverImage from "../assets/want_to_read_shelf_demo_book_cover_image.png";
+import InfinieScroll from "react-infinite-scroll-component";
 import readShelfDemoBookCoverImage from "../assets/read_shelf_demo_book_cover_image.png";
-import { useRef } from "react";
-import { useIntersection } from "@mantine/hooks";
+import wantToReadShelfDemoBookCoverImage from "../assets/want_to_read_shelf_demo_book_cover_image.png";
+import currentReadingShelfDemoBookCoverImage from "../assets/current_reading_shelf_demo_book_cover_image.png";
 
 interface HomePageProps {
     onPageOptionClick: (pageID: number) => void;
@@ -27,7 +25,6 @@ interface ShelfOptionProps {
     },
     lastUpdateDate: Date;
     bookCount: number;
-    ref: ((element: any) => void) | null
 }
 
 function ShelfOption(
@@ -36,20 +33,9 @@ function ShelfOption(
         shelfName,
         mostRecentBookInformation,
         lastUpdateDate,
-        bookCount,
-        ref
+        bookCount
     }: ShelfOptionProps
 ) {
-    if (ref !== null) {
-        return (
-            <div
-                ref = {ref}
-            >
-                {shelfName}
-            </div>
-        )
-    }
-
     return (
         <div>    
             {shelfName}
@@ -90,85 +76,71 @@ const demoShelfOptionList = [
     }
 ]
 
-async function fetchShelfOption(
-    page: number
-) {
-    /*
-    
-        Request server to get the page-th earliest-created shelf option.
-
-    */
-    console.log("Fetching page " + page + "...");
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    return demoShelfOptionList[page - 1];
-}
-
 function ShelfListPart() {
-    const {
-        data,
-        fetchNextPage,
-        isFetchingNextPage
-    } = useInfiniteQuery({
-        queryKey: ["query"],
-        queryFn: async ({pageParam = 1}) => {
-            const response = await fetchShelfOption(pageParam);
-            return response;
-        },
-        getNextPageParam: (lastPage, allPages) => {
-            return allPages.length + 1;
-        },
-        initialPageParam: 1
-    });
+    const style = {
+        border: "1px solid red",
+        margin: 12,
+        padding: 8
+    }
 
-    const lastOptionRef = useRef<HTMLDivElement>(null);
-    const {ref, entry} = useIntersection({
-        root: lastOptionRef.current,
-        threshold: 1
-    });
+    /*
+        Request the number of shelves from the server
+    */
+    const numberOfShelves = 200;
 
-    useEffect(() => {
-        if (entry?.isIntersecting) {
-            fetchNextPage();
-        }
-    }, [entry]);
+    var [shelfOptionList, setShelfOptionList] = useState(Array.from({length: 20}));
+    var [hasMore, setHasMore] = useState(true);
+
+    console.log(shelfOptionList.length);
 
     return (
         <div
             id = "shelf-list-part"
         >
+            <InfinieScroll
+                
+                dataLength = {
+                    shelfOptionList.length 
+                }
+
+                next = {
+                    () => {
+                        console.log("next");
+                        if (shelfOptionList.length < numberOfShelves) {
+                            setTimeout(() => {
+                                setShelfOptionList(
+                                    shelfOptionList.concat(Array.from({length: 1})) 
+                                );
+                                console.log(shelfOptionList.length);
+                            }, 100); 
+                        } else {
+                            setHasMore(false);
+                        }
+                    }
+                }
+
+                hasMore = {hasMore}
+
+                loader = {<p> Loading ... </p>}
+
+                endMessage = {
+                    <p> End of the list </p>
+                }
+
+                scrollableTarget = "shelf-list-part"
+            >   
                 {
-                    data?.pages.map((page, i) => {
-                        return (
-                            <ShelfOption 
-                                imageLinkOfBookInShelf = {page.imageLinkOfBookInShelf}
-                                shelfName = {page.shelfName}
-                                mostRecentBookInformation = {page.mostRecentBookInformation}
-                                lastUpdateDate = {page.lastUpdateDate}
-                                bookCount = {page.bookCount}
-                                ref = {
-                                    i === data.pages.length - 1
-                                    ? ref
-                                    : null
-                                }
-                            />
-                        )
+                    shelfOptionList.map((item, index) => {
+                        console.log(index);
+                        
+                        return <div
+                            style = {style}
+                        >
+                            #{index + 1}-th item
+                        </div>
                     })
                 }
-                <button
-                    onClick = {
-                        () => fetchNextPage()
-                    }
-                    disabled = {
-                        isFetchingNextPage
-                    }>
-                    {
-                        isFetchingNextPage
-                        ? "Loading more..."
-                        : ((data?.pages.length ?? 0) < demoShelfOptionList.length)
-                        ? "Load more"
-                        : "Nothing more to load"
-                    }
-                </button>
+            </InfinieScroll>
         </div>
     );
 }

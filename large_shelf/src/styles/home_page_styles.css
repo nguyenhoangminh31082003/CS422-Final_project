@@ -17,8 +17,9 @@
 
 #shelf-list-part {
     width: calc(100% * 1500 / 1600);
-    height: 100%;
-    /*
+    height: calc(100% * (900 - 80) / 900);
+    
     background-color: blue;
-    */
+    
+    overflow: auto;
 }
