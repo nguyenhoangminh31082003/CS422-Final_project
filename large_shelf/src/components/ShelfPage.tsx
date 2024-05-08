@@ -5,7 +5,8 @@ import "../styles/shelf_page_styles.css";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
 import InfinieScroll from "react-infinite-scroll-component";
-import DuneCoverImage from "../assets/dune_cover_image.png";
+import duneCoverImage from "../assets/dune_cover_image.png";
+import backButtonIcon from "../assets/back_button_icon.svg";
 
 interface ShelfPageProps {
     onPageOptionClick: (pageID: number) => void;
@@ -17,15 +18,16 @@ interface ShelfBookOptionProps {
     imageLinkOfBookCover: string;
     title: string;
     authorName: string;
-    date: Date;
+    dateAdded: Date;
     averageRating: number;
-    userRating: number;
+    userProcess: number;
     genre: string;
     onClick: (event: MouseEvent) => void;
 }
 
 interface ShelfBookListPartProps {
     shelfID: string;
+    onPageOptionClick: (pageID: number) => void;
     onShelfBookOptionClick: (shelfID: string) => void;
 }
 
@@ -34,9 +36,9 @@ function ShelfBookOption(
         imageLinkOfBookCover,
         title,
         authorName,
-        date,
+        dateAdded,
         averageRating,
-        userRating,
+        userProcess,
         genre,
         onClick
     }: ShelfBookOptionProps
@@ -50,19 +52,127 @@ function ShelfBookOption(
                 onClick = {onClick}
             >
                 <div
-                    className="detail-cell-in-shelf-page"
+                    className = "detail-cell-in-shelf-page"
                 >
                     <img
-                        className = "image-of-a-book-in-shelf-in-shelf-page"
+                        className = "cover-image-of-shelf-book-in-shelf-page"
                         src = {imageLinkOfBookCover}
-                        alt = "Book in shelf"
+                        alt = "Book cover"
                     />
                 </div>
 
                 <div
-                    className="detail-cell-in-shelf-page"
+                    className = "detail-cell-in-shelf-page"
                 >
-                    
+                    <h1
+                        className = "title-of-shelf-book-in-shelf-page"
+                    >
+                        Title
+                    </h1>
+                    <p
+                        className = "detail-of-shelf-book-in-shelf-page"
+                    >
+                        {title}
+                    </p>
+                </div>
+
+                <div
+                    className = "detail-cell-in-shelf-page"
+                >
+                    <h1
+                        className = "title-of-shelf-book-in-shelf-page"
+                    >
+                        Author
+                    </h1>
+                    <p
+                        className = "detail-of-shelf-book-in-shelf-page"
+                    >
+                        {authorName}
+                    </p>
+                </div>
+
+                <div
+                    className = "detail-cell-in-shelf-page"
+                >
+                    <h1
+                        className = "title-of-shelf-book-in-shelf-page"
+                    >
+                        Date added
+                    </h1>
+                    <p
+                        className = "detail-of-shelf-book-in-shelf-page"
+                    >
+                        {
+                            `${
+                                (() => {
+                                    const date = dateAdded.getDate();
+                                    const lastDigit = date % 10;
+                                    if ((3 <= date) || (date <= 20)) {
+                                        return `${date}-th`;
+                                    }
+                                    if (lastDigit === 1) {
+                                        return `${date}-st`;
+                                    }
+                                    if (lastDigit === 2) {
+                                        return `${date}-nd`;
+                                    }
+                                    if (lastDigit === 3) {
+                                        return `${date}-rd`;
+                                    }
+                                    return `${date}-th`;
+                                })()
+                            } ${dateAdded.toLocaleString('default', { month: 'long' })},`
+                        }
+                        <br/>
+                        {
+                            dateAdded.getFullYear()
+                        }
+                    </p>
+                </div>
+
+                <div
+                    className = "detail-cell-in-shelf-page"
+                >
+                    <h1
+                        className = "title-of-shelf-book-in-shelf-page"
+                    >
+                        Average rating
+                    </h1>
+                    <p
+                        className = "detail-of-shelf-book-in-shelf-page"
+                    >
+                        {averageRating}/5 stars
+                    </p>
+                </div>
+
+                <div
+                    className = "detail-cell-in-shelf-page"
+                >
+                    <h1
+                        className = "title-of-shelf-book-in-shelf-page"
+                    >
+                        Your process
+                    </h1>
+                    <p
+                        className = "detail-of-shelf-book-in-shelf-page"
+                    >
+                        {(userProcess * 100).toFixed(2)}%
+                    </p>
+                </div>
+
+                <div
+                    className = "detail-cell-in-shelf-page"
+                >
+                    <h1
+                        className = "title-of-shelf-book-in-shelf-page"
+                    >
+                        Genre
+                    </h1>
+                    <p
+                        className = "detail-of-shelf-book-in-shelf-page"
+                    >
+                        {genre}
+                    </p>
                 </div>
 
             </button>
@@ -73,12 +183,12 @@ function ShelfBookOption(
 const demoShelfBookOptionList = [
     {
         bookID: "1",
-        imageLinkOfBookCover: DuneCoverImage,
+        imageLinkOfBookCover: duneCoverImage,
         title: "Dune",
         authorName: "Frank Herbert",
-        date: new Date(2024, 3, 24),
+        dateAdded: new Date(2024, 3, 24),
         averageRating: 4.27,
-        userRating: 0.9669,
+        userProcess: 0.9669,
         genre: "Science Fiction"
     }
 ]
@@ -86,6 +196,7 @@ const demoShelfBookOptionList = [
 function ShelfBookListPart(
     {
         shelfID,
+        onPageOptionClick,
         onShelfBookOptionClick
     }: ShelfBookListPartProps
 ) {
@@ -110,6 +221,21 @@ function ShelfBookListPart(
             <div 
                 id = "title-bar-in-shelf-page"
             >
+                <button
+                    id = "back-button-in-shelf-page"
+                    onClick = {
+                        () => {
+                            onPageOptionClick(PAGE_ID.HOME_PAGE);
+                        }
+                    }
+                >
+                    <img
+                        id = "back-button-icon-in-shelf-page"
+                        src = {backButtonIcon}
+                        alt = "Back"
+                    />
+                </button>
+
                 <h1
                     id = "shelf-name-title-in-shelf-page"
                 > 
@@ -158,9 +284,9 @@ function ShelfBookListPart(
                                     imageLinkOfBookCover = {item.imageLinkOfBookCover}
                                     title = {item.title}
                                     authorName = {item.authorName}
-                                    date = {item.date}
+                                    dateAdded = {item.dateAdded}
                                     averageRating = {item.averageRating}
-                                    userRating = {item.userRating}
+                                    userProcess = {item.userProcess}
                                     genre = {item.genre}
                                     onClick = {
                                         (event: MouseEvent) => {
@@ -204,6 +330,10 @@ function ShelfPage(
                 />
                 <ShelfBookListPart
                     shelfID = {shelfID}
+
+                    onPageOptionClick = {
+                        onPageOptionClick
+                    }
 
                     onShelfBookOptionClick = {
                         onShelfBookOptionClick
