@@ -37,9 +37,102 @@ function ShelfOption(
     }: ShelfOptionProps
 ) {
     return (
-        <div>    
-            {shelfName}
-        </div>
+        <button
+            className = "shelf-option-in-home-page"
+        >    
+            <div
+                className = "shelf-option-detail-in-home-page"
+            >
+                <img
+                    className = "image-of-a-book-in-shelf"
+                    src = {imageLinkOfBookInShelf}
+                    alt = "Book in shelf"
+                />
+
+                <div
+                    className = "text-information-of-shelf-option-in-home-page"
+                >   
+                    <h1
+                        className = "shelf-name-in-home-page"
+                    >
+                        {shelfName}
+                    </h1>
+                    <p>
+                        {"Most recent book: "} 
+                        <p
+                            style = {
+                                {
+                                    display: "inline",
+                                    fontStyle: "italic"
+                                }
+                            }
+                        >
+                            {mostRecentBookInformation.bookName}
+                        </p>
+                        {" by "}
+
+                        <p
+                            style = {
+                                {
+                                    display: "inline",
+                                    fontStyle: "italic"
+                                }
+                            }
+                        >
+                            {mostRecentBookInformation.authorName}
+                        </p>
+                    </p>
+                    <p>
+                        {"Last update at "}
+                        <p
+                            style = {
+                                {
+                                    display: "inline",
+                                    fontStyle: "italic"
+                                }
+                            }
+                        >
+                            {
+                                `${lastUpdateDate.getFullYear()} ${lastUpdateDate.toLocaleString('default', { month: 'long' })} ${
+                                    (() => {
+                                        const date = lastUpdateDate.getDate();
+                                        const lastDigit = date % 10;
+                                        if ((3 <= date) || (date <= 20)) {
+                                            return `${date}-th`;
+                                        }
+                                        if (lastDigit === 1) {
+                                            return `${date}-st`;
+                                        }
+                                        if (lastDigit === 2) {
+                                            return `${date}-nd`;
+                                        }
+                                        if (lastDigit === 3) {
+                                            return `${date}-rd`;
+                                        }
+                                        return `${date}-th`;
+                                    })()
+                                }`
+                            }
+                        </p> 
+                    </p>
+                    <p>
+                        <p 
+                            style = {
+                                {
+                                    display: "inline",
+                                    fontStyle: "italic"
+                                }
+                            }
+                        >
+                            {bookCount}
+                        </p>
+                            
+                        {bookCount > 1 ? " books" : " book"}
+                    </p>
+                </div>
+
+            </div>
+        </button>
     );
 }
 
@@ -77,21 +170,13 @@ const demoShelfOptionList = [
 ]
 
 function ShelfListPart() {
-    const style = {
-        border: "1px solid red",
-        margin: 12,
-        padding: 8
-    }
-
     /*
         Request the number of shelves from the server
     */
-    const numberOfShelves = 200;
+    const numberOfShelves = demoShelfOptionList.length;
 
-    var [shelfOptionList, setShelfOptionList] = useState(Array.from({length: 20}));
+    var [shelfOptionList, setShelfOptionList] = useState(demoShelfOptionList);
     var [hasMore, setHasMore] = useState(true);
-
-    console.log(shelfOptionList.length);
 
     return (
         <div
@@ -105,13 +190,13 @@ function ShelfListPart() {
 
                 next = {
                     () => {
-                        console.log("next");
                         if (shelfOptionList.length < numberOfShelves) {
                             setTimeout(() => {
-                                setShelfOptionList(
-                                    shelfOptionList.concat(Array.from({length: 1})) 
-                                );
-                                console.log(shelfOptionList.length);
+                                /*
+                                
+                                    Request from server to get more shelf
+                                
+                                */
                             }, 100); 
                         } else {
                             setHasMore(false);
@@ -131,13 +216,15 @@ function ShelfListPart() {
             >   
                 {
                     shelfOptionList.map((item, index) => {
-                        console.log(index);
-                        
-                        return <div
-                            style = {style}
-                        >
-                            #{index + 1}-th item
-                        </div>
+                        return (
+                            <ShelfOption
+                                imageLinkOfBookInShelf = {item.imageLinkOfBookInShelf}
+                                shelfName = {item.shelfName}
+                                mostRecentBookInformation = {item.mostRecentBookInformation}
+                                lastUpdateDate = {item.lastUpdateDate}
+                                bookCount = {item.bookCount}
+                            />
+                        )
                     })
                 }
             </InfinieScroll>
