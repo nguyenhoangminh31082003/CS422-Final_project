@@ -7,7 +7,7 @@ import LibraryPage from './components/LibraryPage';
 import AccountPage from './components/AccountPage';
 import WelcomePage from './components/WelcomePage';
 import RegistrationPage from './components/RegistrationPage';
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
+import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query'
 
 const queryClient = new QueryClient();
 

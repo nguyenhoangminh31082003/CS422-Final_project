@@ -97,23 +97,18 @@ function ShelfListPart() {
         data,
         fetchNextPage,
         isFetchingNextPage
-    } = useInfiniteQuery(
-        ["query"],
-        async ({pageParam = 1}) => {
+    } = useInfiniteQuery({
+        queryKey: ["query"],
+        queryFn: async ({pageParam = 1}) => {
             const response = await fetchShelfOption(pageParam);
             return response;
         },
-        {
-            getNextPageParam: (_, pages) => {
-                return pages.length + 1;
-            },
-            initialData: {
-                pages: [demoShelfOptionList[0]],
-                pageParams: [1]
-            }
-        }
-    );
- 
+        getNextPageParam: (lastPage, allPages) => {
+            return allPages.length + 1;
+        },
+        initialPageParam: 1
+    });
+
     return (
         <div
             id = "shelf-list-part"
