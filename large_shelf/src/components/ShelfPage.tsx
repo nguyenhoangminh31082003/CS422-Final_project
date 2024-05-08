@@ -50,13 +50,19 @@ function ShelfBookOption(
                 onClick = {onClick}
             >
                 <div
-                    className = "detail-cell-in-shelf-page"
+                    className="detail-cell-in-shelf-page"
                 >
                     <img
                         className = "image-of-a-book-in-shelf-in-shelf-page"
                         src = {imageLinkOfBookCover}
                         alt = "Book in shelf"
                     />
+                </div>
+
+                <div
+                    className="detail-cell-in-shelf-page"
+                >
+                    
                 </div>
 
             </button>

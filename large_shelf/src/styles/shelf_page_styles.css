@@ -58,19 +58,15 @@
 
 .shelf-book-option-in-shelf-page {
     width: 100%;
-    height: calc(100% * 180 / (900 - 80));
     padding: 1%;
-    background-color: #FFE9C5;
+    background-color:#FFE9C5;
     border-width: 0px;
 }
 
 .shelf-book-option-detail-in-shelf-page {
     color: black;
     border-style: solid;
-    width: 100%;
-
-    height: 100%;
-    
+    width: 100%;    
     display: flex;
     flex-direction: row;
     border-radius: 4px;
@@ -80,15 +76,15 @@
     background-color: #FFE9C5;
 }
 
-#image-of-a-book-in-shelf-in-shelf-page {
-    height: 80%;
+.image-of-a-book-in-shelf-in-shelf-page {
+    width: 80%;
     aspect-ratio: 5 / 7;
+    border-radius: 4%;
 }   
 
-#detail-cell-in-shelf-page {
-    padding: 4%;
-    height: 100%;
-    width: 16%;
+.detail-cell-in-shelf-page {
+    padding: 1%;
+    width: 12%;
     align-items: center;
-    background-color: aqua;
+    box-shadow: inset -7px 0 9px -7px rgba(0,0,0,0.4);;
 }

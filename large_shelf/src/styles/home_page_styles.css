@@ -65,12 +65,13 @@
 }
 
 .image-of-a-book-in-shelf {
-    height: 80%;
+    width: 8%;
     aspect-ratio: 5 / 7;
     margin-top: 1%;
     margin-bottom: 1%;
     margin-left: 2%;
     margin-right: 2%;
+    border-radius: 4%;
 }
 
 .text-information-of-shelf-option-in-home-page {
