@@ -1,8 +1,5 @@
-"use client";
+import { Fragment, useState, MouseEvent } from "react";
 
-import { Fragment } from "react";
-import { useState } from "react";
-import { MouseEvent } from "react";
 import PAGE_ID from "../PageID";
 import "../styles/home_page_styles.css";
 import VerticalPageBar from "./VerticalPageBar";
@@ -10,10 +7,11 @@ import TopHorizontalBar from "./TopHorizontalBar";
 import InfinieScroll from "react-infinite-scroll-component";
 import readShelfDemoBookCoverImage from "../assets/read_shelf_demo_book_cover_image.png";
 import wantToReadShelfDemoBookCoverImage from "../assets/want_to_read_shelf_demo_book_cover_image.png";
-import currentReadingShelfDemoBookCoverImage from "../assets/current_reading_shelf_demo_book_cover_image.png";
+import currentReadingShelfDemoBookCoverImage from "../assets/dune_cover_image.png";
 
 interface HomePageProps {
     onPageOptionClick: (pageID: number) => void;
+    onShelfOptionClick: (shelfID: string) => void;
 }
 
 interface ShelfOptionProps {
@@ -25,6 +23,11 @@ interface ShelfOptionProps {
     },
     lastUpdateDate: Date;
     bookCount: number;
+    onClick: (event: MouseEvent) => void;
+}
+
+interface ShelfListPartProps {
+    onShelfOptionClick: (shelfID: string) => void;
 }
 
 function ShelfOption(
@@ -33,12 +36,14 @@ function ShelfOption(
         shelfName,
         mostRecentBookInformation,
         lastUpdateDate,
-        bookCount
+        bookCount,
+        onClick
     }: ShelfOptionProps
 ) {
     return (
         <button
             className = "shelf-option-in-home-page"
+            onClick = {onClick}
         >    
             <div
                 className = "shelf-option-detail-in-home-page"
@@ -138,6 +143,7 @@ function ShelfOption(
 
 const demoShelfOptionList = [
     {
+        id: "1",
         imageLinkOfBookInShelf: currentReadingShelfDemoBookCoverImage,
         shelfName: "Current Reading",
         mostRecentBookInformation: {
@@ -148,6 +154,7 @@ const demoShelfOptionList = [
         bookCount: 2
     },
     {
+        id: "2",
         imageLinkOfBookInShelf: wantToReadShelfDemoBookCoverImage,
         shelfName: "Want to Read",
         mostRecentBookInformation: {
@@ -158,6 +165,7 @@ const demoShelfOptionList = [
         bookCount: 263
     },
     {
+        id: "3",
         imageLinkOfBookInShelf: readShelfDemoBookCoverImage,
         shelfName: "Read",
         mostRecentBookInformation: {
@@ -169,7 +177,11 @@ const demoShelfOptionList = [
     }
 ]
 
-function ShelfListPart() {
+function ShelfListPart(
+    {
+        onShelfOptionClick
+    }: ShelfListPartProps
+) {
     /*
         Request the number of shelves from the server
     */
@@ -194,7 +206,7 @@ function ShelfListPart() {
                             setTimeout(() => {
                                 /*
                                 
-                                    Request from server to get more shelf
+                                    Request from server to get more shelves
                                 
                                 */
                             }, 100); 
@@ -223,6 +235,11 @@ function ShelfListPart() {
                                 mostRecentBookInformation = {item.mostRecentBookInformation}
                                 lastUpdateDate = {item.lastUpdateDate}
                                 bookCount = {item.bookCount}
+                                onClick = {
+                                    (event: MouseEvent) => {
+                                        onShelfOptionClick(item.id);
+                                    }
+                                }
                             />
                         )
                     })
@@ -234,7 +251,8 @@ function ShelfListPart() {
 
 function HomePage(
     {
-        onPageOptionClick
+        onPageOptionClick,
+        onShelfOptionClick
     }: HomePageProps
 ) {
     return (
@@ -255,7 +273,11 @@ function HomePage(
                         onPageOptionClick    
                     }
                 />
-                <ShelfListPart/>
+                <ShelfListPart
+                    onShelfOptionClick = {
+                        onShelfOptionClick
+                    }
+                />
             </div>
         </div>
     );

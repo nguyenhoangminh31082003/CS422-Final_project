@@ -39,6 +39,14 @@ function App() {
                         setPageID(pageID);
                     }
                 }
+                onShelfOptionClick = {
+                    (shelfID: string) => {
+                        setPageID(PAGE_ID["SHELF_PAGE"]);
+                        setOtherData({
+                            shelfID: shelfID
+                        });
+                    }
+                }
             />
         );
     } else if (pageID == PAGE_ID["REGISTRATION_PAGE"]) {
@@ -82,11 +90,15 @@ function App() {
         );
     } else if (pageID == PAGE_ID["SHELF_PAGE"]) {
         return (
-                <ShelfPage onPageOptionClick = {
-                    (pageID: number) => {
-                        setPageID(pageID);
+                <ShelfPage 
+                    onPageOptionClick = {
+                        (pageID: number) => {
+                            setPageID(pageID);
+                        }
                     }
-                }/>
+
+                    shelfID = {otherData.shelfID}
+                />
         );
     }
 }
