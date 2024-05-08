@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { useState } from "react";
 import { MouseEvent } from "react";
 import PAGE_ID from "../PageID";
@@ -11,6 +11,8 @@ import TopHorizontalBar from "./TopHorizontalBar";
 import currentReadingShelfDemoBookCoverImage from "../assets/current_reading_shelf_demo_book_cover_image.png";
 import wantToReadShelfDemoBookCoverImage from "../assets/want_to_read_shelf_demo_book_cover_image.png";
 import readShelfDemoBookCoverImage from "../assets/read_shelf_demo_book_cover_image.png";
+import { useRef } from "react";
+import { useIntersection } from "@mantine/hooks";
 
 interface HomePageProps {
     onPageOptionClick: (pageID: number) => void;
@@ -25,6 +27,7 @@ interface ShelfOptionProps {
     },
     lastUpdateDate: Date;
     bookCount: number;
+    ref: ((element: any) => void) | null
 }
 
 function ShelfOption(
@@ -33,14 +36,24 @@ function ShelfOption(
         shelfName,
         mostRecentBookInformation,
         lastUpdateDate,
-        bookCount
+        bookCount,
+        ref
     }: ShelfOptionProps
 ) {
-    console.log("Debug!!!");
+    if (ref !== null) {
+        return (
+            <div
+                ref = {ref}
+            >
+                {shelfName}
+            </div>
+        )
+    }
+
     return (
-        <button>    
+        <div>    
             {shelfName}
-        </button>
+        </div>
     );
 }
 
@@ -91,8 +104,6 @@ async function fetchShelfOption(
 }
 
 function ShelfListPart() {
-    console.log("Hello");
-
     const {
         data,
         fetchNextPage,
@@ -109,6 +120,18 @@ function ShelfListPart() {
         initialPageParam: 1
     });
 
+    const lastOptionRef = useRef<HTMLDivElement>(null);
+    const {ref, entry} = useIntersection({
+        root: lastOptionRef.current,
+        threshold: 1
+    });
+
+    useEffect(() => {
+        if (entry?.isIntersecting) {
+            fetchNextPage();
+        }
+    }, [entry]);
+
     return (
         <div
             id = "shelf-list-part"
@@ -122,6 +145,11 @@ function ShelfListPart() {
                                 mostRecentBookInformation = {page.mostRecentBookInformation}
                                 lastUpdateDate = {page.lastUpdateDate}
                                 bookCount = {page.bookCount}
+                                ref = {
+                                    i === data.pages.length - 1
+                                    ? ref
+                                    : null
+                                }
                             />
                         )
                     })
