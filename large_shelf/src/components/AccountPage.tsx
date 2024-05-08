@@ -194,7 +194,8 @@ function DetailedProfileInformationPart(
                             type = "text"
                             readOnly = {true}
                             style = {{
-                                fontStyle: passwordVisibility ? "normal" : "italic"
+                                fontStyle: passwordVisibility ? "normal" : "italic",
+                                opacity: passwordVisibility ? 1 : 0.8
                             }}
                             value = {passwordVisibility ? password : "Hidden"}
                         />
