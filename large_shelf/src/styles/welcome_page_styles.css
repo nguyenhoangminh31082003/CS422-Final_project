@@ -84,6 +84,7 @@
 }
 
 .input-box:focus {
+    background-color: #FFE9C5;
     outline: none;
 }
 
