@@ -77,20 +77,24 @@ function App() {
     }
     
     if (pageID === PAGE_ID["VOICE_PAGE"]) {
-            /*
-            return (
-                    <VoicePage 
-                        onPageOptionClick = {
-                            onPageOptionClick
-                        }
-                    />
-            );
-            */
-            return (
-                <div>
-                    Comming soon
-                </div>
-            );
+        return (
+            <VoicePage 
+                onPageOptionClick = {
+                    onPageOptionClick
+                }
+                
+                userID = {userID}
+
+                onAudioFolderOptionClick = {
+                    (folderID: string) => {
+                        setPageID(PAGE_ID["AUDIO_FOLDER_PAGE"]);
+                        setOtherData({
+                            folderID: folderID
+                        });
+                    }
+                }
+            />
+        );
     }
     
     if (pageID === PAGE_ID["LIBRARY_PAGE"]) {

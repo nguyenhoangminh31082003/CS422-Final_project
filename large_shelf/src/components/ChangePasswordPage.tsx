@@ -9,7 +9,15 @@ interface ChangePasswordPageProps {
     onPageOptionClick: (pageID: number) => void;
 }
 
-function NewPasswordCreationPart() {
+interface NewPasswordCreationPartProps {
+    onPageOptionClick: (pageID: number) => void;
+}
+
+function NewPasswordCreationPart(
+    {
+        onPageOptionClick
+    }: NewPasswordCreationPartProps
+) {
     const [message, setMessage] = useState<string>("");
     
     return (
@@ -84,11 +92,14 @@ function NewPasswordCreationPart() {
                             setMessage("The re-entered password does not match the new password");
                             return;
                         }
+
                         /*
                     
                             Request server to change password
 
                         */
+
+                        onPageOptionClick(PAGE_ID.ACCOUNT_PAGE);
                     }
                 }
             >
@@ -127,7 +138,11 @@ export default function ChangePasswordPage(
                         onPageOptionClick    
                     }
                 />
-                <NewPasswordCreationPart/>
+                <NewPasswordCreationPart
+                    onPageOptionClick = {
+                        onPageOptionClick
+                    }
+                />
             </div>
         </div>
     );
