@@ -10,6 +10,8 @@ interface ChangePasswordPageProps {
 }
 
 function NewPasswordCreationPart() {
+    const [message, setMessage] = useState<string>("");
+    
     return (
         <div
             id = "new-password-creation-part"
@@ -65,17 +67,39 @@ function NewPasswordCreationPart() {
                 id = "create-new-password-button"
                 onClick = {
                     (event: MouseEvent<HTMLButtonElement>) => {
+                        const newlyChosenPassword = (document.getElementById("first-new-user-password-input-box") as HTMLInputElement).value;
+                        const reEnteredNewlyChosenPassword = (document.getElementById("second-new-user-password-input-box") as HTMLInputElement).value;
+                        
+                        if (typeof(newlyChosenPassword) !== "string" || typeof(reEnteredNewlyChosenPassword) !== "string") {
+                            setMessage("The requested new password is not valid");
+                            return;
+                        }
+
+                        if (newlyChosenPassword.length <= 0 || reEnteredNewlyChosenPassword.length <= 0) {
+                            setMessage("The requested new password must not be empty");
+                            return;
+                        }
+
+                        if (newlyChosenPassword !== reEnteredNewlyChosenPassword) {
+                            setMessage("The re-entered password does not match the new password");
+                            return;
+                        }
                         /*
                     
                             Request server to change password
 
                         */
-                        
                     }
                 }
             >
                 Change password
             </button>
+        
+            <div
+                id = "response-message-to-password-change-request"
+            >
+                {message}
+            </div>
         </div>
     );
 }
