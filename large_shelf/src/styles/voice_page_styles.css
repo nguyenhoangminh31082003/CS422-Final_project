@@ -103,7 +103,6 @@
 
 #create-new-folder-button:hover {
     margin-right: 1%;
-    margin-top: -1%;
     opacity: 0.8;
 }
 
@@ -117,12 +116,14 @@
 .audio-folder-option-detail-in-voice-page {
     width: 100%;    
     display: flex;
-    color: black;
+    color: #7D4230;
     border-style: solid;
     flex-direction: row;
     border-radius: 12px;
     border-color:#7D4230;
     background-color: #FFE9C5;
+    font-size: larger;
+    font-family: "Inter", sans-serif;
     box-shadow: inset 0 0 4px black;
     box-shadow: 4px 4px 12px #888888;
     transition: background-color 1s, color 1s, margin-top 1s, box-shadow 1s;
@@ -160,5 +161,33 @@
 }
 
 .remove-folder-button-icon-in-audio-folder-option-in-voice-page {
+    margin: 1%;
+    transition: opacity 1s, margin 1s;
+}
+
+.remove-folder-button-icon-in-audio-folder-option-in-voice-page:hover {
+    opacity: 0.8;
+    margin: 4%;
+}
+
+.remove-folder-button-in-audio-folder-option-in-voice-page {
     border-width: 0px;
+    background-color: rgba(0, 0, 0, 0);
+    transition: background-color 1s, border-width 1s, border-radius 1s;
+}
+
+.remove-folder-button-in-audio-folder-option-in-voice-page:hover {
+    background-color:#FFE9C5;
+    border-width: 0px;
+    border-radius: 12px;
+}
+
+.audio-folder-name-in-voice-page {
+    font-family: "Inter", sans-serif;
+    text-align: left;
+}
+
+.audio-file-count-in-voice-page {
+    font-family: "Inter", sans-serif;
+    text-align: left;
 }

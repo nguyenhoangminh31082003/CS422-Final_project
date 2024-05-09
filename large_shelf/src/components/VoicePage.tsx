@@ -64,7 +64,7 @@ function AudioFolderOption(
                         className = "top-bar-in-text-part-of-audio-folder-option-in-voice-page"
                     >
                         <button
-                            id = "remove-folder-button-in-audio-folder-option-in-voice-page"
+                            className = "remove-folder-button-in-audio-folder-option-in-voice-page"
                             onClick = {
                                 (event: MouseEvent) => {
                                     event.stopPropagation();
@@ -78,6 +78,19 @@ function AudioFolderOption(
                             />
                         </button>
                     </div>
+
+                    <div
+                        className = "audio-folder-name-in-voice-page"
+                    >
+                        {folderName}
+                    </div>
+
+                    <div
+                        className = "audio-file-count-in-voice-page"
+                    >
+                        Number of audio files: {audioFileCount}
+                    </div>
+
                 </div>
             </button>
         </div>
