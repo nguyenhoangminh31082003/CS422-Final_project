@@ -9,6 +9,7 @@ import AccountPage from './components/AccountPage';
 import WelcomePage from './components/WelcomePage';
 import RegistrationPage from './components/RegistrationPage';
 import ChangePasswordPage from './components/ChangePasswordPage';
+import BookInformationPage from './components/BookInformationPage';
 
 function App() {
     const [pageID, setPageID] = useState(PAGE_ID["WELCOME_PAGE"]);
@@ -99,7 +100,22 @@ function App() {
     
     if (pageID === PAGE_ID["LIBRARY_PAGE"]) {
         return (
-                <LibraryPage />
+                <LibraryPage 
+                    onPageOptionClick = {
+                        onPageOptionClick
+                    }
+
+                    onShelfBookOptionClick = {
+                        (bookID: string) => {
+                            setPageID(PAGE_ID["BOOK_INFORMATION_PAGE"]);
+                            setOtherData({
+                                bookID: bookID
+                            });
+                        }
+                    }
+
+                    shelfID = {otherData.shelfID}
+                />
         );
     }
     
@@ -145,9 +161,8 @@ function App() {
     
     if (pageID === PAGE_ID["BOOK_INFORMATION_PAGE"]) {
             return (
-                <div>
-                    Comming soon
-                </div>
+                <BookInformationPage
+                />
             );
     } 
     

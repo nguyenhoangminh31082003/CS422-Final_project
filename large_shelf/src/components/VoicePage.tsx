@@ -64,6 +64,16 @@ const demoAudioFolderOptionList = [
     }
 ]
 
+function VoiceSettingPart() {
+    return (
+        <div
+            id = "voice-setting-part-in-voice-page"
+        >
+            Voice Setting
+        </div>
+    );
+}
+
 function AudioFolderListPart(
     {
         onPageOptionClick,
@@ -83,6 +93,7 @@ function AudioFolderListPart(
         <div
             id = "audio-folder-list-part"
         >
+            Hello;
         </div>
     );
 }
@@ -112,6 +123,7 @@ export default function VoicePage(
                         onPageOptionClick    
                     }
                 />
+
                 <AudioFolderListPart
                     userID = {userID}
 
@@ -122,6 +134,9 @@ export default function VoicePage(
                     onAudioFolderOptionClick = {
                         onAudioFolderOptionClick
                     }
+                />
+
+                <VoiceSettingPart
                 />
             </div>
         </div>
