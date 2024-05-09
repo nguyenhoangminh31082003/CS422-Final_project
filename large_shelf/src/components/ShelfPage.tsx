@@ -214,10 +214,8 @@ function ShelfBookListPart(
     var [shelfBookOptionList, setShelfBookOptionList] = useState(demoShelfBookOptionList);
     var [hasMore, setHasMore] = useState(true);
 
-    return (
-        <div
-            id = "shelf-book-list-part"
-        >
+    function TitlePart() {
+        return (
             <div 
                 id = "title-bar-in-shelf-page"
             >
@@ -242,6 +240,16 @@ function ShelfBookListPart(
                     {`"${shelfName}" Shelf`} 
                 </h1>
             </div>
+        );
+    }
+
+    return (
+        <div
+            id = "shelf-book-list-part"
+        >
+            
+            <TitlePart />
+
             <div
                 id = "shelf-book-option-list"
             >
