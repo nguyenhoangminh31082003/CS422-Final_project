@@ -15,114 +15,129 @@ function App() {
     const [userID, setUserID] = useState(null as string | null);
     const [otherData, setOtherData] = useState(null as any | null);
     
-    if (pageID === PAGE_ID["WELCOME_PAGE"]) {
-        return (
-            <WelcomePage 
-                onSuccessfullLogin = {
-                    (currentUserID : string) => {
-                        setPageID(PAGE_ID["HOME_PAGE"]);
-                        setUserID(currentUserID);
-                    }
-                }
+    const onPageOptionClick = (pageID: number) => {
+        setPageID(pageID);
+    };
 
-                onRegistrationRequest = {
-                    () => {
-                        setPageID(PAGE_ID["REGISTRATION_PAGE"]);
+    while (true) {
+        if (pageID === PAGE_ID["WELCOME_PAGE"]) {
+            return (
+                <WelcomePage 
+                    onSuccessfullLogin = {
+                        (currentUserID : string) => {
+                            setPageID(PAGE_ID["HOME_PAGE"]);
+                            setUserID(currentUserID);
+                        }
                     }
-                }
-            />
-        );
-    } else if (pageID == PAGE_ID["HOME_PAGE"]) {
-        return (
-            <HomePage 
-                onPageOptionClick = {
-                    (pageID: number) => {
-                        setPageID(pageID);
-                    }
-                }
-                onShelfOptionClick = {
-                    (shelfID: string) => {
-                        setPageID(PAGE_ID["SHELF_PAGE"]);
-                        setOtherData({
-                            shelfID: shelfID
-                        });
-                    }
-                }
-            />
-        );
-    } else if (pageID == PAGE_ID["REGISTRATION_PAGE"]) {
-        return (
-            <RegistrationPage 
-                onSuccessfullRegistration = {
-                    (currentUserID : string) => {
-                    setPageID(PAGE_ID["HOME_PAGE"]);
-                    setUserID(currentUserID);
-                    }
-                }
-        
-                onLoginRequest = {
-                    () => {
-                    setPageID(PAGE_ID["WELCOME_PAGE"]);
-                    }
-                }
-            />
-        );
-    } else if (pageID == PAGE_ID["VOICE_PAGE"]) {
-        return (
-                <VoicePage />
-        );
-    } else if (pageID == PAGE_ID["LIBRARY_PAGE"]) {
-        return (
-                <LibraryPage />
-        );
-    } else if (pageID == PAGE_ID["BOOK_PAGE"]) {
-        return (
-                <BookPage />
-        );
-    } else if (pageID == PAGE_ID["ACCOUNT_PAGE"]) {
-        return (
-                <AccountPage 
-                    onPageOptionClick = {
-                        (pageID: number) => {
-                            setPageID(pageID);
+
+                    onRegistrationRequest = {
+                        () => {
+                            setPageID(PAGE_ID["REGISTRATION_PAGE"]);
                         }
                     }
                 />
-        );
-    } else if (pageID == PAGE_ID["SHELF_PAGE"]) {
-        return (
-                <ShelfPage 
-
+            );
+        } else if (pageID == PAGE_ID["HOME_PAGE"]) {
+            return (
+                <HomePage 
                     onPageOptionClick = {
-                        (pageID: number) => {
-                            setPageID(pageID);
-                        }
+                        onPageOptionClick
                     }
-
-                    onShelfBookOptionClick={
-                        (bookID: string) => {
-                            setPageID(PAGE_ID["BOOK_INFORMATION_PAGE"]);
+                    onShelfOptionClick = {
+                        (shelfID: string) => {
+                            setPageID(PAGE_ID["SHELF_PAGE"]);
                             setOtherData({
-                                bookID: bookID
+                                shelfID: shelfID
                             });
                         }
                     }
-
-                    shelfID = {otherData.shelfID}
                 />
-        );
-    } else if (pageID == PAGE_ID["BOOK_INFORMATION_PAGE"]) {
-        return (
-            <div>
-                Comming soon
-            </div>
-        );
-    } else if (pageID == PAGE_ID["CHANGE_PASSWORD_PAGE"]) {
-        return (
-            <ChangePasswordPage 
-                
-            />
-        );
+            );
+        } else if (pageID == PAGE_ID["REGISTRATION_PAGE"]) {
+            return (
+                <RegistrationPage 
+                    onSuccessfullRegistration = {
+                        (currentUserID : string) => {
+                        setPageID(PAGE_ID["HOME_PAGE"]);
+                        setUserID(currentUserID);
+                        }
+                    }
+            
+                    onLoginRequest = {
+                        () => {
+                        setPageID(PAGE_ID["WELCOME_PAGE"]);
+                        }
+                    }
+                />
+            );
+        } else if (pageID == PAGE_ID["VOICE_PAGE"]) {
+            setPageID(PAGE_ID["WELCOME_PAGE"]);
+            /*
+            return (
+                    <VoicePage 
+                        onPageOptionClick = {
+                            onPageOptionClick
+                        }
+                    />
+            );
+            */
+        } else if (pageID == PAGE_ID["LIBRARY_PAGE"]) {
+            return (
+                    <LibraryPage />
+            );
+        } else if (pageID == PAGE_ID["BOOK_PAGE"]) {
+            return (
+                    <BookPage />
+            );
+        } else if (pageID == PAGE_ID["ACCOUNT_PAGE"]) {
+            if (userID == null) {
+                setPageID(PAGE_ID["WELCOME_PAGE"]);
+            } else {
+                return (
+                        <AccountPage 
+                            onPageOptionClick = {
+                                onPageOptionClick
+                            }
+
+                            userID = {userID}
+                        />
+                );
+            }
+        } else if (pageID == PAGE_ID["SHELF_PAGE"]) {
+            return (
+                    <ShelfPage 
+
+                        onPageOptionClick = {
+                            onPageOptionClick
+                        }
+
+                        onShelfBookOptionClick={
+                            (bookID: string) => {
+                                setPageID(PAGE_ID["BOOK_INFORMATION_PAGE"]);
+                                setOtherData({
+                                    bookID: bookID
+                                });
+                            }
+                        }
+
+                        shelfID = {otherData.shelfID}
+                    />
+            );
+        } else if (pageID == PAGE_ID["BOOK_INFORMATION_PAGE"]) {
+            return (
+                <div>
+                    Comming soon
+                </div>
+            );
+        } else if (pageID == PAGE_ID["CHANGE_PASSWORD_PAGE"]) {
+            return (
+                <ChangePasswordPage 
+                    onPageOptionClick = {
+                        onPageOptionClick
+                    }
+                />
+            );
+        }
     }
 }
 

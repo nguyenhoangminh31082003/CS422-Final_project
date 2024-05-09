@@ -9,265 +9,73 @@ interface ChangePasswordPageProps {
     onPageOptionClick: (pageID: number) => void;
 }
 
-function BriefProfileInformationPart(
-    {
-        profilePicture,
-        fullName
-    }: BriefProfileInformationPartProps
-) {
+function NewPasswordCreationPart() {
     return (
         <div
-            id = "brief-information-part"
+            id = "new-password-creation-part"
         >
-            <img
-                src = {profilePicture}
-                alt = "Profile Picture"
-                id = "displayed-profile-picture"
-            />
-            <div
-                id = "displayed-full-name"
+            <h1
+                id = "new-password-creation-title"
             >
-                {fullName}
-            </div>
-        </div>
-    );
-}
+                Please think carefully when changing your password
+            </h1>
 
-function DetailedProfileInformationPart(
-    {
-        firstName,
-        lastName,
-        email,
-        phoneNumber,
-        biography
-    }: DetailedProfileInformationPartProps
-) {
+            <form
+                id = "new-password-form"
+            >
+                <label
+                    className = "new-password-creation-field-label"
+                >
+                    Please enter your current password
+                </label><br/>
+                <input
+                    id = "old-user-password-input-box"
+                    className = "new-password-creation-field-input-box"
+                    type = "password"
+                />
 
-    var [passwordVisibility, setPasswordVisibility] = useState<boolean>(false);
+                <br/>
 
-    var password: string = "This is not a password";
+                <label
+                    className = "new-password-creation-field-label"
+                >
+                    Please enter your new password
+                </label><br/>
+                <input
+                    id = "first-new-user-password-input-box"
+                    className = "new-password-creation-field-input-box"
+                    type = "password"
+                />
 
-    if (passwordVisibility) {
-        /*
-        
-            Request server to get plaintext password
-        
-        */
-       password = "I am the one who knocks!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
-    }
+                <br/>   
 
-    return (
-        <div
-            id = "detailed-information-part"
-        >
+                <label
+                    className = "new-password-creation-field-label"
+                >
+                    Please re-enter your new password
+                </label><br/>
+                <input
+                    id = "second-new-user-password-input-box"
+                    className = "new-password-creation-field-input-box"
+                    type = "password"
+                />
+            </form>
+
             <button
-                id = "request-save-modification-button"
-            >
-                Save your modification
-            </button>
+                id = "create-new-password-button"
+                onClick = {
+                    (event: MouseEvent<HTMLButtonElement>) => {
+                        /*
+                    
+                            Request server to change password
 
-            <div
-                id = "name-information-row"
-            >
-                <div
-                    id = "first-name-container"
-                    className = "profile-information-container"
-                >
-                    <div
-                        className = "profile-information-label"
-                    >
-                        First name
-                    </div>
-
-                    <input
-                        type = "text"
-                        id = "editable-first-name-box"
-                        className = "editable-profile-box"
-                        placeholder={firstName}
-                    />
-
-                </div>
-
-
-                <div
-                    id = "last-name-container"
-                    className = "profile-information-container"
-                >
-                    <div
-                        className = "profile-information-label"
-                    >
-                        Last name
-                    </div>
-
-                    <input
-                        type = "text"
-                        id = "editable-last-name-box"
-                        className = "editable-profile-box"
-                        placeholder={lastName}
-                    />
-
-                </div>
-            </div>
-
-            <div
-                id = "contact-information-row"
-            >
-                <div
-                    id = "email-container"
-                    className = "profile-information-container"
-                >
-                    <div
-                        className = "profile-information-label"
-                    >
-                        Email
-                    </div>
-
-                    <input
-                        type = "text"
-                        id = "editable-email-box"
-                        className = "editable-profile-box"
-                        placeholder={email}
-                    />
-
-                </div>
-
-
-                <div
-                    id = "phone-number-container"
-                    className = "profile-information-container"
-                >
-                    <div
-                        className = "profile-information-label"
-                    >
-                        Phone number
-                    </div>
-
-                    <input
-                        type = "text"
-                        id = "editable-phone-number-box"
-                        className = "editable-profile-box"
-                        placeholder={phoneNumber}
-                    />
-
-                </div>
-            </div>
-
-            <div
-                id = "password-information-row"
-            >
-                
-                <div
-                    id = "password-container"
-                    className = "profile-information-container"
-                >
-                    <div
-                        className = "profile-information-label"
-                    >
-                        Password
-                    </div>
-
-                    <div
-                        id = "displayed-password-field"
-                        style = {{
-                            fontStyle: passwordVisibility ? "normal" : "italic"
-                        }}
-                    >
-                        <input
-                            id = "password-field-text-part"
-                            type = "text"
-                            readOnly = {true}
-                            style = {{
-                                fontStyle: passwordVisibility ? "normal" : "italic",
-                                opacity: passwordVisibility ? 1 : 0.8
-                            }}
-                            value = {passwordVisibility ? password : "Hidden"}
-                        />
-
-                        <button
-                            id = "password-visibility-button"
-                            onClick = {
-                                (event: MouseEvent<HTMLButtonElement>) => {
-                                    setPasswordVisibility(!passwordVisibility);
-                                }
-                            }
-                        >
-                            <img
-                                src = {passwordVisibility ? openedEyeIcon : closedEyeIcon}
-                                alt = "Password Visibility"
-                            />
-                        </button>
+                        */
                         
-                    </div>
-
-                </div>
-
-                <button
-                    id = "change-password-button"
-                >
-                    Change password
-                </button>
-
-            </div>
-
-            <div
-                id = "biography-information-row"
+                    }
+                }
             >
-                <div
-                    id = "biography-container"
-                    className = "profile-information-container"
-                >
-                    <div
-                        id = "biography-information-label"
-                    >
-                        Biography
-                    </div>
-
-                    <textarea
-                        id = "editable-biography-box"
-                        placeholder={biography}
-                    >
-                    </textarea>
-
-                </div>
-            </div>
-        </div>
-    )
-}
-
-function ProfileInformationPart() {
-
-    /*
-    
-        Send request to server to get user's information
-    
-    */
-
-    var information = {
-        profilePicture: defaultProfilePicture,
-        fullName: "Nakahara Hiroshi",
-        firstName: "Hiroshi",
-        lastName: "Nakahara",
-        email: "deadlinesarecommingfromeverydirections@gmail.com",
-        phoneNumber: "0123456789",
-        biography: "I am not in danger. I am the danger. I am the one who knocks!!!"
-    };
-
-
-    return (
-        <div
-            id = "information-list-part"
-        >
-            <BriefProfileInformationPart
-                profilePicture = {information.profilePicture}
-                fullName = {information.fullName}
-            />
-            <DetailedProfileInformationPart
-                firstName = {information.firstName}
-                lastName = {information.lastName}
-                email = {information.email}
-                phoneNumber = {information.phoneNumber}
-                biography = {information.biography}
-            />
+                Change password
+            </button>
         </div>
     );
 }
@@ -279,7 +87,7 @@ export default function ChangePasswordPage(
 ) {
     return (
         <div
-            id = "account-page"
+            id = "change-password-page"
         >
             <TopHorizontalBar 
         
@@ -295,7 +103,7 @@ export default function ChangePasswordPage(
                         onPageOptionClick    
                     }
                 />
-                <ProfileInformationPart/>
+                <NewPasswordCreationPart/>
             </div>
         </div>
     );

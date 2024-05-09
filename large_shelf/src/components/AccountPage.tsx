@@ -9,6 +9,7 @@ import closedEyeIcon from "../assets/closed_eye_icon.svg";
 
 interface AccountPageProps {
     onPageOptionClick: (pageID: number) => void;
+    userID: string;
 }
 
 interface BriefProfileInformationPartProps {
@@ -22,6 +23,12 @@ interface DetailedProfileInformationPartProps {
     email: string;
     phoneNumber: string;
     biography: string;
+    onPageOptionClick: (pageID: number) => void;
+}
+
+interface ProfileInformationPartProps {
+    userID: string;
+    onPageOptionClick: (pageID: number) => void;
 }
 
 function BriefProfileInformationPart(
@@ -54,7 +61,8 @@ function DetailedProfileInformationPart(
         lastName,
         email,
         phoneNumber,
-        biography
+        biography,
+        onPageOptionClick
     }: DetailedProfileInformationPartProps
 ) {
 
@@ -218,6 +226,11 @@ function DetailedProfileInformationPart(
 
                 <button
                     id = "change-password-button"
+                    onClick={
+                        () => {
+                            onPageOptionClick(PAGE_ID.CHANGE_PASSWORD_PAGE);
+                        }
+                    }
                 >
                     Change password
                 </button>
@@ -249,7 +262,12 @@ function DetailedProfileInformationPart(
     )
 }
 
-function ProfileInformationPart() {
+function ProfileInformationPart(
+    {
+        userID,
+        onPageOptionClick
+    }: ProfileInformationPartProps
+) {
 
     /*
     
@@ -282,6 +300,7 @@ function ProfileInformationPart() {
                 email = {information.email}
                 phoneNumber = {information.phoneNumber}
                 biography = {information.biography}
+                onPageOptionClick={onPageOptionClick}
             />
         </div>
     );
@@ -289,7 +308,8 @@ function ProfileInformationPart() {
 
 export default function AccountPage(
     {
-        onPageOptionClick
+        onPageOptionClick,
+        userID
     }: AccountPageProps
 ) {
     return (
@@ -310,7 +330,12 @@ export default function AccountPage(
                         onPageOptionClick    
                     }
                 />
-                <ProfileInformationPart/>
+                <ProfileInformationPart
+                    userID = {userID}
+                    onPageOptionClick = {
+                        onPageOptionClick
+                    }
+                />
             </div>
         </div>
     );

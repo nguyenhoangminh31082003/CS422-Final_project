@@ -79,7 +79,7 @@ function RegistrationPart(
                 id = "registration-form"
             >
                 <label
-                    className = "registration-fill-label"
+                    className = "registration-field-label"
                 >
                     Please enter your email 
                 </label><br/>
@@ -91,7 +91,7 @@ function RegistrationPart(
                 />
 
                 <label
-                    className = "registration-fill-label"
+                    className = "registration-field-label"
                 >
                     Please create your password 
                 </label><br/>
@@ -103,7 +103,7 @@ function RegistrationPart(
                 />
 
                 <label
-                    className = "registration-fill-label"
+                    className = "registration-field-label"
                 >
                     Please re-enter your password 
                 </label><br/>
