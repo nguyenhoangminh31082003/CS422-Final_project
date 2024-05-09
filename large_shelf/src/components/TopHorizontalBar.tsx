@@ -1,6 +1,4 @@
-import { Fragment } from "react";
-import { useState } from "react";
-import { MouseEvent } from "react";
+import { Fragment, MouseEvent, useState } from "react";
 import "../styles/top_horizontal_bar_styles.css";
 import logo from "../assets/large_shelf_logo.svg";
 import searchIcon from "../assets/normal_search_icon.svg";
@@ -28,7 +26,7 @@ function SearchBar() {
     );
 }
 
-function TopHorizontalBar() {
+export default function TopHorizontalBar() {
     return (
         <div
             id = "top-horizontal-bar"
@@ -47,5 +45,3 @@ function TopHorizontalBar() {
         </div>
     );
 }
-
-export default TopHorizontalBar;

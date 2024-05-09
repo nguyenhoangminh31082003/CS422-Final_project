@@ -303,7 +303,7 @@ function ShelfBookListPart(
     );
 }
 
-function ShelfPage(
+export default function ShelfPage(
     {
         onPageOptionClick,
         onShelfBookOptionClick,
@@ -343,5 +343,3 @@ function ShelfPage(
         </div>
     );
 }
-
-export default ShelfPage;

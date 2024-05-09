@@ -1,6 +1,4 @@
-import { Fragment } from "react";
-import { useState } from "react";
-import { MouseEvent } from "react";
+import { Fragment, MouseEvent, useState } from "react";
 import PAGE_ID from "../PageID";
 import "../styles/account_page_styles.css";
 import VerticalPageBar from "./VerticalPageBar";
@@ -289,7 +287,7 @@ function ProfileInformationPart() {
     );
 }
 
-function AccountPage(
+export default function AccountPage(
     {
         onPageOptionClick
     }: AccountPageProps
@@ -317,5 +315,3 @@ function AccountPage(
         </div>
     );
 }
-
-export default AccountPage;

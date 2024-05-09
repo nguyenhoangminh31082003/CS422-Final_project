@@ -1,13 +1,9 @@
-import { Fragment } from "react";
-import { MouseEvent } from "react";
-import { useState } from "react";
+import { Fragment, MouseEvent, useState } from "react";
 
-function LibraryPage() {
+export default function LibraryPage() {
     return (
         <Fragment>
             <h1>Library Page</h1>
         </Fragment>
     );
 }
-
-export default LibraryPage;

@@ -249,7 +249,7 @@ function ShelfListPart(
     );
 }
 
-function HomePage(
+export default function HomePage(
     {
         onPageOptionClick,
         onShelfOptionClick
@@ -282,5 +282,3 @@ function HomePage(
         </div>
     );
 }
-
-export default HomePage;

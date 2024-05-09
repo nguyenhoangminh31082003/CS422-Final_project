@@ -1,6 +1,4 @@
-import { Fragment } from "react";
-import { useState } from "react";
-import { MouseEvent } from "react";
+import { Fragment, MouseEvent, useState } from "react";
 import "../styles/vertical_page_bar_styles.css";
 import PAGE_ID from "../PageID";
 
@@ -100,7 +98,7 @@ function VerticalPageBarCell(
     );
 }
 
-function VerticalPageBar(
+export default function VerticalPageBar(
     { 
         chosenPageID,
         onOptionClick
@@ -190,5 +188,3 @@ function VerticalPageBar(
         </div>
     );
 }
-
-export default VerticalPageBar;

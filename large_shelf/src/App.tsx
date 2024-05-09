@@ -8,6 +8,7 @@ import LibraryPage from './components/LibraryPage';
 import AccountPage from './components/AccountPage';
 import WelcomePage from './components/WelcomePage';
 import RegistrationPage from './components/RegistrationPage';
+import ChangePasswordPage from './components/ChangePasswordPage';
 
 function App() {
     const [pageID, setPageID] = useState(PAGE_ID["WELCOME_PAGE"]);
@@ -17,7 +18,7 @@ function App() {
     if (pageID === PAGE_ID["WELCOME_PAGE"]) {
         return (
             <WelcomePage 
-                onSucessfullLogin = {
+                onSuccessfullLogin = {
                     (currentUserID : string) => {
                         setPageID(PAGE_ID["HOME_PAGE"]);
                         setUserID(currentUserID);
@@ -52,7 +53,7 @@ function App() {
     } else if (pageID == PAGE_ID["REGISTRATION_PAGE"]) {
         return (
             <RegistrationPage 
-                onSucessfullRegistration = {
+                onSuccessfullRegistration = {
                     (currentUserID : string) => {
                     setPageID(PAGE_ID["HOME_PAGE"]);
                     setUserID(currentUserID);
@@ -115,6 +116,12 @@ function App() {
             <div>
                 Comming soon
             </div>
+        );
+    } else if (pageID == PAGE_ID["CHANGE_PASSWORD_PAGE"]) {
+        return (
+            <ChangePasswordPage 
+                
+            />
         );
     }
 }

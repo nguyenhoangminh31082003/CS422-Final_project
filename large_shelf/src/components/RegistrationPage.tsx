@@ -1,17 +1,15 @@
-import { Fragment } from "react";
-import { MouseEvent } from "react";
-import { useState } from "react";
+import { Fragment, MouseEvent, useState } from "react";
 import "../styles/registration_page_styles.css";
 import logo from "../assets/large_shelf_logo.svg";
 import decoration from "../assets/decoration_of_cover_of_books.svg";
 
 interface RegistrationPageProps {
-    onSucessfullRegistration: (userID : string) => void;
+    onSuccessfullRegistration: (userID : string) => void;
     onLoginRequest: () => void;
 }
 
 interface RegistrationPartProps {
-    onSucessfullRegistration: (userID : string) => void;
+    onSuccessfullRegistration: (userID : string) => void;
     onLoginRequest: () => void;
 }
 
@@ -54,7 +52,7 @@ function CoverPart() {
 
 function RegistrationPart(
     {
-        onSucessfullRegistration,
+        onSuccessfullRegistration,
         onLoginRequest
     } : RegistrationPartProps
 ) {
@@ -147,9 +145,9 @@ function RegistrationPart(
     );
 }
 
-function RegistrationPage(
+export default function RegistrationPage(
     {
-        onSucessfullRegistration,
+        onSuccessfullRegistration,
         onLoginRequest
     } : RegistrationPageProps
 ) {
@@ -159,11 +157,9 @@ function RegistrationPage(
         >
             <CoverPart />
             <RegistrationPart 
-                onSucessfullRegistration = {onSucessfullRegistration}
+                onSuccessfullRegistration = {onSuccessfullRegistration}
                 onLoginRequest = {onLoginRequest}
             />
         </div>
     )
 }
-
-export default RegistrationPage;

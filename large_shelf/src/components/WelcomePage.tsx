@@ -1,17 +1,16 @@
-import { Fragment } from "react";
-import { MouseEvent } from "react";
-import { useState } from "react";
+import { Fragment, MouseEvent, useState } from "react";
+import axios from "axios";
 import "../styles/welcome_page_styles.css";
 import logo from "../assets/large_shelf_logo.svg";
 import decoration from "../assets/decoration_of_cover_of_books.svg";
 
 interface HomePageProps {
-    onSucessfullLogin: (userID : string) => void;
+    onSuccessfullLogin: (userID : string) => void;
     onRegistrationRequest: () => void;
 }
 
 interface LoginPartProps {
-    onSucessfullLogin: (userID : string) => void;
+    onSuccessfullLogin: (userID : string) => void;
     onRegistrationRequest: () => void;
 }
 
@@ -54,7 +53,7 @@ function CoverPart() {
 
 function LoginPart(
     {
-        onSucessfullLogin,
+        onSuccessfullLogin,
         onRegistrationRequest
     } : LoginPartProps
 ) {
@@ -115,7 +114,16 @@ function LoginPart(
                         */
                         console.log("Email: " + email);
                         console.log("Password: " + password);
-                        onSucessfullLogin("1");
+                        axios.post("http://localhost:8000/reader/login", { email, password })
+                            .then(response => {
+                                // Assuming the server returns the userID upon successful login
+                                const userID = response.data.email;
+                                onSuccessfullLogin(userID);
+                            })
+                            .catch(error => {
+                                console.error("Error logging in:", error);
+                            });
+            
                     }
                 }
             >
@@ -142,9 +150,9 @@ function LoginPart(
     );
 }
 
-function WelcomePage(
+export default function WelcomePage(
     {
-        onSucessfullLogin,
+        onSuccessfullLogin,
         onRegistrationRequest
     } : HomePageProps
 ) {
@@ -154,11 +162,9 @@ function WelcomePage(
         >
             <CoverPart />
             <LoginPart 
-                onSucessfullLogin = {onSucessfullLogin}
+                onSuccessfullLogin = {onSuccessfullLogin}
                 onRegistrationRequest = {onRegistrationRequest}
             />
         </div>
     )
 }
-
-export default WelcomePage;
