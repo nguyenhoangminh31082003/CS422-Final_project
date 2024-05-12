@@ -168,3 +168,40 @@ Response
 success: boolean,
 message: string
 }
+
+# Get the number of shelves of the user
+
+Request
+
+{
+"userID": string
+}
+
+Response
+{
+"numberOfShelves": string
+}
+
+# Get the i-th shelf of the user (sorted by names)
+
+Request
+
+{
+"userID": string,
+"shelfOrder": number
+}
+
+Response {
+"shelfID": string
+}
+
+# Get the number of books of a shelf of a user
+
+Reqeust
+{
+"shelfID": string
+}
+
+Response {
+"numberOfBooks": number
+}

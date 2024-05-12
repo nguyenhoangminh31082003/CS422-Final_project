@@ -322,12 +322,12 @@ export default function AudioFolderPage(
     {
         onPageOptionClick,
         onShelfBookOptionClick,
-        shelfID
+        folderID
     }: ShelfPageProps
 ) {
     return (
         <div
-            id = "shelf-page"
+            id = "audio-folder-page"
         >
             <TopHorizontalBar 
         
@@ -337,7 +337,7 @@ export default function AudioFolderPage(
             >
                 <VerticalPageBar
                     chosenPageID = {
-                        PAGE_ID.HOME_PAGE
+                        PAGE_ID.VOICE_PAGE
                     }
                     onOptionClick = {
                         onPageOptionClick    
