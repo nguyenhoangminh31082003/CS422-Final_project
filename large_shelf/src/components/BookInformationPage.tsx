@@ -31,7 +31,7 @@ function BookDescriptionPart(
         Following the destruction of House Atreides by House Harkonnen, Princess Irulan, the daughter of Padishah Emperor Shaddam IV, secretly journals that Paul Atreides may still be alive. On Arrakis, Stilgar's Fremen troops, including Paul and his pregnant mother, Lady Jessica, overcome a Harkonnen patrol. When Jessica and Paul reach Sietch Tabr, some Fremen suspect they are spies, while Stilgar and others see signs of the prophecy that a mother and son from the "Outer World" will bring prosperity to Arrakis.
     Stilgar tells Jessica that Sietch Tabr's Reverend Mother is dying and that Jessica must replace her by drinking the Water of Life — a poison fatal for males and the untrained. Jessica transmutes the poison, surviving and inheriting the memories of every female ancestor in her lineage. The liquid also prematurely awakens the mind of her unborn daughter, Alia, allowing Jessica to communicate with her. They agree to focus on convincing the more skeptical northern Fremen of the prophecy. Chani and her friend, Shishakli, believe the prophecy was fabricated to manipulate the Fremen. However, she begins to respect Paul after he declares that he only intends to fight alongside the Fremen, not to rule them.
     `;
-    const userRating = 0;
+    var [userRating, setUserRating] = useState(0);
 
     return (
         <div
@@ -55,6 +55,26 @@ function BookDescriptionPart(
                     <EditableFiveStarRating
                         id = "user-rating-in-book-description-part"
                         starCount = {userRating}
+                        onStarClick={
+                            (starCount: number) => {
+                                if (starCount === userRating) {
+                                    setUserRating(0);
+                                } else {
+                                    setUserRating(starCount);
+                                }
+                                /*
+                                
+                                    Request server to change user rating on this book
+                                        0 - no rating
+                                        1 - 1 star
+                                        2 - 2 stars
+                                        3 - 3 stars
+                                        4 - 4 stars
+                                        5 - 5 stars
+                                
+                                */
+                            }
+                        }
                     />
                 </div>
 
