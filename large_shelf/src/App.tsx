@@ -7,6 +7,7 @@ import ShelfPage from './components/ShelfPage';
 import LibraryPage from './components/LibraryPage';
 import AccountPage from './components/AccountPage';
 import WelcomePage from './components/WelcomePage';
+import AudioFolderPage from './components/AudioFolderPage';
 import RegistrationPage from './components/RegistrationPage';
 import ChangePasswordPage from './components/ChangePasswordPage';
 import BookInformationPage from './components/BookInformationPage';
@@ -191,6 +192,27 @@ function App() {
                 onPageOptionClick = {
                     onPageOptionClick
                 }
+            />
+        );
+    }
+
+    if (pageID === PAGE_ID["AUDIO_FOLDER_PAGE"]) {
+        return (
+            <AudioFolderPage 
+                onPageOptionClick = {
+                    onPageOptionClick
+                }
+
+                onShelfBookOptionClick={
+                    (bookID: string) => {
+                        setPageID(PAGE_ID["BOOK_INFORMATION_PAGE"]);
+                        setOtherData({
+                            bookID: bookID
+                        });
+                    }
+                }
+
+                shelfID = ""
             />
         );
     }

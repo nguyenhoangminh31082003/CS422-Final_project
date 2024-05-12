@@ -101,3 +101,70 @@ Response
 {
 starRating: number//0 means that user has not rated the book yet and 1, 2, 3, 4, 5 means the rating that user gives
 }
+
+# Change password
+
+Request
+{
+userID: string,
+oldPassword: string,
+newPassword: string
+}
+
+Response
+{
+success: boolean,
+message: string
+}
+
+# Get password
+
+Request
+{
+userID: string
+}
+
+Response
+{
+allowance: boolean,
+password: string,
+message: string
+}
+
+# Get user information
+
+Request
+{
+userID: string
+}
+
+Response
+{
+profilePictureLink: string,
+firstName: string,
+lastName: string,
+email: string,
+phoneNumber: string,
+fullName: string,
+biography: string
+}
+
+# Update user information
+
+Request
+{
+userID: string,
+profilePictureLink: string,
+firstName: string,
+lastName: string,
+email: string,
+phoneNumber: string,
+fullName: string,
+biography: string
+}
+
+Response
+{
+success: boolean,
+message: string
+}
