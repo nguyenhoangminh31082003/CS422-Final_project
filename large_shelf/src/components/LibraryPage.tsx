@@ -6,15 +6,14 @@ import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
 import InfinieScroll from "react-infinite-scroll-component";
 import duneCoverImage from "../assets/dune_cover_image.png";
-import backButtonIcon from "../assets/back_button_icon.svg";
 
-interface ShelfPageProps {
+interface LibraryPageProps {
     onPageOptionClick: (pageID: number) => void;
-    onShelfBookOptionClick: (bookID: string) => void;
-    shelfID: string;
+    onBookOptionClick: (bookID: string) => void;
+    searchInput?: string | null;
 }
 
-interface ShelfBookOptionProps {
+interface BookOptionProps {
     imageLinkOfBookCover: string;
     title: string;
     authorName: string;
@@ -25,13 +24,13 @@ interface ShelfBookOptionProps {
     onClick: (event: MouseEvent) => void;
 }
 
-interface ShelfBookListPartProps {
-    shelfID: string;
+interface BookListPartProps {
+    searchInput?: string | null;
     onPageOptionClick: (pageID: number) => void;
-    onShelfBookOptionClick: (shelfID: string) => void;
+    onBookOptionClick: (shelfID: string) => void;
 }
 
-function ShelfBookOption(
+function BookOption(
     {
         imageLinkOfBookCover,
         title,
@@ -41,7 +40,7 @@ function ShelfBookOption(
         userProcess,
         genre,
         onClick
-    }: ShelfBookOptionProps
+    }: BookOptionProps
 ) {
     return (
         <div
@@ -193,12 +192,12 @@ const demoShelfBookOptionList = [
     }
 ]
 
-function ShelfBookListPart(
+function BookListPart(
     {
-        shelfID,
+        searchInput,
         onPageOptionClick,
-        onShelfBookOptionClick
-    }: ShelfBookListPartProps
+        onBookOptionClick
+    }: BookListPartProps
 ) {
     /*
         Request the number of books in the shelve from the server
@@ -229,11 +228,6 @@ function ShelfBookListPart(
                         }
                     }
                 >
-                    <img
-                        id = "back-button-icon-in-shelf-page"
-                        src = {backButtonIcon}
-                        alt = "Back"
-                    />
                 </button>
 
                 <h1
@@ -280,7 +274,7 @@ function ShelfBookListPart(
                     {
                         shelfBookOptionList.map((item, index) => {
                             return (
-                                <ShelfBookOption
+                                <BookOption
                                     imageLinkOfBookCover = {item.imageLinkOfBookCover}
                                     title = {item.title}
                                     authorName = {item.authorName}
@@ -290,7 +284,7 @@ function ShelfBookListPart(
                                     genre = {item.genre}
                                     onClick = {
                                         (event: MouseEvent) => {
-                                            onShelfBookOptionClick(item.bookID);
+                                            onBookOptionClick(item.bookID);
                                         }
                                     }
                                 />
@@ -306,13 +300,13 @@ function ShelfBookListPart(
 export default function LibraryPage(
     {
         onPageOptionClick,
-        onShelfBookOptionClick,
-        shelfID
-    }: ShelfPageProps
+        onBookOptionClick,
+        searchInput
+    }: LibraryPageProps
 ) {
     return (
         <div
-            id = "shelf-page"
+            id = "library-page"
         >
             <TopHorizontalBar 
             />
@@ -328,15 +322,15 @@ export default function LibraryPage(
                         onPageOptionClick    
                     }
                 />
-                <ShelfBookListPart
-                    shelfID = {shelfID}
+                <BookListPart
+                    searchInput = {searchInput}
 
                     onPageOptionClick = {
                         onPageOptionClick
                     }
 
-                    onShelfBookOptionClick = {
-                        onShelfBookOptionClick
+                    onBookOptionClick = {
+                        onBookOptionClick
                     }
                 />
             </div>

@@ -14,7 +14,7 @@ import BookInformationPage from './components/BookInformationPage';
 function App() {
     const [pageID, setPageID] = useState(PAGE_ID["WELCOME_PAGE"]);
     const [userID, setUserID] = useState("");
-    const [otherData, setOtherData] = useState(null as any | null);
+    const [otherData, setOtherData] = useState(null as any);
     
     const onPageOptionClick = (pageID: number) => {
         setPageID(pageID);
@@ -105,7 +105,7 @@ function App() {
                         onPageOptionClick
                     }
 
-                    onShelfBookOptionClick = {
+                    onBookOptionClick = {
                         (bookID: string) => {
                             setPageID(PAGE_ID["BOOK_INFORMATION_PAGE"]);
                             setOtherData({
@@ -114,7 +114,9 @@ function App() {
                         }
                     }
 
-                    shelfID = {otherData.shelfID}
+                    searchInput = {
+                        (otherData === null ? null : otherData.searchInput)
+                    }
                 />
         );
     }
@@ -154,7 +156,9 @@ function App() {
                     }
                 }
 
-                shelfID = {otherData.shelfID}
+                shelfID = {
+                    otherData.shelfID
+                }
             />
         );
     } 
@@ -166,7 +170,9 @@ function App() {
                         onPageOptionClick
                     }
                     
-                    bookID = {otherData.bookID}
+                    bookID = {
+                        otherData.bookID
+                    }
                 />
             );
     } 
