@@ -162,6 +162,11 @@ function App() {
     if (pageID === PAGE_ID["BOOK_INFORMATION_PAGE"]) {
             return (
                 <BookInformationPage
+                    onPageOptionClick = {
+                        onPageOptionClick
+                    }
+                    
+                    bookID = {otherData.bookID}
                 />
             );
     } 

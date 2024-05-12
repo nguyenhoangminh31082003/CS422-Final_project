@@ -1,0 +1,124 @@
+#shelf-page {
+    width: 100%;
+    height: 100vh;
+}
+
+#content-part {
+    position: fixed;
+    top: calc(100% * 80 / 900);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background: #FFE9C5;
+    margin-left: auto;
+}
+
+#shelf-book-list-part {
+    width: calc(100% * 1500 / 1600);
+    height: calc(100% * (900 - 80) / 900);
+}
+
+#shelf-book-list-part::-webkit-scrollbar {
+    background-color: #FFE9C5;
+    width: 8px;
+}
+
+#shelf-book-list-part::-webkit-scrollbar-thumb {
+    background-color: #7D4230;
+    border-radius: 20px;
+    transition: background-color 1s;
+}
+
+#shelf-book-list-part::-webkit-scrollbar-thumb:hover {
+    background-color: #E29675;
+}
+
+#shelf-name-title-in-shelf-page {
+    font-family: "Inter", sans-serif;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+}
+
+#title-bar-in-shelf-page {
+    width: 100%;
+    height: 8%;
+    /*
+    background-color: aqua;
+    */
+}
+
+#shelf-book-option-list {
+    width: 100%;
+    height: 92%;
+    overflow: auto;
+}
+
+.shelf-book-option-in-shelf-page {
+    width: 100%;
+    padding: 1%;
+    background-color:#FFE9C5;
+    border-width: 0px;
+}
+
+.shelf-book-option-detail-in-shelf-page {
+    color: black;
+    border-style: solid;
+    width: 100%;    
+    display: flex;
+    flex-direction: row;
+    border-radius: 4px;
+    border-color:#7D4230;
+    box-shadow: 4px 4px 12px #888888;
+    transition: background-color 1s, color 1s, margin-top 1s, box-shadow 1s;
+    background-color: #FFE9C5;
+    box-shadow: inset 0 0 4px black;
+}
+
+.shelf-book-option-detail-in-shelf-page:hover {
+    background-color: #E29675;
+    color:#FFE9C5;
+    box-shadow: 4px 8px 4px #888888;
+    margin-top: 1%;
+}
+
+.cover-image-of-shelf-book-in-shelf-page {
+    width: 80%;
+    aspect-ratio: 5 / 7;
+    border-radius: 4%;
+}   
+
+.detail-cell-in-shelf-page {
+    padding: 1%;
+    width: 12%;
+    align-items: center;
+}
+
+.title-of-shelf-book-in-shelf-page {
+    font-size: 120%;
+    font-weight: bold;
+    font-family: "Inter", sans-serif;
+}
+
+.detail-of-shelf-book-in-shelf-page {
+    font-size: 120%;
+    font-style: italic;
+    font-family: "Inter", sans-serif;
+}
+
+#back-button-in-shelf-page {
+    position: fixed;
+    background-color: #FFE9C5;
+    border-width: 0px;
+    border-style: solid;
+    margin: 0.4%;
+    transition: opacity 1s, margin-left 1s;
+}
+
+#back-button-in-shelf-page:hover {
+    opacity: 0.8;
+    margin-left: 0%;
+}
+

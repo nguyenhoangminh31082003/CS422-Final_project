@@ -1,5 +1,4 @@
 import { Fragment, useState, MouseEvent } from "react";
-
 import PAGE_ID from "../PageID";
 import "../styles/shelf_page_styles.css";
 import VerticalPageBar from "./VerticalPageBar";
