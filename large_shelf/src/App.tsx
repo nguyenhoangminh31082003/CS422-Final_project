@@ -123,7 +123,15 @@ function App() {
     
     if (pageID === PAGE_ID["BOOK_PAGE"]) {
         return (
-            <BookPage />
+            <BookPage 
+                onPageOptionClick = {
+                    onPageOptionClick
+                }
+
+                bookID = {
+                    "This field will be updated later by the developer"
+                }
+            />
         );
     }
     
