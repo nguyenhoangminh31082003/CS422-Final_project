@@ -66,3 +66,11 @@
 #book-title-in-book-description-part {
     font-weight: bold;
 }
+
+#user-rating-row-in-book-description-part {
+    align-items: center;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    margin: calc(100% * 40 / 900);
+}
