@@ -1,11 +1,14 @@
 import { Fragment, useState, MouseEvent } from "react";
 
 import PAGE_ID from "../PageID";
-import "../styles/shelf_page_styles.css";
+import "../styles/library_page_styles.css";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
 import InfinieScroll from "react-infinite-scroll-component";
 import duneCoverImage from "../assets/dune_cover_image.png";
+import duneMessiahCoverImage from "../assets/dune_messiah_cover_image.png";
+import hereticsOfDuneCoverImage from "../assets/heretics_of_dune_cover_image.png";
+import houseCorrinoCoverImage from "../assets/house_corrino_cover_image.png";
 
 interface LibraryPageProps {
     onPageOptionClick: (pageID: number) => void;
@@ -17,9 +20,7 @@ interface BookOptionProps {
     imageLinkOfBookCover: string;
     title: string;
     authorName: string;
-    dateAdded: Date;
     averageRating: number;
-    userProcess: number;
     genre: string;
     onClick: (event: MouseEvent) => void;
 }
@@ -35,140 +36,84 @@ function BookOption(
         imageLinkOfBookCover,
         title,
         authorName,
-        dateAdded,
         averageRating,
-        userProcess,
         genre,
         onClick
     }: BookOptionProps
 ) {
     return (
         <div
-            className = "shelf-book-option-in-shelf-page"
+            className = "book-option-in-library-page"
         >
             <button
-                className = "shelf-book-option-detail-in-shelf-page"
+                className = "book-option-detail-in-library-page"
                 onClick = {onClick}
             >
                 <div
-                    className = "detail-cell-in-shelf-page"
+                    className = "detail-cell-in-library-page"
                 >
                     <img
-                        className = "cover-image-of-shelf-book-in-shelf-page"
+                        className = "cover-image-of-book-in-library-page"
                         src = {imageLinkOfBookCover}
                         alt = "Book cover"
                     />
                 </div>
 
                 <div
-                    className = "detail-cell-in-shelf-page"
+                    className = "detail-cell-in-library-page"
                 >
                     <h1
-                        className = "title-of-shelf-book-in-shelf-page"
+                        className = "title-of-book-in-library-page"
                     >
                         Title
                     </h1>
                     <p
-                        className = "detail-of-shelf-book-in-shelf-page"
+                        className = "detail-of-book-in-library-page"
                     >
                         {title}
                     </p>
                 </div>
 
                 <div
-                    className = "detail-cell-in-shelf-page"
+                    className = "detail-cell-in-library-page"
                 >
                     <h1
-                        className = "title-of-shelf-book-in-shelf-page"
+                        className = "title-of-book-in-library-page"
                     >
                         Author
                     </h1>
                     <p
-                        className = "detail-of-shelf-book-in-shelf-page"
+                        className = "detail-of-book-in-library-page"
                     >
                         {authorName}
                     </p>
                 </div>
 
                 <div
-                    className = "detail-cell-in-shelf-page"
+                    className = "detail-cell-in-library-page"
                 >
                     <h1
-                        className = "title-of-shelf-book-in-shelf-page"
-                    >
-                        Date added
-                    </h1>
-                    <p
-                        className = "detail-of-shelf-book-in-shelf-page"
-                    >
-                        {
-                            `${
-                                (() => {
-                                    const date = dateAdded.getDate();
-                                    const lastDigit = date % 10;
-                                    if ((3 <= date) || (date <= 20)) {
-                                        return `${date}-th`;
-                                    }
-                                    if (lastDigit === 1) {
-                                        return `${date}-st`;
-                                    }
-                                    if (lastDigit === 2) {
-                                        return `${date}-nd`;
-                                    }
-                                    if (lastDigit === 3) {
-                                        return `${date}-rd`;
-                                    }
-                                    return `${date}-th`;
-                                })()
-                            } ${dateAdded.toLocaleString('default', { month: 'long' })},`
-                        }
-                        <br/>
-                        {
-                            dateAdded.getFullYear()
-                        }
-                    </p>
-                </div>
-
-                <div
-                    className = "detail-cell-in-shelf-page"
-                >
-                    <h1
-                        className = "title-of-shelf-book-in-shelf-page"
+                        className = "title-of-book-in-library-page"
                     >
                         Average rating
                     </h1>
                     <p
-                        className = "detail-of-shelf-book-in-shelf-page"
+                        className = "detail-of-book-in-library-page"
                     >
                         {averageRating}/5 stars
                     </p>
                 </div>
 
                 <div
-                    className = "detail-cell-in-shelf-page"
+                    className = "detail-cell-in-library-page"
                 >
                     <h1
-                        className = "title-of-shelf-book-in-shelf-page"
-                    >
-                        Your process
-                    </h1>
-                    <p
-                        className = "detail-of-shelf-book-in-shelf-page"
-                    >
-                        {(userProcess * 100).toFixed(2)}%
-                    </p>
-                </div>
-
-                <div
-                    className = "detail-cell-in-shelf-page"
-                >
-                    <h1
-                        className = "title-of-shelf-book-in-shelf-page"
+                        className = "title-of-book-in-library-page"
                     >
                         Genre
                     </h1>
                     <p
-                        className = "detail-of-shelf-book-in-shelf-page"
+                        className = "detail-of-book-in-library-page"
                     >
                         {genre}
                     </p>
@@ -179,15 +124,37 @@ function BookOption(
     )
 }
 
-const demoShelfBookOptionList = [
+const demoBookOptionList = [
     {
         bookID: "1",
         imageLinkOfBookCover: duneCoverImage,
         title: "Dune",
         authorName: "Frank Herbert",
-        dateAdded: new Date(2024, 3, 24),
         averageRating: 4.27,
-        userProcess: 0.9669,
+        genre: "Science Fiction"
+    },
+    {
+        bookID: "2",
+        imageLinkOfBookCover: duneMessiahCoverImage,
+        title: "Dune Messiah",
+        authorName: "Frank Herbert",
+        averageRating: 3.89,
+        genre: "Science Fiction"
+    },
+    {
+        bookID: "3",
+        imageLinkOfBookCover: hereticsOfDuneCoverImage,
+        title: "Heratics of Dune",
+        authorName: "Frank Herbert",
+        averageRating: 3.87,
+        genre: "Science Fiction"
+    },
+    {
+        bookID: "4",
+        imageLinkOfBookCover: houseCorrinoCoverImage,
+        title: "House Corrino",
+        authorName: "Brian Herbert, Kevin J. Anderson",
+        averageRating: 3.74,
         genre: "Science Fiction"
     }
 ]
@@ -200,54 +167,54 @@ function BookListPart(
     }: BookListPartProps
 ) {
     /*
-        Request the number of books in the shelve from the server
+        Request the number of books in the from the server
     */
-    const numberOfBooks = demoShelfBookOptionList.length;
-    /*
-    
-        Request from the server to get the shelf name given shelf ID
-    
-    */
-    const shelfName = "Current reading";
-
-    var [shelfBookOptionList, setShelfBookOptionList] = useState(demoShelfBookOptionList);
+    const numberOfBooks = demoBookOptionList.length;
+    var [bookOptionList, setBookOptionList] = useState(demoBookOptionList);
     var [hasMore, setHasMore] = useState(true);
 
     return (
         <div
-            id = "shelf-book-list-part"
+            id = "book-list-part"
         >
             <div 
-                id = "title-bar-in-shelf-page"
+                id = "title-bar-in-library-page"
             >
-                <button
-                    id = "back-button-in-shelf-page"
-                    onClick = {
-                        () => {
-                            onPageOptionClick(PAGE_ID.HOME_PAGE);
-                        }
-                    }
+                <form
+                    id = "order-option-selection-in-library-page"
                 >
-                </button>
+                    <label 
+                        htmlFor = "orders"
+                        style = {
+                            {
+                                fontWeight: "bold"
+                            }
+                        }
+                    >Sort by&nbsp;</label>
 
-                <h1
-                    id = "shelf-name-title-in-shelf-page"
-                > 
-                    {`"${shelfName}" Shelf`} 
-                </h1>
+                    <select 
+                        name = "orders" 
+                        id="order-option-in-library-page"
+                    >
+                        <option value = "highly-rated">Highly rated</option>
+                        <option value = "most-popular">Most popular</option>
+                    </select>
+
+                </form>
+                 
             </div>
             <div
-                id = "shelf-book-option-list"
+                id = "book-option-list"
             >
                 <InfinieScroll
                         
                     dataLength = {
-                        shelfBookOptionList.length 
+                        bookOptionList.length 
                     }
 
                     next = {
                         () => {
-                            if (shelfBookOptionList.length < numberOfBooks) {
+                            if (bookOptionList.length < numberOfBooks) {
                                 setTimeout(() => {
                                     /*
                                     
@@ -266,21 +233,27 @@ function BookListPart(
                     loader = {<p> Loading ... </p>}
 
                     endMessage = {
-                        <p> End of the list </p>
+                        <p
+                            style = {
+                                {
+                                    textAlign: "center",
+                                    color: "#7D4230"
+                                }
+                            }
+                        > End of the list 
+                        </p>
                     }
 
-                    scrollableTarget = "shelf-book-option-list"
+                    scrollableTarget = "book-option-list"
                 >   
                     {
-                        shelfBookOptionList.map((item, index) => {
+                        bookOptionList.map((item, index) => {
                             return (
                                 <BookOption
                                     imageLinkOfBookCover = {item.imageLinkOfBookCover}
                                     title = {item.title}
                                     authorName = {item.authorName}
-                                    dateAdded = {item.dateAdded}
                                     averageRating = {item.averageRating}
-                                    userProcess = {item.userProcess}
                                     genre = {item.genre}
                                     onClick = {
                                         (event: MouseEvent) => {

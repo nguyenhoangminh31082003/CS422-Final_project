@@ -123,7 +123,7 @@ export default function BookPage(
             >
                 <VerticalPageBar
                     chosenPageID = {
-                        PAGE_ID.LIBRARY_PAGE
+                        PAGE_ID.BOOK_PAGE
                     }
                     onOptionClick = {
                         onPageOptionClick    

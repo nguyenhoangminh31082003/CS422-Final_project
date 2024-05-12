@@ -221,7 +221,15 @@ function ShelfListPart(
                 loader = {<p> Loading ... </p>}
 
                 endMessage = {
-                    <p> End of the list </p>
+                    <p
+                        style = {
+                            {
+                                textAlign: "center",
+                                color: "#7D4230"
+                            }
+                        }
+                    > End of the list 
+                    </p>
                 }
 
                 scrollableTarget = "shelf-list-part"
