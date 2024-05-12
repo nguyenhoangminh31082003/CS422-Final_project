@@ -267,7 +267,7 @@ export default function VoicePage(
             >
                 <VerticalPageBar
                     chosenPageID = {
-                        PAGE_ID.HOME_PAGE
+                        PAGE_ID.VOICE_PAGE
                     }
                     onOptionClick = {
                         onPageOptionClick    

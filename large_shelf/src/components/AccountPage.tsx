@@ -317,8 +317,8 @@ export default function AccountPage(
             id = "account-page"
         >
             <TopHorizontalBar 
-        
             />
+
             <div
                 id = "content-part"
             >
@@ -330,6 +330,7 @@ export default function AccountPage(
                         onPageOptionClick    
                     }
                 />
+                
                 <ProfileInformationPart
                     userID = {userID}
                     onPageOptionClick = {

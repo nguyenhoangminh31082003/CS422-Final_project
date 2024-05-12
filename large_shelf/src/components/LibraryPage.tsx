@@ -315,14 +315,14 @@ export default function LibraryPage(
             id = "shelf-page"
         >
             <TopHorizontalBar 
-        
             />
+
             <div
                 id = "content-part"
             >
                 <VerticalPageBar
                     chosenPageID = {
-                        PAGE_ID.HOME_PAGE
+                        PAGE_ID.LIBRARY_PAGE
                     }
                     onOptionClick = {
                         onPageOptionClick    
