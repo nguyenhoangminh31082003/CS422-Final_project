@@ -4,117 +4,54 @@ import PAGE_ID from "../PageID";
 import "../styles/audio_folder_page_styles.css";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
+import AddButtonIcon from "../assets/add_button_icon.svg";
 import InfinieScroll from "react-infinite-scroll-component";
 import backButtonIcon from "../assets/back_button_icon.svg";
-import EmmaStoneImage from "../assets/Emma_Stone_Image.png";
-import MattSmithImage from "../assets/Matt_Smith_Image.png";
-import KeanuReevesImage from "../assets/Keanu_Reeves_Image.png";
-import AddButtonIcon from "../assets/add_button_icon.svg";
 import RemoveButtonIcon from "../assets/remove_button_icon.svg";
 
 interface AudioFolderPageProps {
     onPageOptionClick: (pageID: number) => void;
-    onAudioFolderOptionClick: (audioFolderID: string) => void;
-    userID: string;
+    onAudioFileOptionClick: (audioFolderID: string) => void;
+    folderID: string;
 }
 
-interface AudioFolderOptionProps {
-    folderCoverImageLink: string;
-    folderName: string;
-    audioFileCount: number;
+interface AudioFileOptionProps {
+    audioFileName: string;
+    audioFileLength: string;
     onClick: (event: MouseEvent) => void;
 }
 
-interface AudioFolderListPartProps {
-    onPageOptionClick: (pageID: number) => void;
-    onAudioFolderOptionClick: (audioFolderID: string) => void;
-    userID: string;
+interface AudioFileListPartProps {
+    onAudioFileOptionClick: (audioFolderID: string) => void;
+    folderID: string;
 }
 
-function AudioFolderOption(
+function AudioFileOption(
     {
-        folderCoverImageLink,
-        folderName,
-        audioFileCount,
+        audioFileName,
+        audioFileLength,
         onClick  
-    }: AudioFolderOptionProps
+    }: AudioFileOptionProps
 ) {
     return (
         <div
-            className = "audio-folder-option-in-voice-page"
+            className = "audio-file-option-in-audio-folder-page"
         >
             <button
-                className = "audio-folder-option-detail-in-voice-page"
+                className = "audio-file-option-detail-in-audio-folder-page"
                 onClick = {onClick}
             >
-                <div
-                    className = "image-cell-in-voice-page"
-                >
-                    <img
-                        className = "cover-image-of-audio-folder-in-voice-page"
-                        src = {folderCoverImageLink}
-                        alt = "Audio folder cover"
-                    />
-                </div>
-
-                <div
-                    className = "text-part-of-audio-folder-option-in-voice-page"
-                >
-                    <div
-                        className = "top-bar-in-text-part-of-audio-folder-option-in-voice-page"
-                    >
-                        <button
-                            className = "remove-folder-button-in-audio-folder-option-in-voice-page"
-                            onClick = {
-                                (event: MouseEvent) => {
-                                    event.stopPropagation();
-                                }
-                            }
-                        >
-                            <img
-                                className = "remove-folder-button-icon-in-audio-folder-option-in-voice-page"
-                                src = {RemoveButtonIcon}
-                                alt = "Remove button"
-                            />
-                        </button>
-                    </div>
-
-                    <div
-                        className = "audio-folder-name-in-voice-page"
-                    >
-                        {folderName}
-                    </div>
-
-                    <div
-                        className = "audio-file-count-in-voice-page"
-                    >
-                        Number of audio files: {audioFileCount}
-                    </div>
-
-                </div>
+                Hello world
             </button>
         </div>
     )
 }
 
-const demoAudioFolderOptionList = [
+const demoAudioFileOptionList = [
     {
-        name: "Emma Stone",
-        audioFileCount: 1,
-        folderID: "1",
-        folderCoverImageLink: EmmaStoneImage
-    },
-    {
-        name: "Matt Smith",
-        audioFileCount: 3,
-        folderID: "2",
-        folderCoverImageLink: MattSmithImage
-    },
-    {
-        name: "Keanu Reeves",
-        audioFileCount: 50,
-        folderID: "3",
-        folderCoverImageLink: KeanuReevesImage
+        "audioFileID": "24601",
+        "audioFileName": "2024_31_03.mp4",
+        "audioFileLength": "1 minutes 32 seconds"
     }
 ]
 
@@ -148,36 +85,35 @@ function VoiceSettingPart() {
 
 function AudioFolderListPart(
     {
-        onPageOptionClick,
-        onAudioFolderOptionClick,
-        userID
-    }: AudioFolderListPartProps
+        onAudioFileOptionClick,
+        folderID
+    }: AudioFileListPartProps
 ) {
     /*
-        Request the number of folders of the user from the server
+        Request the number of files of the folder from the server
     */
-    const numberOfFolders = demoAudioFolderOptionList.length;
+    const numberOfFiles = demoAudioFileOptionList.length;
     
-    var [audioFolderOptionList, setAudioFolderOptionList] = useState(demoAudioFolderOptionList);
+    var [audioFileOptionList, setAudioFileOptionList] = useState(demoAudioFileOptionList);
     var [hasMore, setHasMore] = useState(true);
 
     function TitlePart() {
         return (
             <div
-                id = "title-bar-in-audio-folder-list-part"
+                id = "title-bar-in-audio-file-list-part"
             >   
                 <h1
-                    id = "title-in-audio-folder-list-part"
+                    id = "title-in-audio-file-list-part"
                 >
-                    Audio folders
+                    Audio files
                 </h1>
 
                 <button
-                    id = "create-new-folder-button"
+                    id = "upload-new-file-button"
                 >
                     <img
                         src = {AddButtonIcon}
-                        alt = "Add button"
+                        alt = "Upload file button"
                     />
                 </button>
 
@@ -187,22 +123,22 @@ function AudioFolderListPart(
 
     return (
         <div
-            id = "audio-folder-list-part"
+            id = "audio-file-list-part"
         >
             <TitlePart />
 
             <div
-                id = "audio-folder-option-list"
+                id = "audio-file-option-list"
             >
                 <InfinieScroll
                         
                     dataLength = {
-                        audioFolderOptionList.length 
+                        audioFileOptionList.length 
                     }
 
                     next = {
                         () => {
-                            if (audioFolderOptionList.length < numberOfFolders) {
+                            if (audioFileOptionList.length < numberOfFiles) {
                                 setTimeout(() => {
                                     /*
                                     
@@ -221,21 +157,28 @@ function AudioFolderListPart(
                     loader = {<p> Loading ... </p>}
 
                     endMessage = {
-                        <p> End of the list </p>
+                        <p
+                            style = {
+                                {
+                                    textAlign: "center",
+                                    color: "#7D4230"
+                                }
+                            }
+                        > End of the list 
+                        </p>
                     }
 
-                    scrollableTarget = "audio-folder-option-list"
+                    scrollableTarget = "audio-file-option-list"
                 >   
                     {
-                        audioFolderOptionList.map((item, index) => {
+                        audioFileOptionList.map((item, index) => {
                             return (
-                                <AudioFolderOption
-                                    folderCoverImageLink = {item.folderCoverImageLink}
-                                    folderName = {item.name}
-                                    audioFileCount = {item.audioFileCount}
+                                <AudioFileOption
+                                    audioFileName={item.audioFileName}
+                                    audioFileLength={item.audioFileLength}
                                     onClick = {
                                         (event: MouseEvent) => {
-                                            onAudioFolderOptionClick(item.folderID);
+                                            onAudioFileOptionClick(item.audioFileID);
                                         }
                                     }
                                 />
@@ -248,16 +191,16 @@ function AudioFolderListPart(
     );
 }
 
-export default function VoicePage(
+export default function AudioFolderPage(
     {
         onPageOptionClick,
-        onAudioFolderOptionClick,
-        userID
-    }: VoicePageProps
+        onAudioFileOptionClick,
+        folderID
+    }: AudioFolderPageProps
 ) {
     return (
         <div
-            id = "voice-page"
+            id = "audio-folder-page"
         >
             <TopHorizontalBar 
         
@@ -275,14 +218,10 @@ export default function VoicePage(
                 />
 
                 <AudioFolderListPart
-                    userID = {userID}
+                    folderID={folderID}
 
-                    onPageOptionClick = {
-                        onPageOptionClick
-                    }
-
-                    onAudioFolderOptionClick = {
-                        onAudioFolderOptionClick
+                    onAudioFileOptionClick={
+                        onAudioFileOptionClick
                     }
                 />
 

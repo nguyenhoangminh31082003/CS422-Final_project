@@ -4,12 +4,12 @@ import PAGE_ID from "../PageID";
 import "../styles/voice_page_styles.css";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
+import AddButtonIcon from "../assets/add_button_icon.svg";
 import InfinieScroll from "react-infinite-scroll-component";
 import backButtonIcon from "../assets/back_button_icon.svg";
 import EmmaStoneImage from "../assets/Emma_Stone_Image.png";
 import MattSmithImage from "../assets/Matt_Smith_Image.png";
 import KeanuReevesImage from "../assets/Keanu_Reeves_Image.png";
-import AddButtonIcon from "../assets/add_button_icon.svg";
 import RemoveButtonIcon from "../assets/remove_button_icon.svg";
 
 interface VoicePageProps {
@@ -26,7 +26,6 @@ interface AudioFolderOptionProps {
 }
 
 interface AudioFolderListPartProps {
-    onPageOptionClick: (pageID: number) => void;
     onAudioFolderOptionClick: (audioFolderID: string) => void;
     userID: string;
 }
@@ -148,7 +147,6 @@ function VoiceSettingPart() {
 
 function AudioFolderListPart(
     {
-        onPageOptionClick,
         onAudioFolderOptionClick,
         userID
     }: AudioFolderListPartProps
@@ -221,7 +219,15 @@ function AudioFolderListPart(
                     loader = {<p> Loading ... </p>}
 
                     endMessage = {
-                        <p> End of the list </p>
+                        <p
+                            style = {
+                                {
+                                    textAlign: "center",
+                                    color: "#7D4230"
+                                }
+                            }
+                        > End of the list 
+                        </p>
                     }
 
                     scrollableTarget = "audio-folder-option-list"
@@ -276,10 +282,6 @@ export default function VoicePage(
 
                 <AudioFolderListPart
                     userID = {userID}
-
-                    onPageOptionClick = {
-                        onPageOptionClick
-                    }
 
                     onAudioFolderOptionClick = {
                         onAudioFolderOptionClick

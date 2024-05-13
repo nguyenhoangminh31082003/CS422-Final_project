@@ -203,16 +203,18 @@ function App() {
                     onPageOptionClick
                 }
 
-                onShelfBookOptionClick={
-                    (bookID: string) => {
-                        setPageID(PAGE_ID["BOOK_INFORMATION_PAGE"]);
+                folderID = {
+                    otherData.folderID
+                }
+
+                onAudioFileOptionClick = {
+                    (fileID: string) => {
+                        setPageID(PAGE_ID["BOOK_PAGE"]);
                         setOtherData({
-                            bookID: bookID
+                            fileID: fileID
                         });
                     }
                 }
-
-                shelfID = ""
             />
         );
     }
