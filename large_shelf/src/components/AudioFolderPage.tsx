@@ -1,266 +1,208 @@
 import { Fragment, useState, MouseEvent } from "react";
+
 import PAGE_ID from "../PageID";
-import "../styles/shelf_page_styles.css";
+import "../styles/audio_folder_page_styles.css";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
 import InfinieScroll from "react-infinite-scroll-component";
-import duneCoverImage from "../assets/dune_cover_image.png";
 import backButtonIcon from "../assets/back_button_icon.svg";
+import EmmaStoneImage from "../assets/Emma_Stone_Image.png";
+import MattSmithImage from "../assets/Matt_Smith_Image.png";
+import KeanuReevesImage from "../assets/Keanu_Reeves_Image.png";
+import AddButtonIcon from "../assets/add_button_icon.svg";
+import RemoveButtonIcon from "../assets/remove_button_icon.svg";
 
-interface ShelfPageProps {
+interface AudioFolderPageProps {
     onPageOptionClick: (pageID: number) => void;
-    onShelfBookOptionClick: (bookID: string) => void;
-    shelfID: string;
+    onAudioFolderOptionClick: (audioFolderID: string) => void;
+    userID: string;
 }
 
-interface ShelfBookOptionProps {
-    imageLinkOfBookCover: string;
-    title: string;
-    authorName: string;
-    dateAdded: Date;
-    averageRating: number;
-    userProcess: number;
-    genre: string;
+interface AudioFolderOptionProps {
+    folderCoverImageLink: string;
+    folderName: string;
+    audioFileCount: number;
     onClick: (event: MouseEvent) => void;
 }
 
-interface ShelfBookListPartProps {
-    shelfID: string;
+interface AudioFolderListPartProps {
     onPageOptionClick: (pageID: number) => void;
-    onShelfBookOptionClick: (shelfID: string) => void;
+    onAudioFolderOptionClick: (audioFolderID: string) => void;
+    userID: string;
 }
 
-function ShelfBookOption(
+function AudioFolderOption(
     {
-        imageLinkOfBookCover,
-        title,
-        authorName,
-        dateAdded,
-        averageRating,
-        userProcess,
-        genre,
-        onClick
-    }: ShelfBookOptionProps
+        folderCoverImageLink,
+        folderName,
+        audioFileCount,
+        onClick  
+    }: AudioFolderOptionProps
 ) {
     return (
         <div
-            className = "shelf-book-option-in-shelf-page"
+            className = "audio-folder-option-in-voice-page"
         >
             <button
-                className = "shelf-book-option-detail-in-shelf-page"
+                className = "audio-folder-option-detail-in-voice-page"
                 onClick = {onClick}
             >
                 <div
-                    className = "detail-cell-in-shelf-page"
+                    className = "image-cell-in-voice-page"
                 >
                     <img
-                        className = "cover-image-of-shelf-book-in-shelf-page"
-                        src = {imageLinkOfBookCover}
-                        alt = "Book cover"
+                        className = "cover-image-of-audio-folder-in-voice-page"
+                        src = {folderCoverImageLink}
+                        alt = "Audio folder cover"
                     />
                 </div>
 
                 <div
-                    className = "detail-cell-in-shelf-page"
+                    className = "text-part-of-audio-folder-option-in-voice-page"
                 >
-                    <h1
-                        className = "title-of-shelf-book-in-shelf-page"
+                    <div
+                        className = "top-bar-in-text-part-of-audio-folder-option-in-voice-page"
                     >
-                        Title
-                    </h1>
-                    <p
-                        className = "detail-of-shelf-book-in-shelf-page"
-                    >
-                        {title}
-                    </p>
-                </div>
+                        <button
+                            className = "remove-folder-button-in-audio-folder-option-in-voice-page"
+                            onClick = {
+                                (event: MouseEvent) => {
+                                    event.stopPropagation();
+                                }
+                            }
+                        >
+                            <img
+                                className = "remove-folder-button-icon-in-audio-folder-option-in-voice-page"
+                                src = {RemoveButtonIcon}
+                                alt = "Remove button"
+                            />
+                        </button>
+                    </div>
 
-                <div
-                    className = "detail-cell-in-shelf-page"
-                >
-                    <h1
-                        className = "title-of-shelf-book-in-shelf-page"
+                    <div
+                        className = "audio-folder-name-in-voice-page"
                     >
-                        Author
-                    </h1>
-                    <p
-                        className = "detail-of-shelf-book-in-shelf-page"
-                    >
-                        {authorName}
-                    </p>
-                </div>
+                        {folderName}
+                    </div>
 
-                <div
-                    className = "detail-cell-in-shelf-page"
-                >
-                    <h1
-                        className = "title-of-shelf-book-in-shelf-page"
+                    <div
+                        className = "audio-file-count-in-voice-page"
                     >
-                        Date added
-                    </h1>
-                    <p
-                        className = "detail-of-shelf-book-in-shelf-page"
-                    >
-                        {
-                            `${
-                                (() => {
-                                    const date = dateAdded.getDate();
-                                    const lastDigit = date % 10;
-                                    if ((3 <= date) || (date <= 20)) {
-                                        return `${date}-th`;
-                                    }
-                                    if (lastDigit === 1) {
-                                        return `${date}-st`;
-                                    }
-                                    if (lastDigit === 2) {
-                                        return `${date}-nd`;
-                                    }
-                                    if (lastDigit === 3) {
-                                        return `${date}-rd`;
-                                    }
-                                    return `${date}-th`;
-                                })()
-                            } ${dateAdded.toLocaleString('default', { month: 'long' })},`
-                        }
-                        <br/>
-                        {
-                            dateAdded.getFullYear()
-                        }
-                    </p>
-                </div>
+                        Number of audio files: {audioFileCount}
+                    </div>
 
-                <div
-                    className = "detail-cell-in-shelf-page"
-                >
-                    <h1
-                        className = "title-of-shelf-book-in-shelf-page"
-                    >
-                        Average rating
-                    </h1>
-                    <p
-                        className = "detail-of-shelf-book-in-shelf-page"
-                    >
-                        {averageRating}/5 stars
-                    </p>
                 </div>
-
-                <div
-                    className = "detail-cell-in-shelf-page"
-                >
-                    <h1
-                        className = "title-of-shelf-book-in-shelf-page"
-                    >
-                        Your process
-                    </h1>
-                    <p
-                        className = "detail-of-shelf-book-in-shelf-page"
-                    >
-                        {(userProcess * 100).toFixed(2)}%
-                    </p>
-                </div>
-
-                <div
-                    className = "detail-cell-in-shelf-page"
-                >
-                    <h1
-                        className = "title-of-shelf-book-in-shelf-page"
-                    >
-                        Genre
-                    </h1>
-                    <p
-                        className = "detail-of-shelf-book-in-shelf-page"
-                    >
-                        {genre}
-                    </p>
-                </div>
-
             </button>
         </div>
     )
 }
 
-const demoShelfBookOptionList = [
+const demoAudioFolderOptionList = [
     {
-        bookID: "1",
-        imageLinkOfBookCover: duneCoverImage,
-        title: "Dune",
-        authorName: "Frank Herbert",
-        dateAdded: new Date(2024, 3, 24),
-        averageRating: 4.27,
-        userProcess: 0.9669,
-        genre: "Science Fiction"
+        name: "Emma Stone",
+        audioFileCount: 1,
+        folderID: "1",
+        folderCoverImageLink: EmmaStoneImage
+    },
+    {
+        name: "Matt Smith",
+        audioFileCount: 3,
+        folderID: "2",
+        folderCoverImageLink: MattSmithImage
+    },
+    {
+        name: "Keanu Reeves",
+        audioFileCount: 50,
+        folderID: "3",
+        folderCoverImageLink: KeanuReevesImage
     }
 ]
 
-function ShelfBookListPart(
+function VoiceSettingPart() {
+    return (
+        <div
+            id = "voice-setting-part-in-voice-page"
+        >
+            <h1>
+                Voice setting
+            </h1>
+
+            <form
+                id = "voice-setting-form-in-voice-page"
+            >
+                <label
+                    className = "voice-setting-label-in-voice-page"
+                >
+                    Default narrator
+                </label>
+                <input
+                    className = "audio-file-path-input-field-in-voice-setting-form"
+                    type = "text"
+                    placeholder = "Not set"
+                />
+            </form>
+
+        </div>
+    );
+}
+
+function AudioFolderListPart(
     {
-        shelfID,
         onPageOptionClick,
-        onShelfBookOptionClick
-    }: ShelfBookListPartProps
+        onAudioFolderOptionClick,
+        userID
+    }: AudioFolderListPartProps
 ) {
     /*
-        Request the number of books in the shelve from the server
+        Request the number of folders of the user from the server
     */
-    const numberOfBooks = demoShelfBookOptionList.length;
-    /*
+    const numberOfFolders = demoAudioFolderOptionList.length;
     
-        Request from the server to get the shelf name given shelf ID
-    
-    */
-    const shelfName = "Current reading";
-
-    var [shelfBookOptionList, setShelfBookOptionList] = useState(demoShelfBookOptionList);
+    var [audioFolderOptionList, setAudioFolderOptionList] = useState(demoAudioFolderOptionList);
     var [hasMore, setHasMore] = useState(true);
 
     function TitlePart() {
         return (
-            <div 
-                id = "title-bar-in-shelf-page"
-            >
+            <div
+                id = "title-bar-in-audio-folder-list-part"
+            >   
+                <h1
+                    id = "title-in-audio-folder-list-part"
+                >
+                    Audio folders
+                </h1>
+
                 <button
-                    id = "back-button-in-shelf-page"
-                    onClick = {
-                        () => {
-                            onPageOptionClick(PAGE_ID.HOME_PAGE);
-                        }
-                    }
+                    id = "create-new-folder-button"
                 >
                     <img
-                        id = "back-button-icon-in-shelf-page"
-                        src = {backButtonIcon}
-                        alt = "Back"
+                        src = {AddButtonIcon}
+                        alt = "Add button"
                     />
                 </button>
 
-                <h1
-                    id = "shelf-name-title-in-shelf-page"
-                > 
-                    {`"${shelfName}" Shelf`} 
-                </h1>
             </div>
-        );
-    }
+        )    
+    };
 
     return (
         <div
-            id = "shelf-book-list-part"
+            id = "audio-folder-list-part"
         >
-            
             <TitlePart />
 
             <div
-                id = "shelf-book-option-list"
+                id = "audio-folder-option-list"
             >
                 <InfinieScroll
                         
                     dataLength = {
-                        shelfBookOptionList.length 
+                        audioFolderOptionList.length 
                     }
 
                     next = {
                         () => {
-                            if (shelfBookOptionList.length < numberOfBooks) {
+                            if (audioFolderOptionList.length < numberOfFolders) {
                                 setTimeout(() => {
                                     /*
                                     
@@ -279,33 +221,21 @@ function ShelfBookListPart(
                     loader = {<p> Loading ... </p>}
 
                     endMessage = {
-                        <p
-                            style = {
-                                {
-                                    textAlign: "center",
-                                    color: "#7D4230"
-                                }
-                            }
-                        > End of the list 
-                        </p>
+                        <p> End of the list </p>
                     }
 
-                    scrollableTarget = "shelf-book-option-list"
+                    scrollableTarget = "audio-folder-option-list"
                 >   
                     {
-                        shelfBookOptionList.map((item, index) => {
+                        audioFolderOptionList.map((item, index) => {
                             return (
-                                <ShelfBookOption
-                                    imageLinkOfBookCover = {item.imageLinkOfBookCover}
-                                    title = {item.title}
-                                    authorName = {item.authorName}
-                                    dateAdded = {item.dateAdded}
-                                    averageRating = {item.averageRating}
-                                    userProcess = {item.userProcess}
-                                    genre = {item.genre}
+                                <AudioFolderOption
+                                    folderCoverImageLink = {item.folderCoverImageLink}
+                                    folderName = {item.name}
+                                    audioFileCount = {item.audioFileCount}
                                     onClick = {
                                         (event: MouseEvent) => {
-                                            onShelfBookOptionClick(item.bookID);
+                                            onAudioFolderOptionClick(item.folderID);
                                         }
                                     }
                                 />
@@ -318,16 +248,16 @@ function ShelfBookListPart(
     );
 }
 
-export default function AudioFolderPage(
+export default function VoicePage(
     {
         onPageOptionClick,
-        onShelfBookOptionClick,
-        folderID
-    }: ShelfPageProps
+        onAudioFolderOptionClick,
+        userID
+    }: VoicePageProps
 ) {
     return (
         <div
-            id = "audio-folder-page"
+            id = "voice-page"
         >
             <TopHorizontalBar 
         
@@ -343,16 +273,20 @@ export default function AudioFolderPage(
                         onPageOptionClick    
                     }
                 />
-                <ShelfBookListPart
-                    shelfID = {shelfID}
+
+                <AudioFolderListPart
+                    userID = {userID}
 
                     onPageOptionClick = {
                         onPageOptionClick
                     }
 
-                    onShelfBookOptionClick = {
-                        onShelfBookOptionClick
+                    onAudioFolderOptionClick = {
+                        onAudioFolderOptionClick
                     }
+                />
+
+                <VoiceSettingPart
                 />
             </div>
         </div>

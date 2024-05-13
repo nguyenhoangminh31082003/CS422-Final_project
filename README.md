@@ -205,3 +205,27 @@ Reqeust
 Response {
 "numberOfBooks": number
 }
+
+# Get the number of audio folders of a user
+
+Request
+{
+"userID": string
+}
+
+Response
+{
+"numberOfBooks": number
+}
+
+# Get the number of audio files in a given audio folder
+
+Request
+{
+"userID": string
+}
+
+Response
+{
+"numberOfAudioFiles": number
+}
