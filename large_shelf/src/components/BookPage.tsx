@@ -113,7 +113,7 @@ export default function BookPage(
 ) {
     return (
         <div
-            id = "book-information-page"
+            id = "book-page"
         >
             <TopHorizontalBar 
             />

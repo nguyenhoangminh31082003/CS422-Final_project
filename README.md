@@ -229,3 +229,15 @@ Response
 {
 "numberOfAudioFiles": number
 }
+
+# Get list of audio files in a given audio folder
+
+Request
+{
+"userID": string
+}
+
+Response
+{
+"audioFileList": [{"audioFileID": string}, ...]
+}
