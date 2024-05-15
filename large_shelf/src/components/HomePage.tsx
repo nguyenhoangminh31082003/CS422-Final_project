@@ -6,6 +6,7 @@ import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
 import InfinieScroll from "react-infinite-scroll-component";
 import AddButtonIcon from "../assets/add_button_icon.svg";
+import RemoveButtonIcon from "../assets/remove_button_icon.svg";
 import currentReadingShelfDemoBookCoverImage from "../assets/dune_cover_image.png";
 import readShelfDemoBookCoverImage from "../assets/read_shelf_demo_book_cover_image.png";
 import wantToReadShelfDemoBookCoverImage from "../assets/want_to_read_shelf_demo_book_cover_image.png";
@@ -58,11 +59,32 @@ function ShelfOption(
                 <div
                     className = "text-information-of-shelf-option-in-home-page"
                 >   
-                    <h1
-                        className = "shelf-name-in-home-page"
+
+                    <div
+                        id = "top-bar-in-shelf-option-in-home-page"
                     >
-                        {shelfName}
-                    </h1>
+                        <h1
+                            className = "shelf-name-in-home-page"
+                        >
+                            {shelfName}
+                        </h1>
+
+                        <button
+                            className = "remove-shelf-button-in-shelf-option-in-home-page"
+                            onClick = {
+                                (event: MouseEvent) => {
+                                    event.stopPropagation();
+                                }
+                            }
+                        >
+                            <img
+                                className = "remove-shelf-button-icon-in-shelf-option-in-home-page"
+                                src = {RemoveButtonIcon}
+                                alt = "Remove button"
+                            />
+                        </button>
+                    </div>
+
                     <p>
                         {"Most recent book: "} 
                         <p
@@ -175,6 +197,17 @@ const demoShelfOptionList = [
         },
         lastUpdateDate: new Date("2021-10-29"),
         bookCount: 5
+    },
+    {
+        id: "4",
+        imageLinkOfBookInShelf: readShelfDemoBookCoverImage,
+        shelfName: "Read",
+        mostRecentBookInformation: {
+            bookName: "The Lord of the Rings",
+            authorName: "J.R.R. Tolkien"
+        },
+        lastUpdateDate: new Date("2021-10-29"),
+        bookCount: 5
     }
 ]
 
@@ -190,7 +223,7 @@ function TitlePart() {
             </h1>
 
             <button
-                id = "create-new-folder-button"
+                id = "create-new-shelf-button"
             >
                 <img
                     src = {AddButtonIcon}

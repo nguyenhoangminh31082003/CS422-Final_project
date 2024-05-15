@@ -162,24 +162,24 @@
 
 .remove-folder-button-icon-in-audio-folder-option-in-voice-page {
     margin: 1%;
-    transition: opacity 1s, margin 1s;
+    transition: opacity 1s;
 }
 
 .remove-folder-button-icon-in-audio-folder-option-in-voice-page:hover {
     opacity: 0.8;
-    margin: 4%;
 }
 
 .remove-folder-button-in-audio-folder-option-in-voice-page {
     border-width: 0px;
     background-color: rgba(0, 0, 0, 0);
-    transition: background-color 1s, border-width 1s, border-radius 1s;
+    transition: background-color 1s, border-width 1s, border-radius 1s, padding 1s;
 }
 
 .remove-folder-button-in-audio-folder-option-in-voice-page:hover {
     background-color:#FFE9C5;
     border-width: 0px;
     border-radius: 12px;
+    padding: 0.4%;
 }
 
 .audio-folder-name-in-voice-page {
