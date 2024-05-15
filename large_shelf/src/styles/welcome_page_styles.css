@@ -1,4 +1,4 @@
-.welcome-page {
+#welcome-page {
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -133,4 +133,16 @@
 #sign-up-button {
     margin-top: 5%;
     background-color: #42B72A;
+}
+
+#server-response-message-in-welcome-page {
+    font-family: "Inter", sans-serif;
+    font-weight: thin;
+    font-size: 120%;
+    color: red;
+    margin-top: 4%;
+    opacity: 0.8;
+    text-align: center;
+    padding-left: 8%;
+    padding-right: 8%;
 }

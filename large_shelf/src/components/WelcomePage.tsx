@@ -57,6 +57,8 @@ function LoginPart(
         onRegistrationRequest
     } : LoginPartProps
 ) {
+    var [displayedMessage, setDisplayedMessage] = useState<Array<String>>([]);
+
     return (
         <div 
             className = "login-part"
@@ -105,23 +107,33 @@ function LoginPart(
                     (event : MouseEvent<HTMLButtonElement>) => {
                         var email = (document.getElementById("email-input-box") as HTMLInputElement).value;
                         var password = (document.getElementById("password-input-box") as HTMLInputElement).value;
-                        /*
                         
-                        Ask server to check email and password
-                        If password is correct, then 
-                            ask server to return the user ID of the email account  
-                            the current page than becomes home page 
-                        */
-                        console.log("Email: " + email);
-                        console.log("Password: " + password);
-                        axios.post("http://localhost:8000/reader/login", { email, password })
+                        axios.post("http://localhost:8000/reader/login", { 
+                            "email": email,
+                            "password": password 
+                        })
                             .then(response => {
-                                // Assuming the server returns the userID upon successful login
-                                const userID = response.data.email;
-                                onSuccessfullLogin(userID);
+                                if (response.status == 200) {
+                                    //console.log(response.data);
+                                    onSuccessfullLogin(response.data["user_id"]);
+                                }
+                                //console.log(response);
                             })
                             .catch(error => {
-                                console.error("Error logging in:", error);
+                                if (error.response) {
+                                    if (error.response.status == 404) {
+                                        setDisplayedMessage([
+                                            "The username or password is incorrect.",
+                                            "Please try again."
+                                        ]);
+                                    } else {
+                                        setDisplayedMessage([
+                                            "There is something wrong in the process of logging in.",
+                                            "Please try again."
+                                        ]);
+                                    }
+                                }
+                                //console.error("Error logging in:", error);
                             });
             
                     }
@@ -145,6 +157,17 @@ function LoginPart(
             >
                 Sign up
             </button>
+            <div
+                id = "server-response-message-in-welcome-page"
+            >
+                {
+                    displayedMessage.map((message, index) => {
+                        return (
+                            <p>{message}</p>
+                        );
+                    })
+                }
+            </div>
             
         </div>
     );
@@ -158,7 +181,7 @@ export default function WelcomePage(
 ) {
     return (
         <div
-            className = "welcome-page"
+            id = "welcome-page"
         >
             <CoverPart />
             <LoginPart 

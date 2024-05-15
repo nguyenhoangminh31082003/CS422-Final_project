@@ -1,15 +1,16 @@
 import { Fragment, MouseEvent, useState } from "react";
+import axios from "axios";
 import "../styles/registration_page_styles.css";
 import logo from "../assets/large_shelf_logo.svg";
 import decoration from "../assets/decoration_of_cover_of_books.svg";
 
 interface RegistrationPageProps {
-    onSuccessfullRegistration: (userID : string) => void;
+    onSuccessfullRegistration: (data: any) => void;
     onLoginRequest: () => void;
 }
 
 interface RegistrationPartProps {
-    onSuccessfullRegistration: (userID : string) => void;
+    onSuccessfullRegistration: (data: any) => void;
     onLoginRequest: () => void;
 }
 
@@ -56,6 +57,8 @@ function RegistrationPart(
         onLoginRequest
     } : RegistrationPartProps
 ) {
+    var [displayedMessage, setDisplayedMessage] = useState<Array<string>>([]);
+
     return (
         <div 
             id = "registration-part"
@@ -122,6 +125,50 @@ function RegistrationPart(
                 className = "noticeable-button"
                 onClick={
                     (event : MouseEvent<HTMLButtonElement>) => {
+                        var email = (document.getElementById("user-email-input-box") as HTMLInputElement).value;
+                        var password1 = (document.getElementById("first-password-input-box") as HTMLInputElement).value;
+                        var password2 = (document.getElementById("second-password-input-box") as HTMLInputElement).value;
+
+                        if (password1 !== password2) {
+                            setDisplayedMessage(["Passwords do not match!"]);
+                            return;
+                        }
+
+                        if (email.length <= 0) {
+                            setDisplayedMessage(["Email is empty!"]);
+                            return;
+                        }
+
+                        if (password1.length <= 0) {
+                            setDisplayedMessage(["Password is empty!"]);
+                            return;
+                        }
+
+                        axios.post("http://localhost:8000/reader/register", { 
+                            "email": email, 
+                            "password": password1 
+                        })
+                            .then(response => {
+                                if (response.status == 201) {
+                                    onSuccessfullRegistration({});
+                                }
+                            })
+                            .catch(error => {
+                                console.log(error.response);
+                                if (error.response) {
+                                    if (error.response.status == 400) {
+                                        setDisplayedMessage([
+                                            "The username or password is not valid.",
+                                            "Please try again."
+                                        ]);
+                                    } else {
+                                        setDisplayedMessage([
+                                            "There is something wrong in the process of registering account.",
+                                            "Please try again."
+                                        ]);
+                                    }
+                                }
+                            });
                     }
                 }
             >
@@ -140,6 +187,18 @@ function RegistrationPart(
             >
                 Already have an account? Let log in!
             </button>
+            <div
+                id = "server-response-message-in-welcome-page"
+            >
+                {
+                    displayedMessage.map((message, index) => {
+                        return (
+                            <p>{message}</p>
+                        );
+                    })
+                }
+            </div>
+            
             
         </div>
     );

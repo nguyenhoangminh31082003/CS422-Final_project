@@ -63,9 +63,8 @@ function App() {
         return (
             <RegistrationPage 
                 onSuccessfullRegistration = {
-                    (currentUserID : string) => {
-                        setPageID(PAGE_ID["HOME_PAGE"]);
-                        setUserID(currentUserID);
+                    (data) => {
+                        setPageID(PAGE_ID["WELCOME_PAGE"]);
                     }
                 }
             
