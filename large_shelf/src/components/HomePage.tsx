@@ -31,6 +31,11 @@ interface ShelfListPartProps {
     userID: string;
 }
 
+interface ListPartProps {
+    onShelfOptionClick: (shelfID: string) => void;
+    userID: string;
+}
+
 function ShelfOption(
     {
         imageLinkOfBookInShelf,
@@ -187,42 +192,96 @@ function TitlePart() {
     )    
 };
 
-function ShelfListPart(
+function ListPart(
     {
         onShelfOptionClick,
         userID
-    }: ShelfListPartProps
+    }: ListPartProps
 ) {
     var allShelves: any[] = [];
 
     axios.get(`http://localhost:8000/shelf/${userID}/`)
         .then(response => {
             if (response.status == 200) {
-                console.log(response.data);
+                allShelves = response.data.map((shelf: any) => {
+                    var books: any[] = [];
+
+                    axios.get(`http://localhost:8000/addedbooks/${userID}/${shelf["id"]}/`)
+                        .then(response => {
+                            if (response.status == 200) {
+                                books = response.data;
+                            }
+                        })
+                        .catch(error => {
+                        });
+
+                    /*
+                    books.sort((firstBook, secondBook) => {
+                        if (firstBook["last_update_date"] > secondBook["last_update_date"]) {
+                            return -1;
+                        }
+                        if (firstBook["last_update_date"] < secondBook["last_update_date"]) {
+                            return 1;
+                        }
+                        return 0;
+                    });
+                    */
+
+                    if (books.length === 0) {
+                        return {
+                            "shelfName": shelf["name"],
+                            "id": shelf["id"],
+                            "bookCount": 0,
+                            "imageLinkOfBookInShelf": "",
+                            "mostRecentBookInformation": {
+                                "bookName": "",
+                                "authorName": ""
+                            },
+                            "lastUpdateDate": new Date()
+                        };
+                    }
+
+                    return {
+                        "shelfName": shelf["name"],
+                        "id": shelf["id"],
+                        "bookCount": books.length,
+                        "imageLinkOfBookInShelf": books[0]["book"]["image_url"],
+                        "mostRecentBookInformation": {
+                            "bookName": books[0]["book"]["title"],
+                            "authorName": books[0]["book"]["author"]
+                        },
+                        "lastUpdateDate": Date.parse(books[0]["last_update_date"])
+                    };
+                });
             }
         })
         .catch(error => {
-            console.log(error);
         });
-
-    allShelves = [];
 
     const numberOfShelves = allShelves.length;
 
     var [shelfOptionList, setShelfOptionList] = useState(allShelves);
     var [hasMore, setHasMore] = useState(true);
 
-    return (
-        <div
-            id = "shelf-list-part"
-        >
-
-            <TitlePart />
-
-            <div
-                id = "shelf-option-list"    
+    if (numberOfShelves === 0) {
+        return (
+            <p
+                style = {
+                    {
+                        fontWeight: "normal",
+                        fontSize: "larger",
+                        textAlign: "center",
+                        color: "#7D4230"
+                    }
+                }
             >
-                <InfinieScroll
+                You currently has no shelf.
+            </p>
+        );
+    }
+
+    return (
+        <InfinieScroll
                 
                     dataLength = {
                         shelfOptionList.length 
@@ -281,6 +340,34 @@ function ShelfListPart(
                         })
                     }
                 </InfinieScroll>
+    );
+}
+
+function ShelfListPart(
+    {
+        onShelfOptionClick,
+        userID
+    }: ShelfListPartProps
+) {
+    
+
+    return (
+        <div
+            id = "shelf-list-part"
+        >
+
+            <TitlePart />
+
+            <div
+                id = "shelf-option-list"    
+            >
+                <ListPart
+                    onShelfOptionClick = {
+                        onShelfOptionClick
+                    }
+
+                    userID = {userID}
+                />
             </div>
 
 
