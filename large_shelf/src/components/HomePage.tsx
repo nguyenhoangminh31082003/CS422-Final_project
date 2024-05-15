@@ -1,19 +1,17 @@
 import { Fragment, useState, MouseEvent } from "react";
-
+import axios from "axios";
 import PAGE_ID from "../PageID";
 import "../styles/home_page_styles.css";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
-import InfinieScroll from "react-infinite-scroll-component";
 import AddButtonIcon from "../assets/add_button_icon.svg";
+import InfinieScroll from "react-infinite-scroll-component";
 import RemoveButtonIcon from "../assets/remove_button_icon.svg";
-import currentReadingShelfDemoBookCoverImage from "../assets/dune_cover_image.png";
-import readShelfDemoBookCoverImage from "../assets/read_shelf_demo_book_cover_image.png";
-import wantToReadShelfDemoBookCoverImage from "../assets/want_to_read_shelf_demo_book_cover_image.png";
 
 interface HomePageProps {
     onPageOptionClick: (pageID: number) => void;
     onShelfOptionClick: (shelfID: string) => void;
+    userID: string;
 }
 
 interface ShelfOptionProps {
@@ -30,6 +28,7 @@ interface ShelfOptionProps {
 
 interface ShelfListPartProps {
     onShelfOptionClick: (shelfID: string) => void;
+    userID: string;
 }
 
 function ShelfOption(
@@ -164,53 +163,6 @@ function ShelfOption(
     );
 }
 
-const demoShelfOptionList = [
-    {
-        id: "1",
-        imageLinkOfBookInShelf: currentReadingShelfDemoBookCoverImage,
-        shelfName: "Current Reading",
-        mostRecentBookInformation: {
-            bookName: "Dune",
-            authorName: "Frank Herbert"
-        },
-        lastUpdateDate: new Date("2024-03-26"),
-        bookCount: 2
-    },
-    {
-        id: "2",
-        imageLinkOfBookInShelf: wantToReadShelfDemoBookCoverImage,
-        shelfName: "Want to Read",
-        mostRecentBookInformation: {
-            bookName: "War and Peace",
-            authorName: "Leo Tolstoy"
-        },
-        lastUpdateDate: new Date("2024-03-25"),
-        bookCount: 263
-    },
-    {
-        id: "3",
-        imageLinkOfBookInShelf: readShelfDemoBookCoverImage,
-        shelfName: "Read",
-        mostRecentBookInformation: {
-            bookName: "The Lord of the Rings",
-            authorName: "J.R.R. Tolkien"
-        },
-        lastUpdateDate: new Date("2021-10-29"),
-        bookCount: 5
-    },
-    {
-        id: "4",
-        imageLinkOfBookInShelf: readShelfDemoBookCoverImage,
-        shelfName: "Read",
-        mostRecentBookInformation: {
-            bookName: "The Lord of the Rings",
-            authorName: "J.R.R. Tolkien"
-        },
-        lastUpdateDate: new Date("2021-10-29"),
-        bookCount: 5
-    }
-]
-
 function TitlePart() {
     return (
         <div
@@ -237,15 +189,27 @@ function TitlePart() {
 
 function ShelfListPart(
     {
-        onShelfOptionClick
+        onShelfOptionClick,
+        userID
     }: ShelfListPartProps
 ) {
-    /*
-        Request the number of shelves from the server
-    */
-    const numberOfShelves = demoShelfOptionList.length;
+    var allShelves: any[] = [];
 
-    var [shelfOptionList, setShelfOptionList] = useState(demoShelfOptionList);
+    axios.get(`http://localhost:8000/shelf/${userID}/`)
+        .then(response => {
+            if (response.status == 200) {
+                console.log(response.data);
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        });
+
+    allShelves = [];
+
+    const numberOfShelves = allShelves.length;
+
+    var [shelfOptionList, setShelfOptionList] = useState(allShelves);
     var [hasMore, setHasMore] = useState(true);
 
     return (
@@ -327,7 +291,8 @@ function ShelfListPart(
 export default function HomePage(
     {
         onPageOptionClick,
-        onShelfOptionClick
+        onShelfOptionClick,
+        userID
     }: HomePageProps
 ) {
     return (
@@ -352,6 +317,8 @@ export default function HomePage(
                     onShelfOptionClick = {
                         onShelfOptionClick
                     }
+
+                    userID = {userID}
                 />
             </div>
         </div>

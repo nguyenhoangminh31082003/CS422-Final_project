@@ -14,7 +14,7 @@ import BookInformationPage from './components/BookInformationPage';
 
 function App() {
     const [pageID, setPageID] = useState(PAGE_ID["WELCOME_PAGE"]);
-    const [userID, setUserID] = useState("");
+    var [userID, setUserID] = useState("");
     const [otherData, setOtherData] = useState(null as any);
     
     const onPageOptionClick = (pageID: number) => {
@@ -55,6 +55,8 @@ function App() {
                         });
                     }
                 }
+
+                userID={userID}
             />
         );
     } 

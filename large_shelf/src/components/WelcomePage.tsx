@@ -114,7 +114,7 @@ function LoginPart(
                         })
                             .then(response => {
                                 if (response.status == 200) {
-                                    onSuccessfullLogin(response.data["user_id"]);
+                                    onSuccessfullLogin(response.data["user_id"].toString());
                                 }
                             })
                             .catch(error => {
