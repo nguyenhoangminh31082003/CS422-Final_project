@@ -15,7 +15,7 @@
     background-color: #E29675;
 }
 
-.login-part {
+#login-part-in-welcome-page {
     display: flex;
     flex-direction: column;
     width: 37.5%;
@@ -51,21 +51,21 @@
     margin-bottom: calc(100% * 20 / 1000);
 }
 
-.application-name {
+#application-name-in-welcome-page {
     font-family: "Inter", sans-serif;
     font-weight: bold;
     font-size: 400%;
     color: #7D4230;
 }
 
-.welcome-message {
+#welcome-message-in-welcome-page {
     font-family: "Inter", sans-serif;
     font-weight: thin;
     font-size: 200%;
     color: #7D4230;
 }
 
-.login-title {
+#login-title-in-welcome-page {
     margin-bottom: 10%;
 }
 

@@ -159,6 +159,37 @@ const demoBookOptionList = [
     }
 ]
 
+function TitlePart() {
+    return (
+        <div 
+            id = "title-bar-in-library-page"
+        >
+            <form
+                id = "order-option-selection-in-library-page"
+            >
+                <label 
+                    htmlFor = "orders"
+                    style = {
+                        {
+                            fontWeight: "bold"
+                        }
+                    }
+                >Sort by&nbsp;</label>
+
+                <select 
+                    name = "orders" 
+                    id="order-option-in-library-page"
+                >
+                    <option value = "highly-rated">Highly rated</option>
+                    <option value = "most-popular">Most popular</option>
+                </select>
+
+            </form>
+            
+        </div>
+    );
+}
+
 function BookListPart(
     {
         searchInput,
@@ -177,32 +208,8 @@ function BookListPart(
         <div
             id = "book-list-part"
         >
-            <div 
-                id = "title-bar-in-library-page"
-            >
-                <form
-                    id = "order-option-selection-in-library-page"
-                >
-                    <label 
-                        htmlFor = "orders"
-                        style = {
-                            {
-                                fontWeight: "bold"
-                            }
-                        }
-                    >Sort by&nbsp;</label>
+            <TitlePart />
 
-                    <select 
-                        name = "orders" 
-                        id="order-option-in-library-page"
-                    >
-                        <option value = "highly-rated">Highly rated</option>
-                        <option value = "most-popular">Most popular</option>
-                    </select>
-
-                </form>
-                 
-            </div>
             <div
                 id = "book-option-list"
             >

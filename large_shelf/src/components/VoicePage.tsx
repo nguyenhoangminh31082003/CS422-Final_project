@@ -145,6 +145,30 @@ function VoiceSettingPart() {
     );
 }
 
+function TitlePart() {
+    return (
+        <div
+            id = "title-bar-in-audio-folder-list-part"
+        >   
+            <h1
+                id = "title-in-audio-folder-list-part"
+            >
+                Audio folders
+            </h1>
+
+            <button
+                id = "create-new-folder-button"
+            >
+                <img
+                    src = {AddButtonIcon}
+                    alt = "Add button"
+                />
+            </button>
+
+        </div>
+    )    
+};
+
 function AudioFolderListPart(
     {
         onAudioFolderOptionClick,
@@ -158,30 +182,6 @@ function AudioFolderListPart(
     
     var [audioFolderOptionList, setAudioFolderOptionList] = useState(demoAudioFolderOptionList);
     var [hasMore, setHasMore] = useState(true);
-
-    function TitlePart() {
-        return (
-            <div
-                id = "title-bar-in-audio-folder-list-part"
-            >   
-                <h1
-                    id = "title-in-audio-folder-list-part"
-                >
-                    Audio folders
-                </h1>
-
-                <button
-                    id = "create-new-folder-button"
-                >
-                    <img
-                        src = {AddButtonIcon}
-                        alt = "Add button"
-                    />
-                </button>
-
-            </div>
-        )    
-    };
 
     return (
         <div

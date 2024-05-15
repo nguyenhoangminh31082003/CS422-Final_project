@@ -61,18 +61,18 @@ function LoginPart(
 
     return (
         <div 
-            className = "login-part"
+            id = "login-part-in-welcome-page"
         >
             <div
-                className = "login-title"
+                id = "login-title-in-welcome-page"
             >
                 <h1
-                    className = "application-name"
+                    id = "application-name-in-welcome-page"
                 >
                     Large Shelf
                 </h1>
                 <h2
-                    className = "welcome-message"
+                    id = "welcome-message-in-welcome-page"
                 >
                     Welcome to Large Shelf! <br/>
                 </h2>
@@ -114,10 +114,8 @@ function LoginPart(
                         })
                             .then(response => {
                                 if (response.status == 200) {
-                                    //console.log(response.data);
                                     onSuccessfullLogin(response.data["user_id"]);
                                 }
-                                //console.log(response);
                             })
                             .catch(error => {
                                 if (error.response) {
@@ -133,7 +131,6 @@ function LoginPart(
                                         ]);
                                     }
                                 }
-                                //console.error("Error logging in:", error);
                             });
             
                     }

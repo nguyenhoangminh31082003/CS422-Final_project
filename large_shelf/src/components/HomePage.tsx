@@ -5,9 +5,10 @@ import "../styles/home_page_styles.css";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
 import InfinieScroll from "react-infinite-scroll-component";
+import AddButtonIcon from "../assets/add_button_icon.svg";
+import currentReadingShelfDemoBookCoverImage from "../assets/dune_cover_image.png";
 import readShelfDemoBookCoverImage from "../assets/read_shelf_demo_book_cover_image.png";
 import wantToReadShelfDemoBookCoverImage from "../assets/want_to_read_shelf_demo_book_cover_image.png";
-import currentReadingShelfDemoBookCoverImage from "../assets/dune_cover_image.png";
 
 interface HomePageProps {
     onPageOptionClick: (pageID: number) => void;
@@ -177,6 +178,30 @@ const demoShelfOptionList = [
     }
 ]
 
+function TitlePart() {
+    return (
+        <div
+            id = "title-bar-in-shelf-list-part"
+        >   
+            <h1
+                id = "title-in-shelf-list-part"
+            >
+                My shelves
+            </h1>
+
+            <button
+                id = "create-new-folder-button"
+            >
+                <img
+                    src = {AddButtonIcon}
+                    alt = "Add button"
+                />
+            </button>
+
+        </div>
+    )    
+};
+
 function ShelfListPart(
     {
         onShelfOptionClick
@@ -194,65 +219,74 @@ function ShelfListPart(
         <div
             id = "shelf-list-part"
         >
-            <InfinieScroll
+
+            <TitlePart />
+
+            <div
+                id = "shelf-option-list"    
+            >
+                <InfinieScroll
                 
-                dataLength = {
-                    shelfOptionList.length 
-                }
-
-                next = {
-                    () => {
-                        if (shelfOptionList.length < numberOfShelves) {
-                            setTimeout(() => {
-                                /*
-                                
-                                    Request from server to get more shelves
-                                
-                                */
-                            }, 100); 
-                        } else {
-                            setHasMore(false);
-                        }
+                    dataLength = {
+                        shelfOptionList.length 
                     }
-                }
 
-                hasMore = {hasMore}
-
-                loader = {<p> Loading ... </p>}
-
-                endMessage = {
-                    <p
-                        style = {
-                            {
-                                textAlign: "center",
-                                color: "#7D4230"
+                    next = {
+                        () => {
+                            if (shelfOptionList.length < numberOfShelves) {
+                                setTimeout(() => {
+                                    /*
+                                    
+                                        Request from server to get more shelves
+                                    
+                                    */
+                                }, 100); 
+                            } else {
+                                setHasMore(false);
                             }
                         }
-                    > End of the list 
-                    </p>
-                }
+                    }
 
-                scrollableTarget = "shelf-list-part"
-            >   
-                {
-                    shelfOptionList.map((item, index) => {
-                        return (
-                            <ShelfOption
-                                imageLinkOfBookInShelf = {item.imageLinkOfBookInShelf}
-                                shelfName = {item.shelfName}
-                                mostRecentBookInformation = {item.mostRecentBookInformation}
-                                lastUpdateDate = {item.lastUpdateDate}
-                                bookCount = {item.bookCount}
-                                onClick = {
-                                    (event: MouseEvent) => {
-                                        onShelfOptionClick(item.id);
-                                    }
+                    hasMore = {hasMore}
+
+                    loader = {<p> Loading ... </p>}
+
+                    endMessage = {
+                        <p
+                            style = {
+                                {
+                                    textAlign: "center",
+                                    color: "#7D4230"
                                 }
-                            />
-                        )
-                    })
-                }
-            </InfinieScroll>
+                            }
+                        > End of the list 
+                        </p>
+                    }
+
+                    scrollableTarget = "shelf-list-part"
+                >   
+                    {
+                        shelfOptionList.map((item, index) => {
+                            return (
+                                <ShelfOption
+                                    imageLinkOfBookInShelf = {item.imageLinkOfBookInShelf}
+                                    shelfName = {item.shelfName}
+                                    mostRecentBookInformation = {item.mostRecentBookInformation}
+                                    lastUpdateDate = {item.lastUpdateDate}
+                                    bookCount = {item.bookCount}
+                                    onClick = {
+                                        (event: MouseEvent) => {
+                                            onShelfOptionClick(item.id);
+                                        }
+                                    }
+                                />
+                            )
+                        })
+                    }
+                </InfinieScroll>
+            </div>
+
+
         </div>
     );
 }
