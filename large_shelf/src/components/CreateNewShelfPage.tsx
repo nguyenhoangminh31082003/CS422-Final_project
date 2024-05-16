@@ -1,28 +1,32 @@
 import { Fragment, MouseEvent, useState } from "react";
+import axios from "axios";
 import PAGE_ID from "../PageID";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
 import "../styles/create_new_shelf_page_styles.css";
 import backButtonIcon from "../assets/back_button_icon.svg";
 
-interface ChangePasswordPageProps {
+interface CreateNewShelfPageProps {
     onPageOptionClick: (pageID: number) => void;
+    userID: string;
 }
 
-interface NewPasswordCreationPartProps {
+interface NewShelfCreationPartProps {
     onPageOptionClick: (pageID: number) => void;
+    userID: string;
 }
 
-function NewPasswordCreationPart(
+function NewShelfCreationPart(
     {
-        onPageOptionClick
-    }: NewPasswordCreationPartProps
+        onPageOptionClick,
+        userID
+    }: NewShelfCreationPartProps
 ) {
     const [message, setMessage] = useState<string>("");
     
     return (
         <div
-            id = "new-password-creation-part"
+            id = "new-shelf-creation-part"
         >
 
             <button
@@ -41,89 +45,68 @@ function NewPasswordCreationPart(
             </button>
 
             <h1
-                id = "new-password-creation-title"
+                id = "new-shelf-creation-title"
             >
-                Please think carefully when changing your password
+                Create your new shelf!
             </h1>
 
             <form
-                id = "new-password-form"
+                id = "new-shelf-form"
             >
                 <label
-                    className = "new-password-creation-field-label"
+                    className = "new-shelf-creation-field-label"
                 >
-                    Please enter your current password
+                    Please enter the name of the shelf
                 </label><br/>
                 <input
-                    id = "old-user-password-input-box"
-                    className = "new-password-creation-field-input-box"
-                    type = "password"
+                    id = "name-of-the-new-shelf-input-box"
+                    className = "new-shelf-creation-field-input-box"
+                    type = "text"
                 />
 
                 <br/>
-
-                <label
-                    className = "new-password-creation-field-label"
-                >
-                    Please enter your new password
-                </label><br/>
-                <input
-                    id = "first-new-user-password-input-box"
-                    className = "new-password-creation-field-input-box"
-                    type = "password"
-                />
-
-                <br/>   
-
-                <label
-                    className = "new-password-creation-field-label"
-                >
-                    Please re-enter your new password
-                </label><br/>
-                <input
-                    id = "second-new-user-password-input-box"
-                    className = "new-password-creation-field-input-box"
-                    type = "password"
-                />
             </form>
 
             <button
-                id = "create-new-password-button"
+                id = "create-new-shelf-button-in-create-new-shelf-page"
                 onClick = {
                     (event: MouseEvent<HTMLButtonElement>) => {
-                        const newlyChosenPassword = (document.getElementById("first-new-user-password-input-box") as HTMLInputElement).value;
-                        const reEnteredNewlyChosenPassword = (document.getElementById("second-new-user-password-input-box") as HTMLInputElement).value;
-                        
-                        if (typeof(newlyChosenPassword) !== "string" || typeof(reEnteredNewlyChosenPassword) !== "string") {
-                            setMessage("The requested new password is not valid");
+                        const shelfName = (document.getElementById("name-of-the-new-shelf-input-box") as HTMLInputElement).value;
+
+                        if (typeof(shelfName) !== "string") {
+                            setMessage("The shelf name is invalid");
                             return;
                         }
 
-                        if (newlyChosenPassword.length <= 0 || reEnteredNewlyChosenPassword.length <= 0) {
-                            setMessage("The requested new password must not be empty");
+                        if (shelfName.length === 0) {
+                            setMessage("The shelf name should not be empty");
                             return;
                         }
 
-                        if (newlyChosenPassword !== reEnteredNewlyChosenPassword) {
-                            setMessage("The re-entered password does not match the new password");
-                            return;
-                        }
-
-                        /*
-                    
-                            Request server to change password
-
-                        */
-
-                        onPageOptionClick(PAGE_ID.ACCOUNT_PAGE);
+                        axios.post("http://localhost:8000/shelf", { 
+                            "name": shelfName,
+                            "user_id": Number.parseInt(userID)
+                        })
+                            .then(response => {
+                                if (response.status == 201) {
+                                    onPageOptionClick(PAGE_ID.HOME_PAGE);
+                                }
+                            })
+                            .catch(error => {
+                                setMessage("The shelf name is invalid");
+                                /*
+                                console.log(error);
+                                console.log(error.response);
+                                */
+                            });
                     }
                 }
             >
-                Change password
+                Create new shelf
             </button>
         
             <div
-                id = "response-message-to-password-change-request"
+                id = "response-message-to-create-new-shelf-request"
             >
                 {message}
             </div>
@@ -131,14 +114,15 @@ function NewPasswordCreationPart(
     );
 }
 
-export default function ChangePasswordPage(
+export default function CreateNewShelfPage(
     {
-        onPageOptionClick
-    }: ChangePasswordPageProps
+        onPageOptionClick,
+        userID
+    }: CreateNewShelfPageProps
 ) {
     return (
         <div
-            id = "change-password-page"
+            id = "create-new-shelf-page"
         >
             <TopHorizontalBar 
         
@@ -148,15 +132,20 @@ export default function ChangePasswordPage(
             >
                 <VerticalPageBar
                     chosenPageID = {
-                        PAGE_ID.ACCOUNT_PAGE
+                        PAGE_ID.HOME_PAGE
                     }
                     onOptionClick = {
                         onPageOptionClick    
                     }
                 />
-                <NewPasswordCreationPart
+
+                <NewShelfCreationPart
                     onPageOptionClick = {
                         onPageOptionClick
+                    }
+
+                    userID = {
+                        userID
                     }
                 />
             </div>

@@ -63,7 +63,7 @@ function App() {
                     }
                 }
 
-                userID={userID}
+                userID = {userID}
             />
         );
     } 
@@ -233,6 +233,8 @@ function App() {
                 onPageOptionClick = {
                     onPageOptionClick
                 }
+
+                userID = {userID}
             />
         );
     }

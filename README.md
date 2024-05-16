@@ -12,6 +12,8 @@ npm run dev
 
 https://github.com/TranLeQuoc/project
 
+https://docs.google.com/document/d/1S_qeJBNLeycAXmFpauPEtQh77vGPaOFHV_rONrXj2WI/edit
+
 python manage.py makemigrations
 
 python manage.py migrate
