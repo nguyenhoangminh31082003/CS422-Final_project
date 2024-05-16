@@ -24,6 +24,8 @@ function NewShelfCreationPart(
 ) {
     const [message, setMessage] = useState<string>("");
     
+    //console.log(`User ID: ${userID}`);
+
     return (
         <div
             id = "new-shelf-creation-part"
@@ -83,7 +85,17 @@ function NewShelfCreationPart(
                             return;
                         }
 
-                        axios.post("http://localhost:8000/shelf", { 
+                        //console.log(`User ID: ${userID}`);
+                        //console.log(Number.parseInt(userID));
+
+                        /*
+                        console.log({ 
+                            "name": shelfName,
+                            "user_id": Number.parseInt(userID)
+                        });
+                        */
+
+                        axios.post("http://127.0.0.1:8000/shelf/", { 
                             "name": shelfName,
                             "user_id": Number.parseInt(userID)
                         })
@@ -98,6 +110,7 @@ function NewShelfCreationPart(
                                 console.log(error);
                                 console.log(error.response);
                                 */
+                               //console.log(userID);
                             });
                     }
                 }

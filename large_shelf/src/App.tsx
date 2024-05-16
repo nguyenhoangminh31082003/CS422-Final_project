@@ -228,6 +228,7 @@ function App() {
     }
 
     if (pageID === PAGE_ID["CREATE_NEW_SHELF_PAGE"]) {
+        //console.log(userID);
         return (
             <CreateNewShelfPage 
                 onPageOptionClick = {

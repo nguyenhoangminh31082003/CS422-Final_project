@@ -213,58 +213,104 @@ function ListPart(
         userID
     }: ListPartProps
 ) {
-    var allShelves: any[] = [];
+    var [allShelves, setAllShelves] = useState([]);
 
     axios.get(`http://localhost:8000/shelf/${userID}/`)
         .then(response => {
             if (response.status == 200) {
-                allShelves = response.data.map((shelf: any) => {
-                    var books: any[] = [];
+                const newData = response.data.map((shelf: any) => {
+                        //console.log(shelf);
 
-                    axios.get(`http://localhost:8000/addedbooks/${userID}/${shelf["id"]}/`)
-                        .then(response => {
-                            if (response.status == 200) {
-                                books = response.data;
-                            }
-                        })
-                        .catch(error => {
-                        });
+                        var books: any[] = [];
 
-                    if (books.length === 0) {
+                        axios.get(`http://localhost:8000/addedbooks/${userID}/${shelf["id"]}/`)
+                            .then(response => {
+                                if (response.status == 200) {
+                                    books = response.data;
+                                    //console.log(`The number of books in shelf ${shelf["name"]} is ${books.length}`);
+                                }
+                            })
+                            .catch(error => {
+                            });
+
+                        if (books.length === 0) {
+                            return {
+                                "shelfName": shelf["name"],
+                                "id": shelf["id"],
+                                "bookCount": 0,
+                                "imageLinkOfBookInShelf": "",
+                                "mostRecentBookInformation": {
+                                    "bookName": "",
+                                    "authorName": ""
+                                },
+                                "lastUpdateDate": new Date(0)
+                            };
+                        }
+
                         return {
                             "shelfName": shelf["name"],
                             "id": shelf["id"],
-                            "bookCount": 0,
-                            "imageLinkOfBookInShelf": "",
+                            "bookCount": books.length,
+                            "imageLinkOfBookInShelf": books[0]["book"]["image_url"],
                             "mostRecentBookInformation": {
-                                "bookName": "",
-                                "authorName": ""
+                                "bookName": books[0]["book"]["title"],
+                                "authorName": books[0]["book"]["author"]
                             },
-                            "lastUpdateDate": new Date()
+                            "lastUpdateDate": Date.parse(books[0]["last_update_date"])
                         };
-                    }
+                    });
 
-                    return {
-                        "shelfName": shelf["name"],
-                        "id": shelf["id"],
-                        "bookCount": books.length,
-                        "imageLinkOfBookInShelf": books[0]["book"]["image_url"],
-                        "mostRecentBookInformation": {
-                            "bookName": books[0]["book"]["title"],
-                            "authorName": books[0]["book"]["author"]
-                        },
-                        "lastUpdateDate": Date.parse(books[0]["last_update_date"])
-                    };
-                });
+                /*
+                console.log(newData.toLocaleString());
+                console.log(newData);
+                console.log(JSON.stringify(newData));
+
+                return;
+
+                if (allShelves !== newData) {
+                    setAllShelves(newData);
+                }
+                */
+
+                /*
+                console.log("All shelves");
+                console.log(JSON.stringify(allShelves));
+                console.log("New data");
+                console.log(JSON.stringify(newData));
+
+                return;
+                */
+
+                if (JSON.stringify(allShelves) !== JSON.stringify(newData)) {
+                    setAllShelves(newData);
+                    //console.log("Hello!!!");
+                }
+                
+
+                console.log(allShelves);
             }
         })
         .catch(error => {
         });
 
+    //console.log(`allShelves: ${allShelves} !!!`);
+
     const numberOfShelves = allShelves.length;
 
-    var [shelfOptionList, setShelfOptionList] = useState(allShelves);
+    //console.log(`The number of shelves is ${numberOfShelves}`);
+
+    var [shelfOptionList, setShelfOptionList] = useState([]);
     var [hasMore, setHasMore] = useState(true);
+
+    //console.log(`The number of shelves is ${numberOfShelves}`);
+
+    //console.log(`shelf option list: ${shelfOptionList} !!!`);
+
+    //console.log(`The number of shelves is ${numberOfShelves}`)
+
+    if (JSON.stringify(shelfOptionList) !== JSON.stringify(allShelves)) {
+        setShelfOptionList(allShelves);
+    }
 
     if (numberOfShelves === 0) {
         return (
@@ -283,6 +329,9 @@ function ListPart(
         );
     }
 
+    //console.log(`The number of shelves is ${shelfOptionList.length}`);
+    //console.log(hasMore);
+
     return (
         <InfinieScroll
                 
@@ -292,6 +341,7 @@ function ListPart(
 
                     next = {
                         () => {
+                            console.log(`The number of shelves is ${shelfOptionList.length} !!!`);
                             if (shelfOptionList.length < numberOfShelves) {
                                 setTimeout(() => {
                                     /*
@@ -299,7 +349,8 @@ function ListPart(
                                         Request from server to get more shelves
                                     
                                     */
-                                }, 100); 
+                                   //setShelfOptionList(shelfOptionList.concat(allShelves.slice(shelfOptionList.length, shelfOptionList.length + 5)));
+                                }, 4000); 
                             } else {
                                 setHasMore(false);
                             }
