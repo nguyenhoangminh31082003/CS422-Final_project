@@ -1,4 +1,5 @@
 import { Fragment, MouseEvent, useState } from "react";
+import axios from "axios";
 import PAGE_ID from "../PageID";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
@@ -8,30 +9,56 @@ import { EditableFiveStarRating } from "./EditableFiveStarRating";
 
 interface BookInformationPageProps {
     onPageOptionClick: (pageID: number) => void;
+    userID: string;
+    bookID: string;
+}
+
+interface BookDescriptionPartProps {
+    userID: string;
     bookID: string;
 }
 
 function BookDescriptionPart(
     {
+        userID,
         bookID
-    }: {
-        bookID: string;
-    }
+    }: BookDescriptionPartProps
 ) {
+    var [bookInformation, setBookInformation] = useState({
+        "bookCoverImage": "",
+        "bookTitle": "",
+        "authorName": "",
+        "summary": ""
+    });
 
-    /*
-    
-        Request the server for the book information
-    
-    */
-    const bookCoverImage = duneCoverImage;
-    const bookTitle = "Dune";
-    const authorName = "Frank Herbert";
-    const summary = `
-        Following the destruction of House Atreides by House Harkonnen, Princess Irulan, the daughter of Padishah Emperor Shaddam IV, secretly journals that Paul Atreides may still be alive. On Arrakis, Stilgar's Fremen troops, including Paul and his pregnant mother, Lady Jessica, overcome a Harkonnen patrol. When Jessica and Paul reach Sietch Tabr, some Fremen suspect they are spies, while Stilgar and others see signs of the prophecy that a mother and son from the "Outer World" will bring prosperity to Arrakis.
-    Stilgar tells Jessica that Sietch Tabr's Reverend Mother is dying and that Jessica must replace her by drinking the Water of Life — a poison fatal for males and the untrained. Jessica transmutes the poison, surviving and inheriting the memories of every female ancestor in her lineage. The liquid also prematurely awakens the mind of her unborn daughter, Alia, allowing Jessica to communicate with her. They agree to focus on convincing the more skeptical northern Fremen of the prophecy. Chani and her friend, Shishakli, believe the prophecy was fabricated to manipulate the Fremen. However, she begins to respect Paul after he declares that he only intends to fight alongside the Fremen, not to rule them.
-    `;
+    axios.get(`http://127.0.0.1:8000/books/${bookID}/`)
+        .then((response) => {
+                const bookData = {
+                    "bookCoverImage": response.data["image_url"],
+                    "bookTitle": response.data["title"],
+                    "authorName": response.data["author"],
+                    "summary": response.data["summary"]
+                };
+            if (JSON.stringify(bookInformation) !== JSON.stringify(bookData)) {
+                setBookInformation(bookData);
+            }
+        })
+        .catch((error) => {
+            
+        });
+
     var [userRating, setUserRating] = useState(0);
+
+    axios.get(`http://127.0.0.1:8000/ratings/${userID}/${bookID}/`)
+        .then((response) => {
+            const rating = response.data["rating"];
+            if (rating !== userRating) {
+                setUserRating(rating);
+            }
+        })
+        .catch((error) => {
+            
+        });
 
     return (
         <div
@@ -44,7 +71,7 @@ function BookDescriptionPart(
 
                     id = "book-cover-image-in-book-description-part"
 
-                    src = {bookCoverImage}
+                    src = {bookInformation["bookCoverImage"]}
                 />
 
                 <div
@@ -57,22 +84,28 @@ function BookDescriptionPart(
                         starCount = {userRating}
                         onStarClick={
                             (starCount: number) => {
+
+                                var newStartCount = starCount;
+
                                 if (starCount === userRating) {
-                                    setUserRating(0);
+                                    newStartCount = 0;
                                 } else {
-                                    setUserRating(starCount);
+                                    newStartCount = starCount;
                                 }
-                                /*
-                                
-                                    Request server to change user rating on this book
-                                        0 - no rating
-                                        1 - 1 star
-                                        2 - 2 stars
-                                        3 - 3 stars
-                                        4 - 4 stars
-                                        5 - 5 stars
-                                
-                                */
+
+                                setUserRating(newStartCount);
+
+                                axios.post("http://127.0.0.1:8000/ratings/", {
+                                    "user_id": Number.parseInt(userID),
+                                    "book_id": Number.parseInt(bookID),
+                                    "rating": newStartCount
+                                })
+                                .then((response) => {
+                                    console.log(response);
+                                })
+                                .catch((error) => {
+                                    console.log(error);
+                                });
                             }
                         }
                     />
@@ -86,19 +119,19 @@ function BookDescriptionPart(
                 <h1
                     id = "book-title-in-book-description-part"
                 >
-                    {bookTitle}
+                    {bookInformation["bookTitle"]}
                 </h1>
 
                 <h2
                     id = "author-name-in-book-description-part"
                 >
-                    by {authorName} 
+                    by {bookInformation["authorName"]} 
                 </h2>
 
                 <p
                     id = "book-summary-in-book-description-part"
                 >
-                    {summary}
+                    {bookInformation["summary"]}
                 </p>
             </div>
         </div>
@@ -108,9 +141,11 @@ function BookDescriptionPart(
 export default function BookInformationPage(
     {
         onPageOptionClick,
+        userID,
         bookID
     }: BookInformationPageProps
 ) {
+
     return (
         <div
             id = "book-information-page"
@@ -132,6 +167,7 @@ export default function BookInformationPage(
 
                 <BookDescriptionPart
                     bookID = {bookID}
+                    userID = {userID}
                 />
 
             </div>
