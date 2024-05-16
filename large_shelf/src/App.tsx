@@ -11,6 +11,7 @@ import AudioFolderPage from './components/AudioFolderPage';
 import RegistrationPage from './components/RegistrationPage';
 import ChangePasswordPage from './components/ChangePasswordPage';
 import BookInformationPage from './components/BookInformationPage';
+import CreateNewShelfPage from './components/CreateNewShelfPage';
 
 function App() {
     const [pageID, setPageID] = useState(PAGE_ID["WELCOME_PAGE"]);
@@ -215,6 +216,16 @@ function App() {
                             fileID: fileID
                         });
                     }
+                }
+            />
+        );
+    }
+
+    if (pageID === PAGE_ID["CREATE_NEW_SHELF_PAGE"]) {
+        return (
+            <CreateNewShelfPage 
+                onPageOptionClick = {
+                    onPageOptionClick
                 }
             />
         );

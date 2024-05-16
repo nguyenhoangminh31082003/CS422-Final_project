@@ -215,18 +215,6 @@ function ListPart(
                         .catch(error => {
                         });
 
-                    /*
-                    books.sort((firstBook, secondBook) => {
-                        if (firstBook["last_update_date"] > secondBook["last_update_date"]) {
-                            return -1;
-                        }
-                        if (firstBook["last_update_date"] < secondBook["last_update_date"]) {
-                            return 1;
-                        }
-                        return 0;
-                    });
-                    */
-
                     if (books.length === 0) {
                         return {
                             "shelfName": shelf["name"],

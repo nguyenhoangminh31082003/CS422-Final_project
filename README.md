@@ -2,9 +2,15 @@
 
 CS422 - Software Analysis and Design - Final project
 
+# Front end
+
 cd large_shelf
 
 npm run dev
+
+# Back end
+
+https://github.com/TranLeQuoc/project
 
 python manage.py makemigrations
 
