@@ -1,14 +1,11 @@
 import { Fragment, useState, MouseEvent } from "react";
-
+import axios from "axios";
 import PAGE_ID from "../PageID";
 import "../styles/library_page_styles.css";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
 import InfinieScroll from "react-infinite-scroll-component";
-import duneCoverImage from "../assets/dune_cover_image.png";
-import duneMessiahCoverImage from "../assets/dune_messiah_cover_image.png";
-import hereticsOfDuneCoverImage from "../assets/heretics_of_dune_cover_image.png";
-import houseCorrinoCoverImage from "../assets/house_corrino_cover_image.png";
+import defaultBookCoverImage from "../assets/default_book_cover_image.png";
 
 interface LibraryPageProps {
     onPageOptionClick: (pageID: number) => void;
@@ -27,7 +24,6 @@ interface BookOptionProps {
 
 interface BookListPartProps {
     searchInput?: string | null;
-    onPageOptionClick: (pageID: number) => void;
     onBookOptionClick: (shelfID: string) => void;
 }
 
@@ -56,6 +52,11 @@ function BookOption(
                         className = "cover-image-of-book-in-library-page"
                         src = {imageLinkOfBookCover}
                         alt = "Book cover"
+                        onError={
+                            (event: any) => {
+                                event.target.src = defaultBookCoverImage;
+                            }
+                        }
                     />
                 </div>
 
@@ -124,40 +125,10 @@ function BookOption(
     )
 }
 
-const demoBookOptionList = [
-    {
-        bookID: "1",
-        imageLinkOfBookCover: duneCoverImage,
-        title: "Dune",
-        authorName: "Frank Herbert",
-        averageRating: 4.27,
-        genre: "Science Fiction"
-    },
-    {
-        bookID: "2",
-        imageLinkOfBookCover: duneMessiahCoverImage,
-        title: "Dune Messiah",
-        authorName: "Frank Herbert",
-        averageRating: 3.89,
-        genre: "Science Fiction"
-    },
-    {
-        bookID: "3",
-        imageLinkOfBookCover: hereticsOfDuneCoverImage,
-        title: "Heratics of Dune",
-        authorName: "Frank Herbert",
-        averageRating: 3.87,
-        genre: "Science Fiction"
-    },
-    {
-        bookID: "4",
-        imageLinkOfBookCover: houseCorrinoCoverImage,
-        title: "House Corrino",
-        authorName: "Brian Herbert, Kevin J. Anderson",
-        averageRating: 3.74,
-        genre: "Science Fiction"
-    }
-]
+interface BookOptionListPartProps {
+    searchInput?: string | null;
+    onBookOptionClick: (bookID: string) => void;
+}
 
 function TitlePart() {
     return (
@@ -190,27 +161,46 @@ function TitlePart() {
     );
 }
 
-function BookListPart(
+function BookOptionListPart(
     {
         searchInput,
-        onPageOptionClick,
         onBookOptionClick
-    }: BookListPartProps
+    }: BookOptionListPartProps
 ) {
-    /*
-        Request the number of books in the from the server
-    */
-    const numberOfBooks = demoBookOptionList.length;
-    var [bookOptionList, setBookOptionList] = useState(demoBookOptionList);
+    var [allBooks, setAllBooks] = useState<any[]>([]);
+
+    axios.get("http://127.0.0.1:8000/books")
+        .then((response) => {
+            console.log(response);
+            const newData = response.data.map((item: any) => {
+                return {
+                    "bookID": item["id"],
+                    "imageLinkOfBookCover": item["image_url"],
+                    "title": item["title"],
+                    "authorName": item["author"],
+                    "averageRating": item["rating"],
+                    "genre": item["genre"]
+                }
+            });
+
+            if (JSON.stringify(allBooks) !== JSON.stringify(newData)) {
+                setAllBooks(newData);
+            }
+        })
+        .catch((error) => {
+        
+        });
+
+    const numberOfBooks = allBooks.length;
+    var [bookOptionList, setBookOptionList] = useState<any[]>([]);
     var [hasMore, setHasMore] = useState(true);
+
+    if (JSON.stringify(bookOptionList) !== JSON.stringify(allBooks)) {
+        setBookOptionList(allBooks);
+    }
 
     return (
         <div
-            id = "book-list-part"
-        >
-            <TitlePart />
-
-            <div
                 id = "book-option-list"
             >
                 <InfinieScroll
@@ -273,6 +263,25 @@ function BookListPart(
                     }
                 </InfinieScroll>
             </div>
+    );
+}
+
+function BookListPart(
+    {
+        searchInput,
+        onBookOptionClick
+    }: BookListPartProps
+) {
+    return (
+        <div
+            id = "book-list-part"
+        >
+            <TitlePart />
+
+            <BookOptionListPart 
+                searchInput = {searchInput}
+                onBookOptionClick = {onBookOptionClick}
+            />
         </div>
     );
 }
@@ -304,10 +313,6 @@ export default function LibraryPage(
                 />
                 <BookListPart
                     searchInput = {searchInput}
-
-                    onPageOptionClick = {
-                        onPageOptionClick
-                    }
 
                     onBookOptionClick = {
                         onBookOptionClick
