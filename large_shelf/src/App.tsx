@@ -57,6 +57,12 @@ function App() {
                     }
                 }
 
+                onCreateNewShelfClick={
+                    () => {
+                        setPageID(PAGE_ID["CREATE_NEW_SHELF_PAGE"]);
+                    }
+                }
+
                 userID={userID}
             />
         );

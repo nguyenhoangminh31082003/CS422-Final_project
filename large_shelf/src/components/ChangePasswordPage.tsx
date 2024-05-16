@@ -26,15 +26,15 @@ function NewPasswordCreationPart(
         >
 
             <button
-                id = "back-button-in-shelf-page"
+                id = "back-button-in-change-password-page"
                 onClick = {
                     () => {
-                        onPageOptionClick(PAGE_ID.HOME_PAGE);
+                        onPageOptionClick(PAGE_ID.ACCOUNT_PAGE);
                     }
                 }
             >
                     <img
-                        id = "back-button-icon-in-shelf-page"
+                        id = "back-button-icon-in-change-password-page"
                         src = {backButtonIcon}
                         alt = "Back"
                     />
@@ -143,6 +143,7 @@ export default function ChangePasswordPage(
             <TopHorizontalBar 
         
             />
+
             <div
                 id = "content-part"
             >

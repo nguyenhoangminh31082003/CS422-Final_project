@@ -11,6 +11,7 @@ import RemoveButtonIcon from "../assets/remove_button_icon.svg";
 interface HomePageProps {
     onPageOptionClick: (pageID: number) => void;
     onShelfOptionClick: (shelfID: string) => void;
+    onCreateNewShelfClick: () => void;
     userID: string;
 }
 
@@ -27,6 +28,7 @@ interface ShelfOptionProps {
 }
 
 interface ShelfListPartProps {
+    onCreateNewShelfClick: () => void;
     onShelfOptionClick: (shelfID: string) => void;
     userID: string;
 }
@@ -34,6 +36,10 @@ interface ShelfListPartProps {
 interface ListPartProps {
     onShelfOptionClick: (shelfID: string) => void;
     userID: string;
+}
+
+interface TitlePartProps {
+    onCreateNewShelfClick: () => void;
 }
 
 function ShelfOption(
@@ -168,7 +174,11 @@ function ShelfOption(
     );
 }
 
-function TitlePart() {
+function TitlePart(
+    {
+        onCreateNewShelfClick
+    }: TitlePartProps
+) {
     return (
         <div
             id = "title-bar-in-shelf-list-part"
@@ -181,6 +191,11 @@ function TitlePart() {
 
             <button
                 id = "create-new-shelf-button"
+                onClick = {
+                    () => {
+                        onCreateNewShelfClick();
+                    }
+                }
             >
                 <img
                     src = {AddButtonIcon}
@@ -334,6 +349,7 @@ function ListPart(
 function ShelfListPart(
     {
         onShelfOptionClick,
+        onCreateNewShelfClick,
         userID
     }: ShelfListPartProps
 ) {
@@ -344,7 +360,11 @@ function ShelfListPart(
             id = "shelf-list-part"
         >
 
-            <TitlePart />
+            <TitlePart 
+                onCreateNewShelfClick = {
+                    onCreateNewShelfClick
+                }
+            />
 
             <div
                 id = "shelf-option-list"    
@@ -367,6 +387,7 @@ export default function HomePage(
     {
         onPageOptionClick,
         onShelfOptionClick,
+        onCreateNewShelfClick,
         userID
     }: HomePageProps
 ) {
@@ -391,6 +412,10 @@ export default function HomePage(
                 <ShelfListPart
                     onShelfOptionClick = {
                         onShelfOptionClick
+                    }
+
+                    onCreateNewShelfClick = {
+                        onCreateNewShelfClick
                     }
 
                     userID = {userID}

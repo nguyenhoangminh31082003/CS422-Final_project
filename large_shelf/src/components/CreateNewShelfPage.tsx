@@ -2,8 +2,8 @@ import { Fragment, MouseEvent, useState } from "react";
 import PAGE_ID from "../PageID";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
-import "../styles/change_password_page_styles.css";
-import defaultProfilePicture from "../assets/default_profile_picture.png";
+import "../styles/create_new_shelf_page_styles.css";
+import backButtonIcon from "../assets/back_button_icon.svg";
 
 interface ChangePasswordPageProps {
     onPageOptionClick: (pageID: number) => void;
@@ -24,6 +24,22 @@ function NewPasswordCreationPart(
         <div
             id = "new-password-creation-part"
         >
+
+            <button
+                id = "back-button-in-create-new-shelf-page"
+                onClick = {
+                    () => {
+                        onPageOptionClick(PAGE_ID.HOME_PAGE);
+                    }
+                }
+            >
+                    <img
+                        id = "back-button-in-create-new-shelf-page"
+                        src = {backButtonIcon}
+                        alt = "Back"
+                    />
+            </button>
+
             <h1
                 id = "new-password-creation-title"
             >
