@@ -7,6 +7,7 @@ import TopHorizontalBar from "./TopHorizontalBar";
 import AddButtonIcon from "../assets/add_button_icon.svg";
 import InfinieScroll from "react-infinite-scroll-component";
 import RemoveButtonIcon from "../assets/remove_button_icon.svg";
+import defaultBookCoverImage from "../assets/default_book_cover_image.png";
 
 interface HomePageProps {
     onPageOptionClick: (pageID: number) => void;
@@ -95,78 +96,101 @@ function ShelfOption(
                         </button>
                     </div>
 
-                    <p>
-                        {"Most recent book: "} 
-                        <p
-                            style = {
-                                {
-                                    display: "inline",
-                                    fontStyle: "italic"
-                                }
+                    {
+                        (() => {
+                            if (bookCount === 0) {
+                                return (
+                                    <>
+                                        <p
+                                            style = {
+                                                {
+                                                    fontStyle: "italic"
+                                                }
+                                            }
+                                        >
+                                            There is no book in shelf yet
+                                        </p>
+                                    </>
+                                );
                             }
-                        >
-                            {mostRecentBookInformation.bookName}
-                        </p>
-                        {" by "}
+                            return (
+                                <>
+                                    <p>
+                                        {"Most recent book: "} 
+                                        <p
+                                            style = {
+                                                {
+                                                    display: "inline",
+                                                    fontStyle: "italic"
+                                                }
+                                            }
+                                        >
+                                            {mostRecentBookInformation.bookName}
+                                        </p>
+                                        {" by "}
 
-                        <p
-                            style = {
-                                {
-                                    display: "inline",
-                                    fontStyle: "italic"
-                                }
-                            }
-                        >
-                            {mostRecentBookInformation.authorName}
-                        </p>
-                    </p>
-                    <p>
-                        {"Last update at "}
-                        <p
-                            style = {
-                                {
-                                    display: "inline",
-                                    fontStyle: "italic"
-                                }
-                            }
-                        >
-                            {
-                                `${lastUpdateDate.getFullYear()} ${lastUpdateDate.toLocaleString('default', { month: 'long' })} ${
-                                    (() => {
-                                        const date = lastUpdateDate.getDate();
-                                        const lastDigit = date % 10;
-                                        if ((3 <= date) || (date <= 20)) {
-                                            return `${date}-th`;
-                                        }
-                                        if (lastDigit === 1) {
-                                            return `${date}-st`;
-                                        }
-                                        if (lastDigit === 2) {
-                                            return `${date}-nd`;
-                                        }
-                                        if (lastDigit === 3) {
-                                            return `${date}-rd`;
-                                        }
-                                        return `${date}-th`;
-                                    })()
-                                }`
-                            }
-                        </p> 
-                    </p>
-                    <p>
-                        <p 
-                            style = {
-                                {
-                                    display: "inline",
-                                    fontStyle: "italic"
-                                }
-                            }
-                        >
-                            {bookCount}
-                        </p>
-                            
-                        {bookCount > 1 ? " books" : " book"}
-                    </p>
+                                        <p
+                                            style = {
+                                                {
+                                                    display: "inline",
+                                                    fontStyle: "italic"
+                                                }
+                                            }
+                                        >
+                                            {mostRecentBookInformation.authorName}
+                                        </p>
+                                    </p>
+                                    <p>
+                                        {"Last update at "}
+                                        <p
+                                            style = {
+                                                {
+                                                    display: "inline",
+                                                    fontStyle: "italic"
+                                                }
+                                            }
+                                        >
+                                            {
+                                                `${lastUpdateDate.getFullYear()} ${lastUpdateDate.toLocaleString('default', { month: 'long' })} ${
+                                                    (() => {
+                                                        const date = lastUpdateDate.getDate();
+                                                        const lastDigit = date % 10;
+                                                        if ((3 <= date) || (date <= 20)) {
+                                                            return `${date}-th`;
+                                                        }
+                                                        if (lastDigit === 1) {
+                                                            return `${date}-st`;
+                                                        }
+                                                        if (lastDigit === 2) {
+                                                            return `${date}-nd`;
+                                                        }
+                                                        if (lastDigit === 3) {
+                                                            return `${date}-rd`;
+                                                        }
+                                                        return `${date}-th`;
+                                                    })()
+                                                }`
+                                            }
+                                        </p> 
+                                    </p>
+                                    <p>
+                                        <p 
+                                            style = {
+                                                {
+                                                    display: "inline",
+                                                    fontStyle: "italic"
+                                                }
+                                            }
+                                        >
+                                            {bookCount}
+                                        </p>
+                                            
+                                        {bookCount > 1 ? " books" : " book"}
+                                    </p>
+                                </>
+                            );
+                        })()
+                    }
                 </div>
 
             </button>
@@ -238,7 +262,7 @@ function ListPart(
                                 "shelfName": shelf["name"],
                                 "id": shelf["id"],
                                 "bookCount": 0,
-                                "imageLinkOfBookInShelf": "",
+                                "imageLinkOfBookInShelf": defaultBookCoverImage,
                                 "mostRecentBookInformation": {
                                     "bookName": "",
                                     "authorName": ""
@@ -260,30 +284,8 @@ function ListPart(
                         };
                     });
 
-                /*
-                console.log(newData.toLocaleString());
-                console.log(newData);
-                console.log(JSON.stringify(newData));
-
-                return;
-
-                if (allShelves !== newData) {
-                    setAllShelves(newData);
-                }
-                */
-
-                /*
-                console.log("All shelves");
-                console.log(JSON.stringify(allShelves));
-                console.log("New data");
-                console.log(JSON.stringify(newData));
-
-                return;
-                */
-
                 if (JSON.stringify(allShelves) !== JSON.stringify(newData)) {
                     setAllShelves(newData);
-                    //console.log("Hello!!!");
                 }
                 
 
@@ -293,20 +295,10 @@ function ListPart(
         .catch(error => {
         });
 
-    //console.log(`allShelves: ${allShelves} !!!`);
-
     const numberOfShelves = allShelves.length;
 
-    //console.log(`The number of shelves is ${numberOfShelves}`);
-
-    var [shelfOptionList, setShelfOptionList] = useState([]);
+    var [shelfOptionList, setShelfOptionList] = useState<any[]>([]);
     var [hasMore, setHasMore] = useState(true);
-
-    //console.log(`The number of shelves is ${numberOfShelves}`);
-
-    //console.log(`shelf option list: ${shelfOptionList} !!!`);
-
-    //console.log(`The number of shelves is ${numberOfShelves}`)
 
     if (JSON.stringify(shelfOptionList) !== JSON.stringify(allShelves)) {
         setShelfOptionList(allShelves);
@@ -329,9 +321,6 @@ function ListPart(
         );
     }
 
-    //console.log(`The number of shelves is ${shelfOptionList.length}`);
-    //console.log(hasMore);
-
     return (
         <InfinieScroll
                 
@@ -349,7 +338,6 @@ function ListPart(
                                         Request from server to get more shelves
                                     
                                     */
-                                   //setShelfOptionList(shelfOptionList.concat(allShelves.slice(shelfOptionList.length, shelfOptionList.length + 5)));
                                 }, 4000); 
                             } else {
                                 setHasMore(false);
