@@ -1,11 +1,12 @@
 import { Fragment, MouseEvent, useState } from "react";
+import axios from "axios";
 import PAGE_ID from "../PageID";
 import "../styles/account_page_styles.css";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
-import defaultProfilePicture from "../assets/default_profile_picture.png";
 import openedEyeIcon from "../assets/opened_eye_icon.svg";
 import closedEyeIcon from "../assets/closed_eye_icon.svg";
+import defaultProfilePicture from "../assets/default_profile_picture.png";
 
 interface AccountPageProps {
     onPageOptionClick: (pageID: number) => void;
@@ -23,6 +24,7 @@ interface DetailedProfileInformationPartProps {
     email: string;
     phoneNumber: string;
     biography: string;
+    userID: string;
     onPageOptionClick: (pageID: number) => void;
 }
 
@@ -62,6 +64,7 @@ function DetailedProfileInformationPart(
         email,
         phoneNumber,
         biography,
+        userID,
         onPageOptionClick
     }: DetailedProfileInformationPartProps
 ) {
@@ -85,6 +88,77 @@ function DetailedProfileInformationPart(
         >
             <button
                 id = "request-save-modification-button"
+                onClick = {
+
+                    () => {
+                        var profilePicture = document.getElementById("displayed-profile-picture") as HTMLImageElement;
+                        var emailBox = document.getElementById("editable-email-box") as HTMLInputElement;
+                        var firstNameBox = document.getElementById("editable-first-name-box") as HTMLInputElement;
+                        var lastNameBox = document.getElementById("editable-last-name-box") as HTMLInputElement;
+                        var phoneNumberBox = document.getElementById("editable-phone-number-box") as HTMLInputElement;
+                        var biographyBox = document.getElementById("editable-biography-box") as HTMLTextAreaElement;
+
+                        var requestData: any = {
+                        };
+
+                        requestData["reader_id"] = Number.parseInt(userID);
+                        requestData["email"] = emailBox.value;
+
+                        if (emailBox.value === "") {
+                            requestData["email"] = emailBox.placeholder;
+                        }
+
+                        requestData["first_name"] = firstNameBox.value;
+                        if (firstNameBox.value === "") {
+                            requestData["first_name"] = firstNameBox.placeholder;
+                        }
+
+                        requestData["last_name"] = lastNameBox.value;
+                        if (lastNameBox.value === "") {
+                            requestData["last_name"] = lastNameBox.placeholder;
+                        }
+
+                        requestData["phone_number"] = phoneNumberBox.value;
+                        if (phoneNumberBox.value === "") {
+                            requestData["phone_number"] = phoneNumberBox.placeholder;
+                        }
+
+                        requestData["biography"] = biographyBox.value;
+                        if (biographyBox.value === "") {
+                            requestData["biography"] = biographyBox.placeholder;
+                            if (biographyBox.placeholder === "") {
+                                requestData["biography"] = "?";
+                            }
+                        }
+
+                        requestData["avatar_url"] = profilePicture.src;
+                        
+                        requestData["page_count"] = 0;
+                        requestData["font_size"] = 0;
+                        requestData["font_style"] = "?";
+
+                        /*
+                        console.log(requestData);
+
+                        return;
+                        */
+
+                        axios.post(
+                            "http://127.0.0.1:8000/readerinfo/",
+                            requestData
+                        )
+                            .then(
+                                response => {
+                                    alert("Successfully saved your modification");
+                                }
+                            )
+                            .catch(
+                                error => {
+                                    console.log(error);
+                                }
+                            );
+                    }
+                }
             >
                 Save your modification
             </button>
@@ -275,15 +349,38 @@ function ProfileInformationPart(
     
     */
 
-    var information = {
-        profilePicture: defaultProfilePicture,
-        fullName: "Nakahara Hiroshi",
-        firstName: "Hiroshi",
-        lastName: "Nakahara",
-        email: "deadlinesarecommingfromeverydirections@gmail.com",
-        phoneNumber: "0123456789",
-        biography: "I am not in danger. I am the danger. I am the one who knocks!!!"
-    };
+    var [userInformation, setUserInformation] = useState({
+        "profilePicture": defaultProfilePicture,
+        "fullName": "Default User",
+        "firstName": "Default",
+        "lastName": "User",
+        "email": "defaultemail@gmail.com",
+        "phoneNumber": "123456789",
+        "biography": "This is a default user"
+    });
+
+    axios.get(`http://127.0.0.1:8000/readerinfo/id/${userID}/`)
+        .then(
+            response => {
+                const newData = {
+                    "profilePicture": response.data["avatar_url"],
+                    "fullName": `${response.data["first_name"]} ${response.data["last_name"]}`,
+                    "firstName": response.data["first_name"],
+                    "lastName": response.data["last_name"],
+                    "email": response.data["email"],
+                    "phoneNumber": response.data["phone_number"],
+                    "biography": response.data["bio"]
+                };
+
+                if (JSON.stringify(userInformation) !== JSON.stringify(newData)) {
+                    setUserInformation(newData);
+                }
+            }
+        )
+        .catch(
+            error => {
+            }
+        );
 
 
     return (
@@ -291,15 +388,16 @@ function ProfileInformationPart(
             id = "information-list-part"
         >
             <BriefProfileInformationPart
-                profilePicture = {information.profilePicture}
-                fullName = {information.fullName}
+                profilePicture = {userInformation.profilePicture}
+                fullName = {userInformation.fullName}
             />
             <DetailedProfileInformationPart
-                firstName = {information.firstName}
-                lastName = {information.lastName}
-                email = {information.email}
-                phoneNumber = {information.phoneNumber}
-                biography = {information.biography}
+                firstName = {userInformation.firstName}
+                lastName = {userInformation.lastName}
+                email = {userInformation.email}
+                phoneNumber = {userInformation.phoneNumber}
+                biography = {userInformation.biography}
+                userID = {userID}
                 onPageOptionClick={onPageOptionClick}
             />
         </div>
