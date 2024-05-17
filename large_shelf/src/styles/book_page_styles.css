@@ -15,63 +15,65 @@
     margin-left: auto;
 }
 
-#book-description-part {
-    width: calc(100% * 1500 / 1600);
-    height: calc(100% * (900 - 80) / 900);
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    background: #FFE9C5;
-}
-
-#image-column-in-book-description-part {
-    width: 20%;
+#properties-part-in-book-page {
+    width: calc(100% * 120 / 1500);
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    box-shadow: inset 0px 0px 10px 0px #000000;
+    box-shadow: inset 0 0 4px #7D4230;
     overflow: auto;
+    color:#7D4230;
+    font-family: "Inter", sans-serif;
 }
 
-#book-cover-image-in-book-description-part {
+#book-cover-in-book-page {
+    background-color: #E29675;
     width: 80%;
+    margin-top: 4%;
     aspect-ratio: 3 / 4;
     object-fit: contain;
+    border-radius: 12px;
+    border-style: solid;
+    border-width: 0px;
 }
 
-#text-column-in-book-description-part {
-    width: 80%;
-    height: 100%;
+#properties-part-in-book-page::-webkit-scrollbar {
+    box-shadow: inset 0px 0px 10px 0px #000000;
+    background-color: #FFE9C5;
+    width: 8px;
+}
+
+#properties-part-in-book-page::-webkit-scrollbar-thumb {
+    background-color: #7D4230;
+    border-radius: 20px;
+    transition: background-color 1s;
+}
+
+#properties-part-in-book-page::-webkit-scrollbar-thumb:hover {
+    background-color: #E29675;
+}
+
+#book-title-in-book-page {
+    margin-top: 4%;
+    font-size: 80%;
+    font-weight: bold;
+    text-align: center;
+    padding: 1%;
+}
+
+#book-author-in-book-page {
+    font-size: 80%;
+    text-align: center;
+    padding: 1%;
+}
+
+.container-in-book-page {
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: flex-start;
-    padding: calc(100% * 20 / 1500);
-    box-shadow: inset 0px 0px 10px 0px #000000;
-    color: #7D4230;
-    font-family: "Inter", sans-serif;
-    overflow: auto;
-}
-
-#author-name-in-book-description-part {
-    font-style: italic;
-}
-
-#book-summary-in-book-description-part {
-    margin-top: calc(100% * 20 / 900);
-}
-
-#book-title-in-book-description-part {
-    font-weight: bold;
-}
-
-#user-rating-row-in-book-description-part {
     align-items: center;
-    font-weight: bold;
-    display: flex;
-    flex-direction: column;
-    margin: calc(100% * 40 / 900);
+    box-shadow: inset 0 0 4px #7D4230;
 }

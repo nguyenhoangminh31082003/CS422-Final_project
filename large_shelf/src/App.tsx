@@ -140,7 +140,7 @@ function App() {
                 }
 
                 bookID = {
-                    "This field will be updated later by the developer"
+                    otherData.bookID
                 }
             />
         );
