@@ -16,6 +16,8 @@ interface BookPageProps {
 interface PropertiesPartProps {
     bookID: string | null | undefined;
     currentPage: number;
+    onBackwardButtonClick: () => void;
+    onForwardButtonClick: () => void;
 }
 
 interface InteractionPartProps {
@@ -31,7 +33,9 @@ interface PagePairPartProps {
 function PropertiesPart(
     {
         bookID,
-        currentPage
+        currentPage,
+        onBackwardButtonClick,
+        onForwardButtonClick
     }: PropertiesPartProps
 ) {
     var [bookInformation, setBookInformation] = useState<any>({});
@@ -48,8 +52,6 @@ function PropertiesPart(
             console.log(error);
         });
 
-    
-    
     return (
         <div
             id = "properties-part-in-book-page"
@@ -97,12 +99,14 @@ function PropertiesPart(
                         <button
                             className = "page-navigation-button-in-book-page"
                             disabled = {currentPage === 0}
+                            onClick = {onBackwardButtonClick}
                         >
                             {`<`}
                         </button>
                         <button
                             className = "page-navigation-button-in-book-page"
                             disabled = {currentPage === bookInformation["total_pages"] - 2}
+                            onClick = {onForwardButtonClick}
                         >
                             {`>`}
                         </button>
@@ -219,6 +223,33 @@ function InteractionPart(
             <PropertiesPart
                 bookID = {bookID}
                 currentPage = {currentPage}
+                onBackwardButtonClick = {() => {
+                    axios.post(`http://127.0.0.1:8000/readingprocess/`, {
+                        user_id: userID,
+                        book_id: bookID,
+                        current_page: Math.max(0, currentPage - 2)
+                    })
+                    .then((response) => {
+                        setCurrentPage(Math.max(0, currentPage - 2));
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+                }}
+
+                onForwardButtonClick = {() => {
+                    axios.post(`http://127.0.0.1:8000/readingprocess/`, {
+                        user_id: userID,
+                        book_id: bookID,
+                        current_page: currentPage + 2
+                    })
+                    .then((response) => {
+                        setCurrentPage(currentPage + 2);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+                }}
             />
         </>
     );
