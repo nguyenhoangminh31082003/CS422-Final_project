@@ -122,3 +122,28 @@
     margin-left: 0%;
 }
 
+.remove-shelf-button-icon-in-shelf-option-in-shelf-page {
+    transition: opacity 1s;
+}
+
+.remove-shelf-button-icon-in-shelf-option-in-shelf-page:hover {
+    opacity: 0.8;
+}
+
+.remove-shelf-button-in-shelf-option-in-shelf-page {
+    border-width: 0px;
+    background-color: rgba(0, 0, 0, 0);
+    transition: background-color 1s, border-width 1s, border-radius 1s, padding 1s, rotate 1s;
+}
+
+.remove-shelf-button-in-shelf-option-in-shelf-page:hover {
+    background-color:#FFE9C5;
+    border-width: 0px;
+    border-radius: 12px;
+    padding: 1%;
+    rotate: 180deg;
+}
+
+.remove-shelf-button-in-shelf-option-in-shelf-page-container {
+    margin-left: auto;
+}
