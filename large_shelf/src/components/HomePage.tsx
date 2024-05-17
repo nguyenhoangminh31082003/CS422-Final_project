@@ -17,6 +17,7 @@ interface HomePageProps {
 }
 
 interface ShelfOptionProps {
+    shelfID: string;
     imageLinkOfBookInShelf: string;
     shelfName: string;
     mostRecentBookInformation: {
@@ -26,6 +27,7 @@ interface ShelfOptionProps {
     lastUpdateDate: Date;
     bookCount: number;
     onClick: (event: MouseEvent) => void;
+    onRemoveButtonClick: (event: MouseEvent) => void;
 }
 
 interface ShelfListPartProps {
@@ -45,12 +47,14 @@ interface TitlePartProps {
 
 function ShelfOption(
     {
+        shelfID,
         imageLinkOfBookInShelf,
         shelfName,
         mostRecentBookInformation,
         lastUpdateDate,
         bookCount,
-        onClick
+        onClick,
+        onRemoveButtonClick
     }: ShelfOptionProps
 ) {
     return (
@@ -58,6 +62,7 @@ function ShelfOption(
             className = "shelf-option-in-home-page"
         >    
             <button
+                id = {`shelf-option-detail-width-shelf-id-${shelfID}-in-home-page`}
                 className = "shelf-option-detail-in-home-page"
                 onClick = {onClick}
             >
@@ -82,9 +87,21 @@ function ShelfOption(
 
                         <button
                             className = "remove-shelf-button-in-shelf-option-in-home-page"
+                            
                             onClick = {
                                 (event: MouseEvent) => {
                                     event.stopPropagation();
+
+                                    axios.delete(`http://127.0.0.1:8000/shelf/delete/${shelfID}/`)
+                                        .then((response) => {
+                                            if (response.status === 200) {
+                                                //alert("The shelf has been removed successfully");
+                                                onRemoveButtonClick(event);
+                                            }
+                                        })
+                                        .catch((error) => {
+                                            console.log(error);
+                                        });
                                 }
                             }
                         >
@@ -368,6 +385,7 @@ function ListPart(
                         shelfOptionList.map((item, index) => {
                             return (
                                 <ShelfOption
+                                    shelfID = {item.id}
                                     imageLinkOfBookInShelf = {item.imageLinkOfBookInShelf}
                                     shelfName = {item.shelfName}
                                     mostRecentBookInformation = {item.mostRecentBookInformation}
@@ -376,6 +394,15 @@ function ListPart(
                                     onClick = {
                                         (event: MouseEvent) => {
                                             onShelfOptionClick(item.id);
+                                        }
+                                    }
+                                    onRemoveButtonClick={
+                                        (event: MouseEvent) => {
+                                            const newShelfOptionList = shelfOptionList.filter((shelf) => {
+                                                return shelf.id !== item.id;
+                                            });
+
+                                            setShelfOptionList(newShelfOptionList);
                                         }
                                     }
                                 />

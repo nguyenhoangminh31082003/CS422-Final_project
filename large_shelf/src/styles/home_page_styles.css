@@ -101,6 +101,7 @@
 }
 
 #shelf-option-list::-webkit-scrollbar {
+    box-shadow: inset 0px 0px 10px 0px #000000;
     background-color: #FFE9C5;
     width: 8px;
 }
