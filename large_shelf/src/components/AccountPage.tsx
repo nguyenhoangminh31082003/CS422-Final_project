@@ -71,16 +71,13 @@ function DetailedProfileInformationPart(
 
     var [passwordVisibility, setPasswordVisibility] = useState<boolean>(false);
 
+    /*
     var password: string = "This is not a password";
 
     if (passwordVisibility) {
-        /*
-        
-            Request server to get plaintext password
-        
-        */
        password = "I am the one who knocks!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
     }
+    */
 
     return (
         <div
@@ -136,12 +133,6 @@ function DetailedProfileInformationPart(
                         requestData["page_count"] = 0;
                         requestData["font_size"] = 0;
                         requestData["font_style"] = "?";
-
-                        /*
-                        console.log(requestData);
-
-                        return;
-                        */
 
                         axios.post(
                             "http://127.0.0.1:8000/readerinfo/",
@@ -257,6 +248,7 @@ function DetailedProfileInformationPart(
                     id = "password-container"
                     className = "profile-information-container"
                 >
+                    {/*
                     <div
                         className = "profile-information-label"
                     >
@@ -295,7 +287,7 @@ function DetailedProfileInformationPart(
                         </button>
                         
                     </div>
-
+                    */}
                 </div>
 
                 <button

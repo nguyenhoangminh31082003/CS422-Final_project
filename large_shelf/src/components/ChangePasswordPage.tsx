@@ -1,4 +1,5 @@
 import { Fragment, MouseEvent, useState } from "react";
+import axios from "axios";
 import PAGE_ID from "../PageID";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
@@ -6,15 +7,18 @@ import "../styles/change_password_page_styles.css";
 import backButtonIcon from "../assets/back_button_icon.svg";
 
 interface ChangePasswordPageProps {
+    userID: string;
     onPageOptionClick: (pageID: number) => void;
 }
 
 interface NewPasswordCreationPartProps {
+    userID: string;
     onPageOptionClick: (pageID: number) => void;
 }
 
 function NewPasswordCreationPart(
     {
+        userID,
         onPageOptionClick
     }: NewPasswordCreationPartProps
 ) {
@@ -91,6 +95,7 @@ function NewPasswordCreationPart(
                 id = "create-new-password-button"
                 onClick = {
                     (event: MouseEvent<HTMLButtonElement>) => {
+                        const oldPassword = (document.getElementById("old-user-password-input-box") as HTMLInputElement).value;
                         const newlyChosenPassword = (document.getElementById("first-new-user-password-input-box") as HTMLInputElement).value;
                         const reEnteredNewlyChosenPassword = (document.getElementById("second-new-user-password-input-box") as HTMLInputElement).value;
                         
@@ -109,13 +114,26 @@ function NewPasswordCreationPart(
                             return;
                         }
 
-                        /*
-                    
-                            Request server to change password
+                        axios.post(`http://127.0.0.1:8000/reader/change-password/`, {
+                            "user_id": userID,
+                            "old_password": oldPassword,
+                            "new_password": newlyChosenPassword
+                        })
+                            .then((response) => {
+                                onPageOptionClick(PAGE_ID.ACCOUNT_PAGE);
+                            })
+                            .catch((error) => {
+                                if (error.response) {
+                                    if (error.response.status === 400) {
+                                        setMessage("The old password is incorrect");
+                                    } else {
+                                        setMessage("Something is not right");
+                                        console.log(error);
+                                    }
+                                }
+                            });
 
-                        */
-
-                        onPageOptionClick(PAGE_ID.ACCOUNT_PAGE);
+                        
                     }
                 }
             >
@@ -133,6 +151,7 @@ function NewPasswordCreationPart(
 
 export default function ChangePasswordPage(
     {
+        userID,
         onPageOptionClick
     }: ChangePasswordPageProps
 ) {
@@ -159,6 +178,8 @@ export default function ChangePasswordPage(
                     onPageOptionClick = {
                         onPageOptionClick
                     }
+
+                    userID = {userID}
                 />
             </div>
         </div>

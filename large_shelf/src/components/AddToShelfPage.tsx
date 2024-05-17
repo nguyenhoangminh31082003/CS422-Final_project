@@ -114,15 +114,10 @@ function AddToShelfPart(
                     {
                         allShelves.map((shelf) => {
                             return (
-                                <Fragment
-                                    key = {shelf["shelf_id"]}
-                                >
-                                    <button
-                                        className = "shelf-option-button"
-                                    >
-                                        {shelf["shelf_name"]}
-                                    </button>
-                                </Fragment>
+                                <>
+                                    <input type = "checkbox"/>
+                                    <label> {shelf["name"]}</label>
+                                </>
                             );
                         })
                     }
