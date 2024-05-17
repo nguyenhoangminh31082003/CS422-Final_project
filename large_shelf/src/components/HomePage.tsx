@@ -95,7 +95,6 @@ function ShelfOption(
                                     axios.delete(`http://127.0.0.1:8000/shelf/delete/${shelfID}/`)
                                         .then((response) => {
                                             if (response.status === 200) {
-                                                //alert("The shelf has been removed successfully");
                                                 onRemoveButtonClick(event);
                                             }
                                         })

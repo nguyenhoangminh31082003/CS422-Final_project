@@ -178,6 +178,8 @@ function App() {
                 shelfID = {
                     otherData.shelfID
                 }
+
+                userID = {userID}
             />
         );
     } 

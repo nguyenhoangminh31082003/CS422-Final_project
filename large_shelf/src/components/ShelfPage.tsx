@@ -1,13 +1,15 @@
 import { Fragment, useState, MouseEvent } from "react";
+import axios from "axios";
 import PAGE_ID from "../PageID";
 import "../styles/shelf_page_styles.css";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
 import InfinieScroll from "react-infinite-scroll-component";
-import duneCoverImage from "../assets/dune_cover_image.png";
 import backButtonIcon from "../assets/back_button_icon.svg";
+import RemoveButtonIcon from "../assets/remove_button_icon.svg";
 
 interface ShelfPageProps {
+    userID: string;
     onPageOptionClick: (pageID: number) => void;
     onShelfBookOptionClick: (bookID: string) => void;
     shelfID: string;
@@ -22,9 +24,11 @@ interface ShelfBookOptionProps {
     userProcess: number;
     genre: string;
     onClick: (event: MouseEvent) => void;
+    onRemoveButtonClick: () => void;
 }
 
 interface ShelfBookListPartProps {
+    userID: string;
     shelfID: string;
     onPageOptionClick: (pageID: number) => void;
     onShelfBookOptionClick: (shelfID: string) => void;
@@ -39,7 +43,8 @@ function ShelfBookOption(
         averageRating,
         userProcess,
         genre,
-        onClick
+        onClick,
+        onRemoveButtonClick,
     }: ShelfBookOptionProps
 ) {
     return (
@@ -174,44 +179,104 @@ function ShelfBookOption(
                     </p>
                 </div>
 
+                <button
+                    className = "remove-shelf-button-in-shelf-option-in-home-page"
+                            
+                    onClick = {
+                        (event: MouseEvent) => {
+                            event.stopPropagation();
+
+                            axios.delete(`http://127.0.0.1:8000/shelf/delete/${shelfID}/`)
+                                .then((response) => {
+                                    if (response.status === 200) {
+                                            
+                                    }
+                                })
+                                .catch((error) => {
+                                    console.log(error);
+                                });
+                            }
+                        }
+                >
+                    <img
+                        className = "remove-shelf-button-icon-in-shelf-option-in-home-page"
+                        src = {RemoveButtonIcon}
+                        alt = "Remove button"
+                    />
+                </button>
+
             </button>
         </div>
     )
 }
 
-const demoShelfBookOptionList = [
-    {
-        bookID: "1",
-        imageLinkOfBookCover: duneCoverImage,
-        title: "Dune",
-        authorName: "Frank Herbert",
-        dateAdded: new Date(2024, 3, 24),
-        averageRating: 4.27,
-        userProcess: 0.9669,
-        genre: "Science Fiction"
-    }
-]
-
 function ShelfBookListPart(
     {
+        userID,
         shelfID,
         onPageOptionClick,
         onShelfBookOptionClick
     }: ShelfBookListPartProps
 ) {
-    /*
-        Request the number of books in the shelve from the server
-    */
-    const numberOfBooks = demoShelfBookOptionList.length;
-    /*
-    
-        Request from the server to get the shelf name given shelf ID
-    
-    */
-    const shelfName = "Current reading";
 
-    var [shelfBookOptionList, setShelfBookOptionList] = useState(demoShelfBookOptionList);
+    var [shelfInformation, setShelfInformation] = useState<any>({
+        "shelf_id": "0",
+        "shelf_name": "Shelf name"
+    });
+
+    var [allBooks, setAllBooks] = useState<any[]>([]);
+
+    axios.get(`http://127.0.0.1:8000/shelf/${userID}/`)
+        .then((response) => {
+            const shelf = response.data.filter((item: any) => item["id"] === shelfID)[0];
+
+            const newData = {
+                "sheld_id": shelf["id"],
+                "shelf_name": shelf["name"],
+            };
+
+            if (JSON.stringify(newData) !== JSON.stringify(shelfInformation)) {
+                setShelfInformation(newData);
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
+    axios.get(`http://127.0.0.1:8000/addedbooks/${userID}/${shelfID}/`)
+        .then((response) => {
+            const newBooks = response.data.map((item: any) => {
+                let book = {
+                    "bookID": item["book_id"],
+                    "imageLinkOfBookCover": item["book"]["image_url"],
+                    "title": item["book"]["title"],
+                    "authorName": item["book"]["author"],
+                    "dateAdded": new Date(item["added_date"]),
+                    "averageRating": item["book"]["rating"],
+                    "userProcess": 0,
+                    "genre": item["book"]["genre"]
+                }
+                
+                return book;
+            });
+            if (JSON.stringify(newBooks) !== JSON.stringify(allBooks)) {
+                setAllBooks(newBooks);
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
+    const numberOfBooks = allBooks.length;
+
+    var [shelfBookOptionList, setShelfBookOptionList] = useState<any[]>([]);
     var [hasMore, setHasMore] = useState(true);
+
+    if (JSON.stringify(allBooks) !== JSON.stringify(shelfBookOptionList)) {
+        setShelfBookOptionList(allBooks);
+    }
+
+    console.log(allBooks);
 
     function TitlePart() {
         return (
@@ -236,7 +301,7 @@ function ShelfBookListPart(
                 <h1
                     id = "shelf-name-title-in-shelf-page"
                 > 
-                    {`"${shelfName}" Shelf`} 
+                    {`"${shelfInformation["shelf_name"]}" Shelf`} 
                 </h1>
             </div>
         );
@@ -308,6 +373,10 @@ function ShelfBookListPart(
                                             onShelfBookOptionClick(item.bookID);
                                         }
                                     }
+                                    onRemoveButtonClick = {
+                                        () => {
+                                        }
+                                    }
                                 />
                             )
                         })
@@ -322,7 +391,8 @@ export default function ShelfPage(
     {
         onPageOptionClick,
         onShelfBookOptionClick,
-        shelfID
+        shelfID,
+        userID
     }: ShelfPageProps
 ) {
     return (
@@ -353,6 +423,8 @@ export default function ShelfPage(
                     onShelfBookOptionClick = {
                         onShelfBookOptionClick
                     }
+
+                    userID = {userID}
                 />
             </div>
         </div>
