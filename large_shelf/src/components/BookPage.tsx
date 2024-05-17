@@ -122,7 +122,33 @@ function PagePairPart(
     }: PagePairPartProps
 ) {
 
-    
+    var [leftPageContent, setLeftPageContent] = useState<string>("");
+    var [rightPageContent, setRightPageContent] = useState<string>("");
+
+    axios.get(`http://127.0.0.1:8000/books/content/${bookID}/${currentPage}`)
+        .then((response) => {   
+            const newLeftPageContent = response.data[`content_page_${currentPage}`].replace(/\r\n|\n|\r/g, '<br/>');
+
+            if (newLeftPageContent !== leftPageContent) {
+                setLeftPageContent(newLeftPageContent);
+            }
+
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
+    axios.get(`http://127.0.0.1:8000/books/content/${bookID}/${currentPage + 1}`)
+        .then((response) => {  
+            const newRightPageContent = response.data[`content_page_${currentPage + 1}`];
+
+            if (newRightPageContent !== rightPageContent) {
+                setRightPageContent(newRightPageContent);
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 
     return (
         <div
@@ -134,6 +160,7 @@ function PagePairPart(
             >
                 <div
                     className = "displayed-page-in-book-page"
+                    dangerouslySetInnerHTML={{ __html: leftPageContent }}
                 >
                 </div>
             </div>
@@ -143,6 +170,7 @@ function PagePairPart(
             >
                 <div
                     className = "displayed-page-in-book-page"
+                    dangerouslySetInnerHTML={{ __html: rightPageContent }}
                 >
                 </div>
             </div>

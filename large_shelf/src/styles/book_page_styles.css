@@ -105,6 +105,26 @@
     height: 100%;
     border-color: #7D4230;
     border-style: solid;
+    color:#7D4230;
+    font-family: "Inter", sans-serif;
+    padding: 1%;
+    overflow: auto;
+}
+
+.displayed-page-in-book-page::-webkit-scrollbar {
+    box-shadow: inset 0px 0px 10px 0px #000000;
+    background-color: #FFE9C5;
+    width: 8px;
+}
+
+.displayed-page-in-book-page::-webkit-scrollbar-thumb {
+    background-color: #7D4230;
+    border-radius: 20px;
+    transition: background-color 1s;
+}
+
+.displayed-page-in-book-page::-webkit-scrollbar-thumb:hover {
+    background-color: #E29675;
 }
 
 .normal-text-detail-in-book-page {
