@@ -9,15 +9,18 @@ import backButtonIcon from "../assets/back_button_icon.svg";
 interface AddToShelfPageProps {
     onPageOptionClick: (pageID: number) => void;
     bookID: string;
+    userID: string;
 }
 
 interface AddToShelfPartProps {
     onPageOptionClick: (pageID: number) => void;
     bookID: string;
+    userID: string;
 }
 
 function AddToShelfPart(
     {
+        userID,
         bookID,
         onPageOptionClick
     }: AddToShelfPartProps
@@ -28,6 +31,8 @@ function AddToShelfPart(
         "authorName": "",
         "summary": ""
     });
+
+    var [allShelves, setAllShelves] = useState<any[]>([]);
 
     axios.get(`http://127.0.0.1:8000/books/${bookID}/`)
         .then((response) => {
@@ -44,6 +49,17 @@ function AddToShelfPart(
         .catch((error) => {
             
         });
+
+    axios.get(`http://127.0.0.1:8000/shelves-containing-book/${userID}/${bookID}/`)
+        .then((response) => {
+            if (JSON.stringify(response.data) !== JSON.stringify(allShelves)) {
+                setAllShelves(response.data);
+            }
+        })
+        .catch((error) => { 
+        });
+
+    //console.log(allShelves);
 
     return (
         <div
@@ -82,9 +98,35 @@ function AddToShelfPart(
             <div
                 id = "shelf-option-list-in-add-to-shelf-page"
             >
-                <h1>
+                <h1
+                    style = {
+                        {
+                            "fontWeight": "bold",
+                        }
+                    }
+                >
                     Choose your shelf
                 </h1>
+
+                <form
+                    id = "shelf-option-form-in-add-to-shelf-page"
+                >
+                    {
+                        allShelves.map((shelf) => {
+                            return (
+                                <Fragment
+                                    key = {shelf["shelf_id"]}
+                                >
+                                    <button
+                                        className = "shelf-option-button"
+                                    >
+                                        {shelf["shelf_name"]}
+                                    </button>
+                                </Fragment>
+                            );
+                        })
+                    }
+                </form>
             </div>
 
             
@@ -94,6 +136,7 @@ function AddToShelfPart(
 
 export default function AddToShelfPage(
     {
+        userID,
         bookID,
         onPageOptionClick
     }: AddToShelfPageProps
@@ -124,6 +167,8 @@ export default function AddToShelfPage(
                     }
 
                     bookID = {bookID}
+
+                    userID = {userID}
                 />
             </div>
         </div>
