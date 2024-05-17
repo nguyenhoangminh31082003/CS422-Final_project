@@ -32,7 +32,18 @@ function AddToShelfPart(
         "summary": ""
     });
 
+    var [allChosenShelves, setAllChosenShelves] = useState<any[]>([]);
     var [allShelves, setAllShelves] = useState<any[]>([]);
+
+    axios.get(`http://127.0.0.1:8000/shelf/${userID}/`)
+        .then((response) => {
+            if (JSON.stringify(allShelves) !== JSON.stringify(response.data)) {
+                setAllShelves(response.data);
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 
     axios.get(`http://127.0.0.1:8000/books/${bookID}/`)
         .then((response) => {
@@ -47,19 +58,17 @@ function AddToShelfPart(
             }
         })
         .catch((error) => {
-            
+            console.log(error);
         });
 
     axios.get(`http://127.0.0.1:8000/shelves-containing-book/${userID}/${bookID}/`)
         .then((response) => {
-            if (JSON.stringify(response.data) !== JSON.stringify(allShelves)) {
-                setAllShelves(response.data);
+            if (JSON.stringify(response.data) !== JSON.stringify(allChosenShelves)) {
+                setAllChosenShelves(response.data);
             }
         })
         .catch((error) => { 
         });
-
-    //console.log(allShelves);
 
     return (
         <div
@@ -113,10 +122,96 @@ function AddToShelfPart(
                 >
                     {
                         allShelves.map((shelf) => {
+                            if (allChosenShelves.some((chosenShelf) => chosenShelf["id"] === shelf["id"]))
+                                return (
+                                    <>
+                                        <input 
+                                            type = "checkbox"
+                                            id = {`shelf-option-checkbox-${shelf["id"]}`}
+                                            className = "shelf-option-checkbox"
+                                            
+                                            onChange={
+                                                (event) => {
+                                                    if (event.target.checked) {
+                                                        axios.post(`http://127.0.0.1:8000/addedbooks/`, {
+                                                            "shelf_id": shelf["id"],
+                                                            "user_id": userID,
+                                                            "book_id": bookID
+                                                        })
+                                                        .then((response) => {
+                                                            allChosenShelves.push({
+                                                                "id": shelf["id"],
+                                                            });
+                                                        })
+                                                        .catch((error) => {
+                                                            console.log(error);
+                                                        });
+                                                    } else {
+                                                        axios.delete(`http://127.0.0.1:8000/addedbook/delete/${shelf["id"]}/${userID}/${bookID}/`)
+                                                        .then((response) => {
+                                                            setAllChosenShelves(allChosenShelves.filter((chosenShelf) => chosenShelf["id"] !== shelf["id"]));
+                                                        })
+                                                        .catch((error) => {
+                                                            console.log(error);
+                                                        });
+                                                    }
+                                                }
+                                            }
+                                            checked = {true}
+                                        />
+                                        <label
+                                            htmlFor={`shelf-option-checkbox-${shelf["id"]}`}
+                                            className = "shelf-option-label-in-add-to-shelf-page"
+                                        > 
+                                            {shelf["name"]}
+                                        </label>
+                                        <br/>
+                                    </>
+                                );
+
+                           
                             return (
                                 <>
-                                    <input type = "checkbox"/>
-                                    <label> {shelf["name"]}</label>
+                                    <input 
+                                        type = "checkbox"
+                                        id = {`shelf-option-checkbox-${shelf["id"]}`}
+                                        className = "shelf-option-checkbox"
+                                        
+                                        onChange={
+                                            (event) => {
+                                                if (event.target.checked) {
+                                                    axios.post(`http://127.0.0.1:8000/addedbooks/`, {
+                                                        "shelf_id": shelf["id"],
+                                                        "user_id": userID,
+                                                        "book_id": bookID
+                                                    })
+                                                    .then((response) => {
+                                                        allChosenShelves.push({
+                                                            "id": shelf["id"],
+                                                        });
+                                                    })
+                                                    .catch((error) => {
+                                                        console.log(error);
+                                                    });
+                                                } else {
+                                                    axios.delete(`http://127.0.0.1:8000/addedbook/delete/${shelf["id"]}/${userID}/${bookID}/`)
+                                                    .then((response) => {
+                                                        setAllChosenShelves(allChosenShelves.filter((chosenShelf) => chosenShelf["id"] !== shelf["id"]));
+                                                    })
+                                                    .catch((error) => {
+                                                        console.log(error);
+                                                    });
+                                                }
+                                            }
+                                        }
+                                    />
+                                    <label
+                                        htmlFor={`shelf-option-checkbox-${shelf["id"]}`}
+                                        className = "shelf-option-label-in-add-to-shelf-page"
+                                    > 
+                                        {shelf["name"]}
+                                    </label>
+                                    <br/>
                                 </>
                             );
                         })

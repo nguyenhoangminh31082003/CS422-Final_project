@@ -121,11 +121,11 @@
     border-style: solid;
     border-width: 0px;
     align-items: center;
-    transition: opacity 1s, margin-right 1s, margin-top 1s;
+    transition: opacity 1s, rotate 1s;
 }
 
 #create-new-shelf-button:hover {
-    margin-right: 1%;
+    rotate: 180deg;
     opacity: 0.8;
 }
 
