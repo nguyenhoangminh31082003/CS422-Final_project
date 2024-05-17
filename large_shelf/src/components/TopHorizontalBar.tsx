@@ -3,13 +3,31 @@ import "../styles/top_horizontal_bar_styles.css";
 import logo from "../assets/large_shelf_logo.svg";
 import searchIcon from "../assets/normal_search_icon.svg";
 
-function SearchBar() {
+interface TopHorizontalBarProps {
+    onSearchButtonClick: (searchQuery: string) => void;
+}
+
+interface SearchBarProps {
+    onSearchButtonClick: (searchQuery: string) => void;
+}
+
+function SearchBar(
+    {
+        onSearchButtonClick
+    }: SearchBarProps
+) {
     return (
         <div
             id = "search-bar"
         >
             <button
                 id = "search-icon-button"
+                onClick = {
+                    () => {
+                        const searchQuery = (document.getElementById("search-bar-input") as HTMLInputElement).value;
+                        onSearchButtonClick(searchQuery);
+                    }
+                }
             >
                 <img
                     id = "search-icon"
@@ -26,7 +44,11 @@ function SearchBar() {
     );
 }
 
-export default function TopHorizontalBar() {
+export default function TopHorizontalBar(
+    {
+        onSearchButtonClick
+    }: TopHorizontalBarProps
+) {
     return (
         <div
             id = "top-horizontal-bar"
@@ -41,7 +63,9 @@ export default function TopHorizontalBar() {
             >
                 Large Shelf
             </h1>
-            <SearchBar />
+            <SearchBar 
+                onSearchButtonClick = {onSearchButtonClick}
+            />
         </div>
     );
 }

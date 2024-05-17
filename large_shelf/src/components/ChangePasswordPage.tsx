@@ -9,6 +9,7 @@ import backButtonIcon from "../assets/back_button_icon.svg";
 interface ChangePasswordPageProps {
     userID: string;
     onPageOptionClick: (pageID: number) => void;
+    onSearchButtonClick: (searchQuery: string) => void;
 }
 
 interface NewPasswordCreationPartProps {
@@ -152,7 +153,8 @@ function NewPasswordCreationPart(
 export default function ChangePasswordPage(
     {
         userID,
-        onPageOptionClick
+        onPageOptionClick,
+        onSearchButtonClick
     }: ChangePasswordPageProps
 ) {
     return (
@@ -160,7 +162,9 @@ export default function ChangePasswordPage(
             id = "change-password-page"
         >
             <TopHorizontalBar 
-        
+                onSearchButtonClick = {
+                    onSearchButtonClick
+                }
             />
 
             <div

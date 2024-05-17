@@ -7,13 +7,16 @@ import TopHorizontalBar from "./TopHorizontalBar";
 import backButtonIcon from "../assets/back_button_icon.svg";
 
 interface AddToShelfPageProps {
+    onSearchButtonClick: (searchText: string) => void;
     onPageOptionClick: (pageID: number) => void;
+    onBackButtonClick: () => void;
     bookID: string;
     userID: string;
 }
 
 interface AddToShelfPartProps {
     onPageOptionClick: (pageID: number) => void;
+    onBackButtonClick: () => void;
     bookID: string;
     userID: string;
 }
@@ -22,7 +25,8 @@ function AddToShelfPart(
     {
         userID,
         bookID,
-        onPageOptionClick
+        onPageOptionClick,
+        onBackButtonClick
     }: AddToShelfPartProps
 ) {
     var [bookInformation, setBookInformation] = useState({
@@ -74,6 +78,20 @@ function AddToShelfPart(
         <div
             id = "add-to-shelf-part"
         >   
+
+            <button
+                id = "back-button-in-add-to-shelf-page"
+                onClick = {
+                    onBackButtonClick
+                }
+            >
+                <img
+                    id = "back-button-icon-in-add-to-shelf-page"
+                    src = {backButtonIcon}
+                    alt = "Back"
+                />
+            </button>
+
             <div
                 id = "book-information-part-in-add-to-shelf-page"
             >
@@ -228,7 +246,9 @@ export default function AddToShelfPage(
     {
         userID,
         bookID,
-        onPageOptionClick
+        onPageOptionClick,
+        onBackButtonClick,
+        onSearchButtonClick
     }: AddToShelfPageProps
 ) {
     return (
@@ -236,7 +256,9 @@ export default function AddToShelfPage(
             id = "add-to-shelf-page"
         >
             <TopHorizontalBar 
-        
+                onSearchButtonClick={
+                    onSearchButtonClick
+                }
             />
 
             <div
@@ -259,6 +281,10 @@ export default function AddToShelfPage(
                     bookID = {bookID}
 
                     userID = {userID}
+
+                    onBackButtonClick = {
+                        onBackButtonClick
+                    }
                 />
             </div>
         </div>

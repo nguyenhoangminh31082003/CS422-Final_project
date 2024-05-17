@@ -10,8 +10,9 @@ import RemoveButtonIcon from "../assets/remove_button_icon.svg";
 import defaultBookCoverImage from "../assets/default_book_cover_image.png";
 
 interface HomePageProps {
-    onPageOptionClick: (pageID: number) => void;
+    onSearchButtonClick: (searchQuery: string) => void;
     onShelfOptionClick: (shelfID: string) => void;
+    onPageOptionClick: (pageID: number) => void;
     onCreateNewShelfClick: () => void;
     userID: string;
 }
@@ -451,9 +452,10 @@ function ShelfListPart(
 
 export default function HomePage(
     {
-        onPageOptionClick,
-        onShelfOptionClick,
         onCreateNewShelfClick,
+        onSearchButtonClick,
+        onShelfOptionClick,
+        onPageOptionClick,
         userID
     }: HomePageProps
 ) {
@@ -462,7 +464,7 @@ export default function HomePage(
             id = "home-page"
         >
             <TopHorizontalBar 
-        
+                onSearchButtonClick={onSearchButtonClick}           
             />
             <div
                 id = "content-part"

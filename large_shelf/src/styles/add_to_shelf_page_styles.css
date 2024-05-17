@@ -152,3 +152,19 @@
     font-size: larger;
     margin-top: 4%;
 }
+
+#back-button-in-add-to-shelf-page {
+    position: fixed;
+    background-color: #FFE9C5;
+    border-width: 0px;
+    border-style: solid;
+    margin: 1%;
+    top: calc(100% * 80 / 900);
+    left: calc(100% * 120 / 1600);
+    transition: opacity 1s, margin-left 1s;
+}
+
+#back-button-in-add-to-shelf-page:hover {
+    opacity: 0.8;
+    margin-left: 0%;
+}

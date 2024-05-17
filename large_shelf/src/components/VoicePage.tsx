@@ -10,8 +10,9 @@ import backButtonIcon from "../assets/back_button_icon.svg";
 import RemoveButtonIcon from "../assets/remove_button_icon.svg";
 
 interface VoicePageProps {
-    onPageOptionClick: (pageID: number) => void;
+    onSearchButtonClick: (searchQuery: string) => void;
     onAudioFolderOptionClick: (audioFolderID: string) => void;
+    onPageOptionClick: (pageID: number) => void;
     userID: string;
 }
 
@@ -286,8 +287,9 @@ function AudioFolderListPart(
 
 export default function VoicePage(
     {
-        onPageOptionClick,
         onAudioFolderOptionClick,
+        onSearchButtonClick,
+        onPageOptionClick,
         userID
     }: VoicePageProps
 ) {
@@ -296,7 +298,7 @@ export default function VoicePage(
             id = "voice-page"
         >
             <TopHorizontalBar 
-        
+                onSearchButtonClick={onSearchButtonClick}
             />
             <div
                 id = "content-part"

@@ -18,11 +18,29 @@ import BookInformationPage from './components/BookInformationPage';
 function App() {
     const [pageID, setPageID] = useState(PAGE_ID["WELCOME_PAGE"]);
     var [userID, setUserID] = useState("");
-    const [otherData, setOtherData] = useState(null as any);
+    var [otherData, setOtherData] = useState<any>({});
     
+    const updateOtherData = (newData: any) => {
+        let newOtherData = otherData;
+
+        for (let key in newData) {
+            newOtherData[key] = newData[key];
+        }
+
+        setOtherData(newOtherData);
+    };
+
     const onPageOptionClick = (pageID: number) => {
         setPageID(pageID);
     };
+
+    const onSearchButtonClick = (searchQuery: string) => {
+        updateOtherData({
+            searchInput: searchQuery
+        });
+
+        setPageID(PAGE_ID["LIBRARY_PAGE"]);
+    }
 
     if (pageID === PAGE_ID["WELCOME_PAGE"]) {
         return (
@@ -49,11 +67,16 @@ function App() {
                 onPageOptionClick = {
                     onPageOptionClick
                 }
+
+                onSearchButtonClick={
+                    onSearchButtonClick
+                }
                 
                 onShelfOptionClick = {
                     (shelfID: string) => {
                         setPageID(PAGE_ID["SHELF_PAGE"]);
-                        setOtherData({
+
+                        updateOtherData({
                             shelfID: shelfID
                         });
                     }
@@ -94,13 +117,17 @@ function App() {
                 onPageOptionClick = {
                     onPageOptionClick
                 }
+
+                onSearchButtonClick={
+                    onSearchButtonClick
+                }
                 
                 userID = {userID}
 
                 onAudioFolderOptionClick = {
                     (folderID: string) => {
                         setPageID(PAGE_ID["AUDIO_FOLDER_PAGE"]);
-                        setOtherData({
+                        updateOtherData({
                             folderID: folderID
                         });
                     }
@@ -119,14 +146,18 @@ function App() {
                     onBookOptionClick = {
                         (bookID: string) => {
                             setPageID(PAGE_ID["BOOK_INFORMATION_PAGE"]);
-                            setOtherData({
+                            updateOtherData({
                                 bookID: bookID
                             });
                         }
                     }
 
                     searchInput = {
-                        (otherData === null ? null : otherData.searchInput)
+                        (otherData.searchInput)
+                    }
+
+                    onSearchButtonClick={
+                        onSearchButtonClick
                     }
                 />
         );
@@ -142,6 +173,10 @@ function App() {
                 bookID = {
                     otherData.bookID
                 }
+
+                onSearchButtonClick={
+                    onSearchButtonClick
+                }
             />
         );
     }
@@ -151,6 +186,10 @@ function App() {
             <AccountPage 
                 onPageOptionClick = {
                     onPageOptionClick
+                }
+
+                onSearchButtonClick={
+                    onSearchButtonClick
                 }
 
                 userID = {userID}
@@ -169,7 +208,7 @@ function App() {
                 onShelfBookOptionClick={
                     (bookID: string) => {
                         setPageID(PAGE_ID["BOOK_INFORMATION_PAGE"]);
-                        setOtherData({
+                        updateOtherData({
                             bookID: bookID
                         });
                     }
@@ -180,6 +219,10 @@ function App() {
                 }
 
                 userID = {userID}
+
+                onSearchButtonClick={
+                    onSearchButtonClick
+                }
             />
         );
     } 
@@ -195,12 +238,16 @@ function App() {
                         otherData.bookID
                     }
 
+                    onSearchButtonClick={
+                        onSearchButtonClick
+                    }
+
                     userID = {userID}
 
                     onAddToShelfButtonClick = {
                         (bookID: string) => {
                             setPageID(PAGE_ID["ADD_TO_SHELF_PAGE"]);
-                            setOtherData({
+                            updateOtherData({
                                 bookID: bookID
                             });
                         }
@@ -209,7 +256,7 @@ function App() {
                     onReadButtonClick = {
                         (bookID: string) => {
                             setPageID(PAGE_ID["BOOK_PAGE"]);
-                            setOtherData({
+                            updateOtherData({
                                 bookID: bookID
                             });
                         }
@@ -226,6 +273,10 @@ function App() {
                 }
 
                 userID = {userID}
+
+                onSearchButtonClick={
+                    onSearchButtonClick
+                }
             />
         );
     }
@@ -244,7 +295,7 @@ function App() {
                 onAudioFileOptionClick = {
                     (fileID: string) => {
                         setPageID(PAGE_ID["BOOK_PAGE"]);
-                        setOtherData({
+                        updateOtherData({
                             fileID: fileID
                         });
                     }
@@ -257,6 +308,10 @@ function App() {
                 }
 
                 userID = {userID}
+
+                onSearchButtonClick={
+                    onSearchButtonClick
+                }
             />
         );
     }
@@ -269,6 +324,10 @@ function App() {
                 }
 
                 userID = {userID}
+
+                onSearchButtonClick={
+                    onSearchButtonClick
+                }
             />
         );
     }
@@ -286,6 +345,16 @@ function App() {
 
                 userID = {
                     userID
+                }
+            
+                onBackButtonClick={
+                    () => {
+                        setPageID(PAGE_ID["BOOK_INFORMATION_PAGE"]);
+                    }
+                }
+
+                onSearchButtonClick={
+                    onSearchButtonClick
                 }
             />
         );

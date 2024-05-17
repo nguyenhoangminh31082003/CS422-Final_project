@@ -7,9 +7,10 @@ import "../styles/book_information_page_styles.css";
 import { EditableFiveStarRating } from "./EditableFiveStarRating";
 
 interface BookInformationPageProps {
+    onSearchButtonClick: (searchQuery: string) => void;
+    onAddToShelfButtonClick: (bookID: string) => void;
     onReadButtonClick: (bookID: string) => void;
     onPageOptionClick: (pageID: number) => void;
-    onAddToShelfButtonClick: (bookID: string) => void;
     userID: string;
     bookID: string;
 }
@@ -167,8 +168,9 @@ function BookDescriptionPart(
 
 export default function BookInformationPage(
     {
-        onReadButtonClick,
         onAddToShelfButtonClick,
+        onSearchButtonClick,
+        onReadButtonClick,
         onPageOptionClick,
         userID,
         bookID
@@ -180,6 +182,7 @@ export default function BookInformationPage(
             id = "book-information-page"
         >
             <TopHorizontalBar 
+                onSearchButtonClick = {onSearchButtonClick}
             />
 
             <div

@@ -7,6 +7,7 @@ import TopHorizontalBar from "./TopHorizontalBar";
 
 
 interface BookPageProps {
+    onSearchButtonClick: (searchQuery: string) => void;
     onPageOptionClick: (pageID: number) => void;
     bookID: string;
 }
@@ -64,6 +65,21 @@ function PropertiesPart(
                 </h2>
 
             </div>
+
+            <div
+                className = "container-in-book-page"
+            >
+                <h1
+                    className = "container-title-in-book-page"
+                >
+                    Location
+                </h1>
+                <p
+                    className = "normal-text-detail-in-book-page"
+                >
+                    Current page
+                </p>
+            </div>
             
         </div>
     );
@@ -98,6 +114,7 @@ function PagePart() {
 
 export default function BookPage(
     {
+        onSearchButtonClick,
         onPageOptionClick,
         bookID
     }: BookPageProps
@@ -106,7 +123,8 @@ export default function BookPage(
         <div
             id = "book-page"
         >
-            <TopHorizontalBar 
+            <TopHorizontalBar
+                onSearchButtonClick = {onSearchButtonClick} 
             />
 
             <div

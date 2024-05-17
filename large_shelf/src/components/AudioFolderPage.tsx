@@ -11,6 +11,7 @@ import RemoveButtonIcon from "../assets/remove_button_icon.svg";
 import AudioFileDecorator from "../assets/audio_file_decorator.svg";
 
 interface AudioFolderPageProps {
+    onSearchButtonClick: (searchQuery: string) => void;
     onAudioFileOptionClick: (audioFolderID: string) => void;
     onPageOptionClick: (pageID: number) => void;
     onBackButtonClick: () => void;
@@ -360,6 +361,7 @@ function AudioFolderListPart(
 
 export default function AudioFolderPage(
     {
+        onSearchButtonClick,
         onAudioFileOptionClick,
         onPageOptionClick,
         onBackButtonClick,
@@ -372,7 +374,9 @@ export default function AudioFolderPage(
             id = "audio-folder-page"
         >
             <TopHorizontalBar 
-        
+                onSearchButtonClick = {
+                    onSearchButtonClick
+                }
             />
             <div
                 id = "content-part"

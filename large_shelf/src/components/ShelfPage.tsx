@@ -10,9 +10,10 @@ import RemoveButtonIcon from "../assets/remove_button_icon.svg";
 
 interface ShelfPageProps {
     userID: string;
+    shelfID: string;
     onPageOptionClick: (pageID: number) => void;
     onShelfBookOptionClick: (bookID: string) => void;
-    shelfID: string;
+    onSearchButtonClick: (searchQuery: string) => void;
 }
 
 interface ShelfBookOptionProps {
@@ -171,7 +172,7 @@ function ShelfBookOption(
                     <p
                         className = "detail-of-shelf-book-in-shelf-page"
                     >
-                        {(userProcess * 100).toFixed(2)}%
+                        {(userProcess).toFixed(2)}%
                     </p>
                 </div>
 
@@ -260,21 +261,31 @@ function ShelfBookOptionListPart(
     var [allBooks, setAllBooks] = useState<any[]>([]);
 
     axios.get(`http://127.0.0.1:8000/addedbooks/${userID}/${shelfID}/`)
-    .then((response) => {
-        const newBooks = response.data.map((item: any) => {
+    .then(async (response) => {
+        const bookPromises = response.data.map(async (item: any) => {
             let book = {
-                "bookID": item["book_id"],
-                "imageLinkOfBookCover": item["book"]["image_url"],
-                "title": item["book"]["title"],
-                "authorName": item["book"]["author"],
-                "dateAdded": new Date(item["added_date"]),
-                "averageRating": item["book"]["rating"],
-                "userProcess": 0,
-                "genre": item["book"]["genre"]
+                bookID: item.book_id,
+                imageLinkOfBookCover: item.book.image_url,
+                title: item.book.title,
+                authorName: item.book.author,
+                dateAdded: new Date(item.added_date),
+                averageRating: item.book.rating,
+                userProcess: 0,
+                genre: item.book.genre
+            };
+
+            try {
+                const processResponse = await axios.get(`http://127.0.0.1:8000/readingprocess/${userID}/${item.book_id}/`);
+                book.userProcess = processResponse.data.percentage;
+            } catch (error) {
+                console.log(error);
             }
-            
+
             return book;
         });
+
+        const newBooks = await Promise.all(bookPromises);
+        
         if (JSON.stringify(newBooks) !== JSON.stringify(allBooks)) {
             setAllBooks(newBooks);
         }
@@ -453,8 +464,9 @@ function ShelfBookListPart(
 
 export default function ShelfPage(
     {
-        onPageOptionClick,
+        onSearchButtonClick,
         onShelfBookOptionClick,
+        onPageOptionClick,
         shelfID,
         userID
     }: ShelfPageProps
@@ -464,7 +476,7 @@ export default function ShelfPage(
             id = "shelf-page"
         >
             <TopHorizontalBar 
-        
+                onSearchButtonClick={onSearchButtonClick}
             />
             <div
                 id = "content-part"

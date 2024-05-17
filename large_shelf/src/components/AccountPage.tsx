@@ -9,6 +9,7 @@ import closedEyeIcon from "../assets/closed_eye_icon.svg";
 import defaultProfilePicture from "../assets/default_profile_picture.png";
 
 interface AccountPageProps {
+    onSearchButtonClick: (searchQuery: string) => void;
     onPageOptionClick: (pageID: number) => void;
     userID: string;
 }
@@ -334,13 +335,6 @@ function ProfileInformationPart(
         onPageOptionClick
     }: ProfileInformationPartProps
 ) {
-
-    /*
-    
-        Send request to server to get user's information
-    
-    */
-
     var [userInformation, setUserInformation] = useState({
         "profilePicture": defaultProfilePicture,
         "fullName": "Default User",
@@ -398,6 +392,7 @@ function ProfileInformationPart(
 
 export default function AccountPage(
     {
+        onSearchButtonClick,
         onPageOptionClick,
         userID
     }: AccountPageProps
@@ -406,7 +401,8 @@ export default function AccountPage(
         <div
             id = "account-page"
         >
-            <TopHorizontalBar 
+            <TopHorizontalBar
+                onSearchButtonClick = {onSearchButtonClick} 
             />
 
             <div

@@ -8,6 +8,7 @@ import InfinieScroll from "react-infinite-scroll-component";
 import defaultBookCoverImage from "../assets/default_book_cover_image.png";
 
 interface LibraryPageProps {
+    onSearchButtonClick: (searchQuery: string) => void;
     onPageOptionClick: (pageID: number) => void;
     onBookOptionClick: (bookID: string) => void;
     searchInput?: string | null;
@@ -25,6 +26,16 @@ interface BookOptionProps {
 interface BookListPartProps {
     searchInput?: string | null;
     onBookOptionClick: (shelfID: string) => void;
+}
+
+interface TitlePartProps {
+    onSelectedOptionChange: (selectedOption: string) => void;
+}
+
+interface BookOptionListPartProps {
+    searchInput?: string | null;
+    selectedOption: string;
+    onBookOptionClick: (bookID: string) => void;
 }
 
 function BookOption(
@@ -125,12 +136,11 @@ function BookOption(
     )
 }
 
-interface BookOptionListPartProps {
-    searchInput?: string | null;
-    onBookOptionClick: (bookID: string) => void;
-}
-
-function TitlePart() {
+function TitlePart(
+    {
+        onSelectedOptionChange
+    }: TitlePartProps
+) {
     return (
         <div 
             id = "title-bar-in-library-page"
@@ -149,10 +159,16 @@ function TitlePart() {
 
                 <select 
                     name = "orders" 
-                    id="order-option-in-library-page"
+                    id = "order-option-in-library-page"
+                    onChange = {
+                        (event) => {
+                            onSelectedOptionChange(event.target.value);
+                        }
+                    }
                 >
                     <option value = "highly-rated">Highly rated</option>
                     <option value = "most-popular">Most popular</option>
+                    <option value = "search-result">Search result</option>
                 </select>
 
             </form>
@@ -163,13 +179,15 @@ function TitlePart() {
 
 function BookOptionListPart(
     {
+        selectedOption,
         searchInput,
         onBookOptionClick
     }: BookOptionListPartProps
 ) {
     var [allBooks, setAllBooks] = useState<any[]>([]);
 
-    axios.get("http://127.0.0.1:8000/books")
+    function getBooksWithRatingAsOrder() {
+        axios.get("http://127.0.0.1:8000/books")
         .then((response) => {
             console.log(response);
             const newData = response.data.map((item: any) => {
@@ -188,8 +206,65 @@ function BookOptionListPart(
             }
         })
         .catch((error) => {
-        
+            console.log(error);
         });
+    }
+
+    function getBooksWithPopularityAsOrder() {
+        axios.get("http://127.0.0.1:8000/books/popular/")
+        .then((response) => {
+            console.log(response);
+            const newData = response.data.map((item: any) => {
+                return {
+                    "bookID": item["id"],
+                    "imageLinkOfBookCover": item["image_url"],
+                    "title": item["title"],
+                    "authorName": item["author"],
+                    "averageRating": item["rating"],
+                    "genre": item["genre"]
+                }
+            });
+
+            if (JSON.stringify(allBooks) !== JSON.stringify(newData)) {
+                setAllBooks(newData);
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
+
+    function getBooksBySearching() {
+        axios.get(`http://127.0.0.1:8000/books/search/?q=${searchInput}`)
+        .then((response) => {
+            console.log(response);
+            const newData = response.data.map((item: any) => {
+                return {
+                    "bookID": item["id"],
+                    "imageLinkOfBookCover": item["image_url"],
+                    "title": item["title"],
+                    "authorName": item["author"],
+                    "averageRating": item["rating"],
+                    "genre": item["genre"]
+                }
+            });
+
+            if (JSON.stringify(allBooks) !== JSON.stringify(newData)) {
+                setAllBooks(newData);
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
+
+    if (selectedOption === "highly-rated") {
+        getBooksWithRatingAsOrder();
+    } else if (selectedOption === "most-popular") {
+        getBooksWithPopularityAsOrder();
+    } else if (selectedOption === "search-result") {
+        getBooksBySearching();
+    }
 
     const numberOfBooks = allBooks.length;
     var [bookOptionList, setBookOptionList] = useState<any[]>([]);
@@ -272,13 +347,23 @@ function BookListPart(
         onBookOptionClick
     }: BookListPartProps
 ) {
+
+    var [selectedOption, setSelectedOption] = useState("highly-rated");
+
     return (
         <div
             id = "book-list-part"
         >
-            <TitlePart />
+            <TitlePart 
+                onSelectedOptionChange = {
+                    (selectedOption: string) => {
+                        setSelectedOption(selectedOption);
+                    }
+                }
+            />
 
             <BookOptionListPart 
+                selectedOption = {selectedOption}
                 searchInput = {searchInput}
                 onBookOptionClick = {onBookOptionClick}
             />
@@ -288,6 +373,7 @@ function BookListPart(
 
 export default function LibraryPage(
     {
+        onSearchButtonClick,
         onPageOptionClick,
         onBookOptionClick,
         searchInput
@@ -297,7 +383,10 @@ export default function LibraryPage(
         <div
             id = "library-page"
         >
-            <TopHorizontalBar 
+            <TopHorizontalBar
+                onSearchButtonClick = {
+                    onSearchButtonClick
+                } 
             />
 
             <div

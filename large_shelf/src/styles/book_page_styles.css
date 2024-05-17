@@ -63,6 +63,13 @@
     padding: 1%;
 }
 
+.container-title-in-book-page {
+    font-size: 80%;
+    font-weight: bold;
+    text-align: center;
+    padding: 1%;
+}
+
 #book-author-in-book-page {
     font-size: 80%;
     text-align: center;
@@ -98,4 +105,10 @@
     height: 100%;
     border-color: #7D4230;
     border-style: solid;
+}
+
+.normal-text-detail-in-book-page {
+    font-size: 80%;
+    text-align: center;
+    padding: 1%;
 }

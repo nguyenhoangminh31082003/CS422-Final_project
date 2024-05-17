@@ -7,6 +7,7 @@ import "../styles/create_new_shelf_page_styles.css";
 import backButtonIcon from "../assets/back_button_icon.svg";
 
 interface CreateNewShelfPageProps {
+    onSearchButtonClick: (searchQuery: string) => void;
     onPageOptionClick: (pageID: number) => void;
     userID: string;
 }
@@ -106,11 +107,6 @@ function NewShelfCreationPart(
                             })
                             .catch(error => {
                                 setMessage("The shelf name is invalid");
-                                /*
-                                console.log(error);
-                                console.log(error.response);
-                                */
-                               //console.log(userID);
                             });
                     }
                 }
@@ -129,6 +125,7 @@ function NewShelfCreationPart(
 
 export default function CreateNewShelfPage(
     {
+        onSearchButtonClick,
         onPageOptionClick,
         userID
     }: CreateNewShelfPageProps
@@ -138,7 +135,9 @@ export default function CreateNewShelfPage(
             id = "create-new-shelf-page"
         >
             <TopHorizontalBar 
-        
+                onSearchButtonClick = {
+                    onSearchButtonClick
+                }
             />
             <div
                 id = "content-part"
