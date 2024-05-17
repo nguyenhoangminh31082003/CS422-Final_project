@@ -53,9 +53,6 @@ function App() {
         })
         .catch((error) => {
             console.log(error);
-            if (error.response) {
-                console.log(error.response);
-            }
         });  
     
 
@@ -194,6 +191,8 @@ function App() {
                 onSearchButtonClick={
                     onSearchButtonClick
                 }
+
+                userID = {userID}
             />
         );
     }

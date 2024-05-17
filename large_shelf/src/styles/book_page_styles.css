@@ -110,7 +110,6 @@
 .normal-text-detail-in-book-page {
     font-size: 80%;
     text-align: center;
-    padding: 1%;
 }
 
 #no-book-selected-message-in-book-page {
@@ -123,4 +122,35 @@
     justify-content: center;
     font-size: larger;
     font-weight: bold;
+}
+
+#displayed-page-index-in-book-page {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.page-navigation-button-in-book-page {
+    font-weight: bold;
+    border-radius: 4px;
+    width: 24%;
+    height: 1%;
+    margin: 4%;
+    color: #7D4230;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #7D4230;
+    background-color: #FFE9C5;
+    transition: background-color 1s, color 1s;
+}
+
+.page-navigation-button-in-book-page:hover {
+    background-color: #E29675;
+    color: #FFE9C5;
+}
+
+.page-navigation-button-in-book-page:disabled {
+    background-color: #7D4230;
+    color: #FFE9C5;
 }

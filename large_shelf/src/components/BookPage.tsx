@@ -10,19 +10,28 @@ interface BookPageProps {
     onSearchButtonClick: (searchQuery: string) => void;
     onPageOptionClick: (pageID: number) => void;
     bookID: string | null | undefined;
+    userID: string;
 }
 
 interface PropertiesPartProps {
     bookID: string | null | undefined;
+    currentPage: number;
 }
 
 interface InteractionPartProps {
     bookID: string | null | undefined;
+    userID: string;
+}
+
+interface PagePairPartProps {
+    bookID: string | null | undefined;
+    currentPage: number;
 }
 
 function PropertiesPart(
     {
-        bookID
+        bookID,
+        currentPage
     }: PropertiesPartProps
 ) {
     var [bookInformation, setBookInformation] = useState<any>({});
@@ -38,6 +47,8 @@ function PropertiesPart(
         .catch((error) => {
             console.log(error);
         });
+
+    
     
     return (
         <div
@@ -79,14 +90,40 @@ function PropertiesPart(
                     className = "normal-text-detail-in-book-page"
                 >
                     Current page
+                    <div
+                        id = "displayed-page-index-in-book-page"
+                    >
+                        {`${currentPage + 1}${((currentPage + 1 < bookInformation["total_pages"]) ? `, ${currentPage + 2}` : "")}`}
+                        <button
+                            className = "page-navigation-button-in-book-page"
+                            disabled = {currentPage === 0}
+                        >
+                            {`<`}
+                        </button>
+                        <button
+                            className = "page-navigation-button-in-book-page"
+                            disabled = {currentPage === bookInformation["total_pages"] - 2}
+                        >
+                            {`>`}
+                        </button>
+                    </div>
                 </p>
+                
             </div>
             
         </div>
     );
 }
 
-function PagePart() {
+function PagePairPart(
+    {
+        bookID,
+        currentPage
+    }: PagePairPartProps
+) {
+
+    
+
     return (
         <div
             id = "page-part-in-book-page"
@@ -115,7 +152,8 @@ function PagePart() {
 
 function InteractionPart(
     {
-        bookID
+        bookID,
+        userID
     }: InteractionPartProps
 ) {
     if (bookID === null || bookID === undefined) {
@@ -129,14 +167,31 @@ function InteractionPart(
         );
     }
 
+    var [currentPage, setCurrentPage] = useState<number>(1);
+
+    axios.get(`http://127.0.0.1:8000/readingprocess/${userID}/${bookID}/`)
+        .then((response) => {
+            const newCurrentPage = response.data["current_page"];
+
+            if (newCurrentPage !== currentPage) {
+                setCurrentPage(newCurrentPage);
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
     return (
         <>
-            <PagePart
+            <PagePairPart
+                bookID={bookID}
+                currentPage={currentPage}
                 />
 
-                <PropertiesPart
-                    bookID = {bookID}
-                />
+            <PropertiesPart
+                bookID = {bookID}
+                currentPage = {currentPage}
+            />
         </>
     );
 }
@@ -145,7 +200,8 @@ export default function BookPage(
     {
         onSearchButtonClick,
         onPageOptionClick,
-        bookID
+        bookID,
+        userID
     }: BookPageProps
 ) {
     return (
@@ -170,6 +226,7 @@ export default function BookPage(
 
                 <InteractionPart
                     bookID = {bookID}
+                    userID = {userID}
                 />
 
             </div>
