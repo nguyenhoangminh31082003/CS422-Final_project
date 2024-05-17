@@ -203,6 +203,15 @@ function App() {
                             });
                         }
                     }
+
+                    onReadButtonClick = {
+                        (bookID: string) => {
+                            setPageID(PAGE_ID["BOOK_PAGE"]);
+                            setOtherData({
+                                bookID: bookID
+                            });
+                        }
+                    }
                 />
             );
     } 
@@ -258,6 +267,10 @@ function App() {
             <AddToShelfPage 
                 onPageOptionClick = {
                     onPageOptionClick
+                }
+
+                bookID = {
+                    otherData.bookID
                 }
             />
         );

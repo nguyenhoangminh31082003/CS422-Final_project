@@ -40,6 +40,8 @@
     width: 80%;
     aspect-ratio: 3 / 4;
     object-fit: contain;
+    background-color: #E29675;
+    border-radius: 12px;
 }
 
 #text-column-in-book-description-part {
@@ -78,7 +80,8 @@
 
 #add-to-shelf-button-in-book-information-page {
     width: 60%;
-    height: 8%;
+    height: 6%;
+    margin-bottom: 8%;
     color:#7D4230;
     border-radius: 12px;
     background-color: #FFE9C5;
@@ -94,6 +97,29 @@
 }
 
 #add-to-shelf-button-in-book-information-page:hover {
+    background-color: #E29675;
+    border-color: #E29675;
+    color: #FFE9C5;
+}
+
+#read-button-in-book-information-page {
+    width: 60%;
+    height: 6%;
+    color:#7D4230;
+    border-radius: 12px;
+    background-color: #FFE9C5;
+    border-color: #7D4230;
+    font-family: "Inter", sans-serif;
+    border-style: solid;
+    font-weight: bold;
+    transition: background-color 1s, border-color 1s, color 1s;
+}
+
+#read-button-in-book-information-page:focus {
+    outline: none;
+}
+
+#read-button-in-book-information-page:hover {
     background-color: #E29675;
     border-color: #E29675;
     color: #FFE9C5;

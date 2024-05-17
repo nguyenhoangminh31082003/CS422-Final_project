@@ -1,144 +1,104 @@
 import { Fragment, MouseEvent, useState } from "react";
+import axios from "axios";
 import PAGE_ID from "../PageID";
+import "../styles/add_to_shelf_page_styles.css";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
-import "../styles/change_password_page_styles.css";
 import backButtonIcon from "../assets/back_button_icon.svg";
 
-interface ChangePasswordPageProps {
+interface AddToShelfPageProps {
     onPageOptionClick: (pageID: number) => void;
+    bookID: string;
 }
 
-interface NewPasswordCreationPartProps {
+interface AddToShelfPartProps {
     onPageOptionClick: (pageID: number) => void;
+    bookID: string;
 }
 
-function NewPasswordCreationPart(
+function AddToShelfPart(
     {
+        bookID,
         onPageOptionClick
-    }: NewPasswordCreationPartProps
+    }: AddToShelfPartProps
 ) {
-    const [message, setMessage] = useState<string>("");
-    
+    var [bookInformation, setBookInformation] = useState({
+        "bookCoverImage": "",
+        "bookTitle": "",
+        "authorName": "",
+        "summary": ""
+    });
+
+    axios.get(`http://127.0.0.1:8000/books/${bookID}/`)
+        .then((response) => {
+                const bookData = {
+                    "bookCoverImage": response.data["image_url"],
+                    "bookTitle": response.data["title"],
+                    "authorName": response.data["author"],
+                    "summary": response.data["summary"]
+                };
+            if (JSON.stringify(bookInformation) !== JSON.stringify(bookData)) {
+                setBookInformation(bookData);
+            }
+        })
+        .catch((error) => {
+            
+        });
+
     return (
         <div
-            id = "new-password-creation-part"
-        >
-
-            <button
-                id = "back-button-in-change-password-page"
-                onClick = {
-                    () => {
-                        onPageOptionClick(PAGE_ID.ACCOUNT_PAGE);
-                    }
-                }
-            >
-                    <img
-                        id = "back-button-icon-in-change-password-page"
-                        src = {backButtonIcon}
-                        alt = "Back"
-                    />
-            </button>
-
-            <h1
-                id = "new-password-creation-title"
-            >
-                Please think carefully when changing your password
-            </h1>
-
-            <form
-                id = "new-password-form"
-            >
-                <label
-                    className = "new-password-creation-field-label"
-                >
-                    Please enter your current password
-                </label><br/>
-                <input
-                    id = "old-user-password-input-box"
-                    className = "new-password-creation-field-input-box"
-                    type = "password"
-                />
-
-                <br/>
-
-                <label
-                    className = "new-password-creation-field-label"
-                >
-                    Please enter your new password
-                </label><br/>
-                <input
-                    id = "first-new-user-password-input-box"
-                    className = "new-password-creation-field-input-box"
-                    type = "password"
-                />
-
-                <br/>   
-
-                <label
-                    className = "new-password-creation-field-label"
-                >
-                    Please re-enter your new password
-                </label><br/>
-                <input
-                    id = "second-new-user-password-input-box"
-                    className = "new-password-creation-field-input-box"
-                    type = "password"
-                />
-            </form>
-
-            <button
-                id = "create-new-password-button"
-                onClick = {
-                    (event: MouseEvent<HTMLButtonElement>) => {
-                        const newlyChosenPassword = (document.getElementById("first-new-user-password-input-box") as HTMLInputElement).value;
-                        const reEnteredNewlyChosenPassword = (document.getElementById("second-new-user-password-input-box") as HTMLInputElement).value;
-                        
-                        if (typeof(newlyChosenPassword) !== "string" || typeof(reEnteredNewlyChosenPassword) !== "string") {
-                            setMessage("The requested new password is not valid");
-                            return;
-                        }
-
-                        if (newlyChosenPassword.length <= 0 || reEnteredNewlyChosenPassword.length <= 0) {
-                            setMessage("The requested new password must not be empty");
-                            return;
-                        }
-
-                        if (newlyChosenPassword !== reEnteredNewlyChosenPassword) {
-                            setMessage("The re-entered password does not match the new password");
-                            return;
-                        }
-
-                        /*
-                    
-                            Request server to change password
-
-                        */
-
-                        onPageOptionClick(PAGE_ID.ACCOUNT_PAGE);
-                    }
-                }
-            >
-                Change password
-            </button>
-        
+            id = "add-to-shelf-part"
+        >   
             <div
-                id = "response-message-to-password-change-request"
+                id = "book-information-part-in-add-to-shelf-page"
             >
-                {message}
+                <img
+
+                    id = "book-cover-image-in-add-to-shelf-page"
+
+                    src = {bookInformation["bookCoverImage"]}
+                />
+
+                <h1
+                    id = "book-title-in-book-description-part"
+                >
+                    {bookInformation["bookTitle"]}
+                </h1>
+
+                <h2
+                    id = "author-name-in-book-description-part"
+                >
+                    by {bookInformation["authorName"]} 
+                </h2>
+
+                <p
+                    id = "book-summary-in-book-description-part"
+                >
+                    {bookInformation["summary"]}
+                </p>
+
             </div>
+
+            <div
+                id = "shelf-option-list-in-add-to-shelf-page"
+            >
+                
+            </div>
+
+            
         </div>
     );
 }
 
 export default function AddToShelfPage(
     {
+        bookID,
         onPageOptionClick
-    }: ChangePasswordPageProps
+    }: AddToShelfPageProps
 ) {
     return (
         <div
-            id = "change-password-page"
+            id = "add-to-shelf-page"
         >
             <TopHorizontalBar 
         
@@ -149,16 +109,19 @@ export default function AddToShelfPage(
             >
                 <VerticalPageBar
                     chosenPageID = {
-                        PAGE_ID.ACCOUNT_PAGE
+                        PAGE_ID.LIBRARY_PAGE
                     }
                     onOptionClick = {
                         onPageOptionClick    
                     }
                 />
-                <NewPasswordCreationPart
+
+                <AddToShelfPart
                     onPageOptionClick = {
                         onPageOptionClick
                     }
+
+                    bookID = {bookID}
                 />
             </div>
         </div>

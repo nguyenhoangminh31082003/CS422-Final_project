@@ -80,6 +80,9 @@
     width: 80%;
     aspect-ratio: 5 / 7;
     border-radius: 4%;
+    background-color: #E29675;
+    border-color: #FFE9C5;
+    border-style: solid;
 }   
 
 .detail-cell-in-library-page {

@@ -240,18 +240,16 @@ function ListPart(
     var [allShelves, setAllShelves] = useState([]);
 
     axios.get(`http://localhost:8000/shelf/${userID}/`)
-        .then(response => {
+        .then((response) => {
             if (response.status == 200) {
                 const newData = response.data.map((shelf: any) => {
-                        //console.log(shelf);
-
+                        
                         var books: any[] = [];
 
                         axios.get(`http://localhost:8000/addedbooks/${userID}/${shelf["id"]}/`)
                             .then(response => {
                                 if (response.status == 200) {
                                     books = response.data;
-                                    //console.log(`The number of books in shelf ${shelf["name"]} is ${books.length}`);
                                 }
                             })
                             .catch(error => {

@@ -7,6 +7,7 @@ import "../styles/book_information_page_styles.css";
 import { EditableFiveStarRating } from "./EditableFiveStarRating";
 
 interface BookInformationPageProps {
+    onReadButtonClick: (bookID: string) => void;
     onPageOptionClick: (pageID: number) => void;
     onAddToShelfButtonClick: (bookID: string) => void;
     userID: string;
@@ -14,6 +15,7 @@ interface BookInformationPageProps {
 }
 
 interface BookDescriptionPartProps {
+    onReadButtonClick: (bookID: string) => void;
     onAddToShelfButtonClick: (bookID: string) => void;
     userID: string;
     bookID: string;
@@ -21,6 +23,7 @@ interface BookDescriptionPartProps {
 
 function BookDescriptionPart(
     {
+        onReadButtonClick,
         onAddToShelfButtonClick,
         userID,
         bookID
@@ -124,6 +127,17 @@ function BookDescriptionPart(
                     Add to shelf
                 </button>
 
+                <button
+                    id = "read-button-in-book-information-page"
+                    onClick = {
+                        () => {
+                            onReadButtonClick(bookID);
+                        }
+                    }
+                >
+                    Read
+                </button>
+
             </div>
 
             <div
@@ -153,6 +167,7 @@ function BookDescriptionPart(
 
 export default function BookInformationPage(
     {
+        onReadButtonClick,
         onAddToShelfButtonClick,
         onPageOptionClick,
         userID,
@@ -184,6 +199,9 @@ export default function BookInformationPage(
                     userID = {userID}
                     onAddToShelfButtonClick = {
                         onAddToShelfButtonClick
+                    }
+                    onReadButtonClick = {
+                        onReadButtonClick
                     }
                 />
 

@@ -1,5 +1,5 @@
 import { Fragment, useState, MouseEvent } from "react";
-
+import axios from "axios";
 import PAGE_ID from "../PageID";
 import "../styles/voice_page_styles.css";
 import VerticalPageBar from "./VerticalPageBar";
@@ -7,9 +7,6 @@ import TopHorizontalBar from "./TopHorizontalBar";
 import AddButtonIcon from "../assets/add_button_icon.svg";
 import InfinieScroll from "react-infinite-scroll-component";
 import backButtonIcon from "../assets/back_button_icon.svg";
-import EmmaStoneImage from "../assets/Emma_Stone_Image.png";
-import MattSmithImage from "../assets/Matt_Smith_Image.png";
-import KeanuReevesImage from "../assets/Keanu_Reeves_Image.png";
 import RemoveButtonIcon from "../assets/remove_button_icon.svg";
 
 interface VoicePageProps {
@@ -101,27 +98,6 @@ function AudioFolderOption(
     )
 }
 
-const demoAudioFolderOptionList = [
-    {
-        name: "Emma Stone",
-        audioFileCount: 1,
-        folderID: "1",
-        folderCoverImageLink: EmmaStoneImage
-    },
-    {
-        name: "Matt Smith",
-        audioFileCount: 3,
-        folderID: "2",
-        folderCoverImageLink: MattSmithImage
-    },
-    {
-        name: "Keanu Reeves",
-        audioFileCount: 50,
-        folderID: "3",
-        folderCoverImageLink: KeanuReevesImage
-    }
-]
-
 function VoiceSettingPart() {
     return (
         <div
@@ -180,10 +156,61 @@ function AudioFolderOptionListPart(
         userID
     }: AudioFolderOptionListPartProps
 ) {
-    const numberOfFolders = demoAudioFolderOptionList.length;
+    const [allAudioFolderOptionList, setAllAudioFolderOptionList] = useState<any>([]);
+
+    axios.get(`http://127.0.0.1:8000/audiofolders/${userID}/`)
+        .then(async (response) => {
+            //console.log(response);
+
+            const newData = await Promise.all(response.data.map(async (item: any) => {
+                var record: any = {};
     
-    var [audioFolderOptionList, setAudioFolderOptionList] = useState(demoAudioFolderOptionList);
+                record["name"] = item["name"];
+                record["folderID"] = item["id"];
+                record["folderCoverImageLink"] = item["image_url"];
+                record["audioFileCount"] = 0;
+    
+                try {
+                    const audioFilesResponse = await axios.get(`http://127.0.0.1:8000/audiofiles/${userID}/${item["id"]}/`);
+                    record["audioFileCount"] = audioFilesResponse.data.length;
+                } catch (error) {
+                    console.log(error);
+                }
+    
+                return record;
+            }));
+
+            /*
+            console.log("All audio folder option list:");
+            console.log(JSON.stringify(allAudioFolderOptionList));
+            console.log("New data:");
+            console.log(JSON.stringify(newData));
+            console.log("================");
+            */
+
+            if (JSON.stringify(allAudioFolderOptionList) !== JSON.stringify(newData)) {
+                setAllAudioFolderOptionList(newData);
+            }
+
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
+    /*
+    console.log("???");
+    console.log(allAudioFolderOptionList);
+    console.log("???");
+    */
+
+    const numberOfFolders = allAudioFolderOptionList.length;
+    
+    var [audioFolderOptionList, setAudioFolderOptionList] = useState<any[]>([]);
     var [hasMore, setHasMore] = useState(true);
+
+    if (JSON.stringify(audioFolderOptionList) !== JSON.stringify(allAudioFolderOptionList)) {
+        setAudioFolderOptionList(allAudioFolderOptionList);
+    }
 
     return (
         <div
