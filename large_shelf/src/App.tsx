@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import axios from 'axios';
 import PAGE_ID from './PageID';
 import BookPage from './components/BookPage';
 import HomePage from './components/HomePage';
@@ -41,6 +42,22 @@ function App() {
 
         setPageID(PAGE_ID["LIBRARY_PAGE"]);
     }
+
+    axios.get(`http://127.0.0.1:8000/readingprocess/recentbook/${userID}/`)
+        .then((response) => {
+            if (response.status === 200) {
+                updateOtherData({
+                    "mostRecentBook": response.data["book_id"]
+                });
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+            if (error.response) {
+                console.log(error.response);
+            }
+        });  
+    
 
     if (pageID === PAGE_ID["WELCOME_PAGE"]) {
         return (
@@ -171,7 +188,7 @@ function App() {
                 }
 
                 bookID = {
-                    otherData.bookID
+                    otherData.mostRecentBook
                 }
 
                 onSearchButtonClick={
@@ -256,9 +273,38 @@ function App() {
                     onReadButtonClick = {
                         (bookID: string) => {
                             setPageID(PAGE_ID["BOOK_PAGE"]);
-                            updateOtherData({
-                                bookID: bookID
-                            });
+                            
+                            const responseAfterSettingCurrentPage = (response: any) => {
+                                updateOtherData({
+                                    mostRecentBook: bookID
+                                });
+                            };
+
+                            axios.get(`http://127.0.0.1:8000/readingprocess/${userID}/${bookID}/`)
+                                .then((response) => {
+                                    if (response.status === 200) {
+                                        axios.post(`http://127.0.0.1:8000/readingprocess/`, {
+                                            "user_id": userID,
+                                            "book_id": bookID,
+                                            "current_page": response.data["current_page"]
+                                        })
+                                        .then(responseAfterSettingCurrentPage)
+                                        .catch((error) => {
+                                            console.log(error);
+                                        });
+                                    }
+                                })
+                                .catch((error) => {
+                                    axios.post(`http://127.0.0.1:8000/readingprocess/`, {
+                                            "user_id": userID,
+                                            "book_id": bookID,
+                                            "current_page": 0
+                                        })
+                                        .then(responseAfterSettingCurrentPage)
+                                        .catch((error) => {
+                                            console.log(error);
+                                        });
+                                });
                         }
                     }
                 />

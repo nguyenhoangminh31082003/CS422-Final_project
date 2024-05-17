@@ -189,7 +189,6 @@ function BookOptionListPart(
     function getBooksWithRatingAsOrder() {
         axios.get("http://127.0.0.1:8000/books")
         .then((response) => {
-            console.log(response);
             const newData = response.data.map((item: any) => {
                 return {
                     "bookID": item["id"],

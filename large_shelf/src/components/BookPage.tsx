@@ -9,11 +9,15 @@ import TopHorizontalBar from "./TopHorizontalBar";
 interface BookPageProps {
     onSearchButtonClick: (searchQuery: string) => void;
     onPageOptionClick: (pageID: number) => void;
-    bookID: string;
+    bookID: string | null | undefined;
 }
 
 interface PropertiesPartProps {
-    bookID: string;
+    bookID: string | null | undefined;
+}
+
+interface InteractionPartProps {
+    bookID: string | null | undefined;
 }
 
 function PropertiesPart(
@@ -25,9 +29,6 @@ function PropertiesPart(
 
     axios.get("http://127.0.0.1:8000/books")
         .then((response) => {
-            console.log(response);
-            console.log(bookID);
-
             const bookData = response.data.find((book: any) => book.id === bookID);
 
             if (JSON.stringify(bookData) !== JSON.stringify(bookInformation)) {
@@ -112,6 +113,34 @@ function PagePart() {
     );
 }
 
+function InteractionPart(
+    {
+        bookID
+    }: InteractionPartProps
+) {
+    if (bookID === null || bookID === undefined) {
+        return (
+            <div
+                id = "no-book-selected-message-in-book-page"
+            >
+                You have not selected a book to read yet. <br/>
+                Please choose a book to read
+            </div>
+        );
+    }
+
+    return (
+        <>
+            <PagePart
+                />
+
+                <PropertiesPart
+                    bookID = {bookID}
+                />
+        </>
+    );
+}
+
 export default function BookPage(
     {
         onSearchButtonClick,
@@ -139,10 +168,7 @@ export default function BookPage(
                     }
                 />
 
-                <PagePart
-                />
-
-                <PropertiesPart
+                <InteractionPart
                     bookID = {bookID}
                 />
 

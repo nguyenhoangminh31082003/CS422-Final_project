@@ -286,8 +286,6 @@ function ListPart(
                             };
                         }
 
-                        console.log(books);
-
                         return {
                             "shelfName": shelf["name"],
                             "id": shelf["id"],
@@ -305,9 +303,6 @@ function ListPart(
                 if (JSON.stringify(allShelves) !== JSON.stringify(newData)) {
                     setAllShelves(newData);
                 }
-                
-
-                console.log(allShelves);
             }
         })
         .catch(error => {
@@ -348,7 +343,6 @@ function ListPart(
 
                     next = {
                         () => {
-                            console.log(`The number of shelves is ${shelfOptionList.length} !!!`);
                             if (shelfOptionList.length < numberOfShelves) {
                                 setTimeout(() => {
                                     /*
