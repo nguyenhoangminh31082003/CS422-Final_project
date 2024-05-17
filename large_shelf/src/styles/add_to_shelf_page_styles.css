@@ -34,7 +34,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     box-shadow: inset 0px 0px 10px 0px #000000;
     overflow: auto;
@@ -49,7 +49,6 @@
     background-color: #E29675;
     border-radius: 12px;
     border-width: 1%;
-    margin-top: 60%;
     margin-bottom: 8%;
 }
 
@@ -66,5 +65,33 @@
 }
 
 #book-information-part-in-add-to-shelf-page::-webkit-scrollbar-thumb:hover {
+    background-color: #E29675;
+}
+
+#shelf-option-list-in-add-to-shelf-page {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    box-shadow: inset 0px 0px 10px 0px #000000;
+    overflow: auto;
+    padding: 4%;
+}
+
+#shelf-option-list-in-add-to-shelf-page::-webkit-scrollbar {
+    box-shadow: inset 0px 0px 10px 0px #000000;
+    background-color: #FFE9C5;
+    width: 8px;
+}
+
+#shelf-option-list-in-add-to-shelf-page::-webkit-scrollbar-thumb {
+    background-color: #7D4230;
+    border-radius: 20px;
+    transition: background-color 1s;
+}
+
+#shelf-option-list-in-add-to-shelf-page::-webkit-scrollbar-thumb:hover {
     background-color: #E29675;
 }

@@ -160,7 +160,6 @@ function AudioFolderOptionListPart(
 
     axios.get(`http://127.0.0.1:8000/audiofolders/${userID}/`)
         .then(async (response) => {
-            //console.log(response);
 
             const newData = await Promise.all(response.data.map(async (item: any) => {
                 var record: any = {};
@@ -180,14 +179,6 @@ function AudioFolderOptionListPart(
                 return record;
             }));
 
-            /*
-            console.log("All audio folder option list:");
-            console.log(JSON.stringify(allAudioFolderOptionList));
-            console.log("New data:");
-            console.log(JSON.stringify(newData));
-            console.log("================");
-            */
-
             if (JSON.stringify(allAudioFolderOptionList) !== JSON.stringify(newData)) {
                 setAllAudioFolderOptionList(newData);
             }
@@ -196,12 +187,6 @@ function AudioFolderOptionListPart(
         .catch((error) => {
             console.log(error);
         });
-
-    /*
-    console.log("???");
-    console.log(allAudioFolderOptionList);
-    console.log("???");
-    */
 
     const numberOfFolders = allAudioFolderOptionList.length;
     

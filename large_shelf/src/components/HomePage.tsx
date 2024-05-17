@@ -237,23 +237,23 @@ function ListPart(
         userID
     }: ListPartProps
 ) {
-    var [allShelves, setAllShelves] = useState([]);
+    var [allShelves, setAllShelves] = useState<any>([]);
 
     axios.get(`http://localhost:8000/shelf/${userID}/`)
-        .then((response) => {
+        .then(async (response) => {
             if (response.status == 200) {
-                const newData = response.data.map((shelf: any) => {
+                const newData = await Promise.all(response.data.map(async (shelf: any) => {
                         
-                        var books: any[] = [];
+                    let books: any[] = [];
 
-                        axios.get(`http://localhost:8000/addedbooks/${userID}/${shelf["id"]}/`)
-                            .then(response => {
-                                if (response.status == 200) {
-                                    books = response.data;
-                                }
-                            })
-                            .catch(error => {
-                            });
+                    try {
+                        const bookResponse = await axios.get(`http://localhost:8000/addedbooks/${userID}/${shelf["id"]}/`);
+                        if (bookResponse.status == 200) {
+                            books = bookResponse.data;
+                        }
+                    } catch (error) {
+                        console.log(error);
+                    }
 
                         if (books.length === 0) {
                             return {
@@ -269,6 +269,8 @@ function ListPart(
                             };
                         }
 
+                        console.log(books);
+
                         return {
                             "shelfName": shelf["name"],
                             "id": shelf["id"],
@@ -278,9 +280,10 @@ function ListPart(
                                 "bookName": books[0]["book"]["title"],
                                 "authorName": books[0]["book"]["author"]
                             },
-                            "lastUpdateDate": Date.parse(books[0]["last_update_date"])
+                            "lastUpdateDate": new Date(books[0]["last_update_date"])
                         };
-                    });
+                    })
+                );
 
                 if (JSON.stringify(allShelves) !== JSON.stringify(newData)) {
                     setAllShelves(newData);
