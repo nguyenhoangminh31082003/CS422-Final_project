@@ -69,6 +69,33 @@ function PropertiesPart(
     );
 }
 
+function PagePart() {
+    return (
+        <div
+            id = "page-part-in-book-page"
+        >
+            <div
+                id = "left-page-in-book-page"
+                className = "displayed-page-in-book-page-container"
+            >
+                <div
+                    className = "displayed-page-in-book-page"
+                >
+                </div>
+            </div>
+            <div
+                id = "right-page-in-book-page"
+                className = "displayed-page-in-book-page-container"
+            >
+                <div
+                    className = "displayed-page-in-book-page"
+                >
+                </div>
+            </div>
+        </div>
+    );
+}
+
 export default function BookPage(
     {
         onPageOptionClick,
@@ -92,6 +119,9 @@ export default function BookPage(
                     onOptionClick = {
                         onPageOptionClick    
                     }
+                />
+
+                <PagePart
                 />
 
                 <PropertiesPart

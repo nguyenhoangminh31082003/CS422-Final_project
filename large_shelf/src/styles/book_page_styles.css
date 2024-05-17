@@ -16,8 +16,8 @@
 }
 
 #properties-part-in-book-page {
-    width: calc(100% * 120 / 1500);
-    height: 100%;
+    width: calc(100% * 120 / 1600);
+    height: calc(100% * (900 - 80) / 900);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -76,4 +76,26 @@
     justify-content: flex-start;
     align-items: center;
     box-shadow: inset 0 0 4px #7D4230;
+}
+
+#page-part-in-book-page {
+    box-shadow: inset 0 0 4px #7D4230;
+    width: calc(100% * (1600 - 120) / 1600);
+    height: calc(100% * (900 - 80) / 900);
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.displayed-page-in-book-page-container {
+    width: 50%;
+    height: 100%;
+    padding: 1%;
+}
+
+.displayed-page-in-book-page {
+    width: 100%;
+    height: 100%;
+    border-color: #7D4230;
+    border-style: solid;
 }

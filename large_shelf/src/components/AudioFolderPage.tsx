@@ -13,6 +13,7 @@ interface AudioFolderPageProps {
     onPageOptionClick: (pageID: number) => void;
     onAudioFileOptionClick: (audioFolderID: string) => void;
     folderID: string;
+    userID: string;
 }
 
 interface AudioFileOptionProps {
