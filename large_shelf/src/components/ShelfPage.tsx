@@ -385,7 +385,7 @@ function ShelfBookOptionListPart(
                                                 .catch((error) => {
                                                     console.log(error);
                                                 });
-                                            }
+                                        }
                                     }    
                                 />
                             )
@@ -426,8 +426,6 @@ function ShelfBookListPart(
         .catch((error) => {
             console.log(error);
         });
-
-
 
     return (
         <div

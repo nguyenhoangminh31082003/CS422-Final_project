@@ -249,6 +249,14 @@ function App() {
                         });
                     }
                 }
+
+                onBackButtonClick = {
+                    () => {
+                        setPageID(PAGE_ID["VOICE_PAGE"]);
+                    }
+                }
+
+                userID = {userID}
             />
         );
     }

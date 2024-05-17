@@ -82,6 +82,7 @@
 #title-in-audio-file-list-part {
     font-family: "Inter", sans-serif;
     font-weight: bold;
+    margin-left: 8%;
     color: #7D4230;
 }
 
@@ -98,11 +99,11 @@
     border-style: solid;
     border-width: 0px;
     align-items: center;
-    transition: opacity 1s, margin-right 1s, margin-top 1s;
+    transition: opacity 1s, rotate 1s;
 }
 
 #upload-new-file-button:hover {
-    margin-right: 1%;
+    rotate: 360deg;
     opacity: 0.8;
 }
 
@@ -115,16 +116,87 @@
 
 .audio-file-option-detail-in-audio-folder-page {
     width: 100%;    
+    padding: 1%;
     display: flex;
     color: #7D4230;
+    font-size: larger;
     border-style: solid;
     flex-direction: row;
     border-radius: 12px;
     border-color:#7D4230;
     background-color: #FFE9C5;
-    font-size: larger;
     font-family: "Inter", sans-serif;
     box-shadow: inset 0 0 4px black;
     box-shadow: 4px 4px 12px #888888;
     transition: background-color 1s, color 1s, margin-top 1s, box-shadow 1s;
+}
+
+.audio-file-option-detail-in-audio-folder-page:hover {
+    background-color: #E29675;
+    color:#FFE9C5;
+    box-shadow: 4px 8px 4px #888888;
+    margin-top: 1%;
+}
+
+#back-button-in-audio-folder-page {
+    position: fixed;
+    background-color: #FFE9C5;
+    border-width: 0px;
+    border-style: solid;
+    margin: 0.4%;
+    transition: opacity 1s, margin-left 1s;
+}
+
+#back-button-in-audio-folder-page:hover {
+    opacity: 0.8;
+    margin-left: 0%;
+}
+
+.remove-shelf-button-icon-in-shelf-option-in-audio-folder-page {
+    transition: opacity 1s;
+}
+
+.remove-shelf-button-icon-in-shelf-option-in-audio-folder-page:hover {
+    opacity: 0.8;
+}
+
+.remove-shelf-button-in-shelf-option-in-audio-folder-page {
+    border-width: 0px;
+    background-color: rgba(0, 0, 0, 0);
+    transition: background-color 1s, border-width 1s, border-radius 1s, padding 1s, rotate 1s;
+}
+
+.remove-shelf-button-in-shelf-option-in-audio-folder-page:hover {
+    background-color:#FFE9C5;
+    border-width: 0px;
+    border-radius: 12px;
+    padding: 1%;
+    rotate: 180deg;
+}
+
+.remove-shelf-button-in-shelf-option-in-audio-folder-page-container {
+    margin-left: auto;
+}
+
+.audio-file-information-in-audio-folder-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.audio-file-name-in-audio-folder-page {
+    font-family: "Inter", sans-serif;
+    font-size: 120%;
+    font-weight: bold;
+    color: #7D4230;
+}
+
+.audio-file-length-in-audio-folder-page {
+    font-family: "Inter", sans-serif;
+    font-size: 100%;
+    font-style: italic;
+    color: #7D4230;
 }
