@@ -75,3 +75,26 @@
     flex-direction: column;
     margin: calc(100% * 40 / 900);
 }
+
+#add-to-shelf-button-in-book-information-page {
+    width: 60%;
+    height: 8%;
+    color:#7D4230;
+    border-radius: 12px;
+    background-color: #FFE9C5;
+    border-color: #7D4230;
+    font-family: "Inter", sans-serif;
+    border-style: solid;
+    font-weight: bold;
+    transition: background-color 1s, border-color 1s, color 1s;
+}
+
+#add-to-shelf-button-in-book-information-page:focus {
+    outline: none;
+}
+
+#add-to-shelf-button-in-book-information-page:hover {
+    background-color: #E29675;
+    border-color: #E29675;
+    color: #FFE9C5;
+}

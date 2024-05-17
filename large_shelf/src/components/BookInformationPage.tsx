@@ -4,22 +4,24 @@ import PAGE_ID from "../PageID";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
 import "../styles/book_information_page_styles.css";
-import duneCoverImage from "../assets/dune_cover_image.png";
 import { EditableFiveStarRating } from "./EditableFiveStarRating";
 
 interface BookInformationPageProps {
     onPageOptionClick: (pageID: number) => void;
+    onAddToShelfButtonClick: (bookID: string) => void;
     userID: string;
     bookID: string;
 }
 
 interface BookDescriptionPartProps {
+    onAddToShelfButtonClick: (bookID: string) => void;
     userID: string;
     bookID: string;
 }
 
 function BookDescriptionPart(
     {
+        onAddToShelfButtonClick,
         userID,
         bookID
     }: BookDescriptionPartProps
@@ -111,6 +113,17 @@ function BookDescriptionPart(
                     />
                 </div>
 
+                <button
+                    id = "add-to-shelf-button-in-book-information-page"
+                    onClick = {
+                        () => {
+                            onAddToShelfButtonClick(bookID);
+                        }
+                    }
+                >
+                    Add to shelf
+                </button>
+
             </div>
 
             <div
@@ -140,6 +153,7 @@ function BookDescriptionPart(
 
 export default function BookInformationPage(
     {
+        onAddToShelfButtonClick,
         onPageOptionClick,
         userID,
         bookID
@@ -168,6 +182,9 @@ export default function BookInformationPage(
                 <BookDescriptionPart
                     bookID = {bookID}
                     userID = {userID}
+                    onAddToShelfButtonClick = {
+                        onAddToShelfButtonClick
+                    }
                 />
 
             </div>

@@ -30,6 +30,11 @@ interface AudioFolderListPartProps {
     userID: string;
 }
 
+interface AudioFolderOptionListPartProps {
+    onAudioFolderOptionClick: (audioFolderID: string) => void;
+    userID: string;
+}
+
 function AudioFolderOption(
     {
         folderCoverImageLink,
@@ -169,15 +174,12 @@ function TitlePart() {
     )    
 };
 
-function AudioFolderListPart(
+function AudioFolderOptionListPart(
     {
         onAudioFolderOptionClick,
         userID
-    }: AudioFolderListPartProps
+    }: AudioFolderOptionListPartProps
 ) {
-    /*
-        Request the number of folders of the user from the server
-    */
     const numberOfFolders = demoAudioFolderOptionList.length;
     
     var [audioFolderOptionList, setAudioFolderOptionList] = useState(demoAudioFolderOptionList);
@@ -185,11 +187,6 @@ function AudioFolderListPart(
 
     return (
         <div
-            id = "audio-folder-list-part"
-        >
-            <TitlePart />
-
-            <div
                 id = "audio-folder-option-list"
             >
                 <InfinieScroll
@@ -250,6 +247,27 @@ function AudioFolderListPart(
                     }
                 </InfinieScroll>
             </div>
+    );
+}
+
+function AudioFolderListPart(
+    {
+        onAudioFolderOptionClick,
+        userID
+    }: AudioFolderListPartProps
+) {
+    return (
+        <div
+            id = "audio-folder-list-part"
+        >
+            <TitlePart />
+
+            <AudioFolderOptionListPart 
+                onAudioFolderOptionClick = {
+                    onAudioFolderOptionClick
+                }
+                userID = {userID}
+            />
         </div>
     );
 }

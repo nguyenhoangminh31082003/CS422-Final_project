@@ -7,11 +7,13 @@ import ShelfPage from './components/ShelfPage';
 import LibraryPage from './components/LibraryPage';
 import AccountPage from './components/AccountPage';
 import WelcomePage from './components/WelcomePage';
+import AddToShelfPage from './components/AddToShelfPage';
 import AudioFolderPage from './components/AudioFolderPage';
 import RegistrationPage from './components/RegistrationPage';
+import CreateNewShelfPage from './components/CreateNewShelfPage';
 import ChangePasswordPage from './components/ChangePasswordPage';
 import BookInformationPage from './components/BookInformationPage';
-import CreateNewShelfPage from './components/CreateNewShelfPage';
+
 
 function App() {
     const [pageID, setPageID] = useState(PAGE_ID["WELCOME_PAGE"]);
@@ -192,6 +194,15 @@ function App() {
                     }
 
                     userID = {userID}
+
+                    onAddToShelfButtonClick = {
+                        (bookID: string) => {
+                            setPageID(PAGE_ID["ADD_TO_SHELF_PAGE"]);
+                            setOtherData({
+                                bookID: bookID
+                            });
+                        }
+                    }
                 />
             );
     } 
@@ -238,6 +249,16 @@ function App() {
                 }
 
                 userID = {userID}
+            />
+        );
+    }
+
+    if (pageID === PAGE_ID["ADD_TO_SHELF_PAGE"]) {
+        return (
+            <AddToShelfPage 
+                onPageOptionClick = {
+                    onPageOptionClick
+                }
             />
         );
     }

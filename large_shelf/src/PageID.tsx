@@ -11,6 +11,7 @@ const PAGE_ID = {
     CHANGE_PASSWORD_PAGE: 9,
     AUDIO_FOLDER_PAGE: 10,
     CREATE_NEW_SHELF_PAGE: 11,
+    ADD_TO_SHELF_PAGE: 12,
 };
 
 export default PAGE_ID;

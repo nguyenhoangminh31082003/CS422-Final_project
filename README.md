@@ -8,6 +8,8 @@ cd large_shelf
 
 npm run dev
 
+http://localhost:5173/
+
 # Back end
 
 https://github.com/TranLeQuoc/project
