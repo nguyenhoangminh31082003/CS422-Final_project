@@ -1,5 +1,6 @@
 import { Fragment, MouseEvent, useState } from "react";
 import axios from "axios";
+import StorageServer from "../StorageServer";
 import "../styles/registration_page_styles.css";
 import logo from "../assets/large_shelf_logo.svg";
 import decoration from "../assets/decoration_of_cover_of_books.svg";
@@ -144,16 +145,15 @@ function RegistrationPart(
                             return;
                         }
 
-                        axios.post("http://localhost:8000/reader/register", { 
-                            "email": email, 
-                            "password": password1 
-                        })
-                            .then(response => {
+                        StorageServer.registerNewUser(
+                            email, 
+                            password1,
+                            (response => {
                                 if (response.status == 201) {
                                     onSuccessfullRegistration({});
                                 }
-                            })
-                            .catch(error => {
+                            }),
+                            error => {
                                 console.log(error.response);
                                 if (error.response) {
                                     if (error.response.status == 400) {
@@ -168,7 +168,8 @@ function RegistrationPart(
                                         ]);
                                     }
                                 }
-                            });
+                            }
+                        );
                     }
                 }
             >

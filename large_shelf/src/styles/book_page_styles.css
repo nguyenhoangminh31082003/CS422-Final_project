@@ -147,8 +147,8 @@
 #displayed-page-index-in-book-page {
     display: flex;
     flex-direction: row;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 }
 
 .page-navigation-button-in-book-page {
@@ -171,6 +171,30 @@
 }
 
 .page-navigation-button-in-book-page:disabled {
+    background-color: #7D4230;
+    color: #FFE9C5;
+}
+
+#change-listen-mode-button-in-book-page {
+    font-weight: bold;
+    border-radius: 4px;
+    width: 80%;
+    height: 40%;
+    margin: 4%;
+    color: #7D4230;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #7D4230;
+    background-color: #FFE9C5;
+    transition: background-color 1s, color 1s;
+}
+
+#change-listen-mode-button-in-book-page:hover {
+    background-color: #E29675;
+    color: #FFE9C5;
+}
+
+#change-listen-mode-button-in-book-page:disabled {
     background-color: #7D4230;
     color: #FFE9C5;
 }

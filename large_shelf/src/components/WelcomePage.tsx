@@ -1,6 +1,6 @@
 import { Fragment, MouseEvent, useState } from "react";
-import axios from "axios";
 import "../styles/welcome_page_styles.css";
+import StorageServer from "../StorageServer";
 import logo from "../assets/large_shelf_logo.svg";
 import decoration from "../assets/decoration_of_cover_of_books.svg";
 
@@ -108,16 +108,15 @@ function LoginPart(
                         var email = (document.getElementById("email-input-box") as HTMLInputElement).value;
                         var password = (document.getElementById("password-input-box") as HTMLInputElement).value;
                         
-                        axios.post("http://localhost:8000/reader/login", { 
-                            "email": email,
-                            "password": password 
-                        })
-                            .then(response => {
+                        StorageServer.login(
+                            email, 
+                            password,
+                            (response) => {
                                 if (response.status == 200) {
                                     onSuccessfullLogin(response.data["user_id"].toString());
                                 }
-                            })
-                            .catch(error => {
+                            },
+                            (error) => {
                                 if (error.response) {
                                     if (error.response.status == 404) {
                                         setDisplayedMessage([
@@ -131,8 +130,8 @@ function LoginPart(
                                         ]);
                                     }
                                 }
-                            });
-            
+                            }
+                        );            
                     }
                 }
             >

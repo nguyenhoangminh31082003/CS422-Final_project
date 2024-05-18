@@ -87,6 +87,56 @@ const StorageServer = (function() {
             .catch((error) => {
                 onError(error);
             });
+        },
+
+        "login": function(
+            email: string,
+            password: string,
+            onSuccess: (response: any) => void,
+            onError: (error: any) => void = printError
+        ) {
+            axios.post(`${host}/reader/login`, {
+                email: email,
+                password: password
+            })
+            .then((response) => {
+                onSuccess(response);
+            })
+            .catch((error) => {
+                onError(error);
+            });
+        },
+
+        "getUserInformation": function(
+            userID: string,
+            onSuccess: (response: any) => void,
+            onError: (error: any) => void = printError
+        ) {
+            axios.get(`${host}/readerinfo/id/${userID}/`)
+            .then((response) => {
+                onSuccess(response);
+            })
+            .catch((error) => {
+                onError(error);
+            });
+        },
+
+        "registerNewUser": function(
+            email: string,
+            password: string,
+            onSuccess: (response: any) => void,
+            onError: (error: any) => void = printError
+        ) {
+            axios.post(`${host}/reader/register`, {
+                email: email,
+                password: password
+            })
+            .then((response) => {
+                onSuccess(response);
+            })
+            .catch((error) => {
+                onError(error);
+            });
         }
     }
 })();

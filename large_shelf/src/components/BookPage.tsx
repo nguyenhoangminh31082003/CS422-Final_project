@@ -1,5 +1,4 @@
 import { Fragment, MouseEvent, useState } from "react";
-import axios from "axios";
 import PAGE_ID from "../PageID";
 import "../styles/book_page_styles.css";
 import StorageServer from "../StorageServer";
@@ -19,6 +18,8 @@ interface PropertiesPartProps {
     currentPage: number;
     onBackwardButtonClick: () => void;
     onForwardButtonClick: () => void;
+    listenMode: any;
+    setListenMode: any;
 }
 
 interface InteractionPartProps {
@@ -36,7 +37,9 @@ function PropertiesPart(
         bookID,
         currentPage,
         onBackwardButtonClick,
-        onForwardButtonClick
+        onForwardButtonClick,
+        listenMode,
+        setListenMode
     }: PropertiesPartProps
 ) {
     var [bookInformation, setBookInformation] = useState<any>({});
@@ -114,6 +117,49 @@ function PropertiesPart(
                 
             </div>
             
+            <div
+                className = "container-in-book-page"
+            >
+                <h1
+                    className = "container-title-in-book-page"
+                >
+                    Listen
+                </h1>
+                <p
+                    className = "normal-text-detail-in-book-page"
+                >
+                    {
+                        (listenMode["status"] === "off") ? "Start from your current page" : (
+                            <>
+                                Currently<br/>
+                                on page {listenMode["page"] + 1}
+                            </>
+                        )
+                    }
+                    <br/>
+                    <button
+                        id = "change-listen-mode-button-in-book-page"
+                        onClick = {() => {
+                            if (listenMode["status"] === "off") {
+                                setListenMode({
+                                    "status": "on",
+                                    "page": currentPage
+                                });
+                            } else {
+                                setListenMode({
+                                    "status": "off",
+                                    "page": -1
+                                });
+                            }
+                        }}
+                    >
+                        {
+                            (listenMode["status"] === "off") ? "Star listening" : "Stop"
+                        }
+                    </button>
+                </p>
+            </div>
+
         </div>
     );
 }
@@ -198,6 +244,10 @@ function InteractionPart(
     }
 
     var [currentPage, setCurrentPage] = useState<number>(1);
+    var [listenMode, setListenMode] = useState<any>({
+        "status": "off",
+        "page": -1
+    });
 
     StorageServer.getUserReadingProcess(
         userID, 
@@ -242,6 +292,10 @@ function InteractionPart(
                         }
                     );
                 }}
+
+                listenMode = {listenMode}
+
+                setListenMode = {setListenMode}
             />
         </>
     );

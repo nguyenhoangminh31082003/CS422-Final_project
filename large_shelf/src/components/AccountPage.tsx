@@ -2,6 +2,7 @@ import { Fragment, MouseEvent, useState } from "react";
 import axios from "axios";
 import PAGE_ID from "../PageID";
 import "../styles/account_page_styles.css";
+import StorageServer from "../StorageServer";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
 import openedEyeIcon from "../assets/opened_eye_icon.svg";
@@ -345,28 +346,24 @@ function ProfileInformationPart(
         "biography": "This is a default user"
     });
 
-    axios.get(`http://127.0.0.1:8000/readerinfo/id/${userID}/`)
-        .then(
-            response => {
-                const newData = {
-                    "profilePicture": response.data["avatar_url"],
-                    "fullName": `${response.data["first_name"]} ${response.data["last_name"]}`,
-                    "firstName": response.data["first_name"],
-                    "lastName": response.data["last_name"],
-                    "email": response.data["email"],
-                    "phoneNumber": response.data["phone_number"],
-                    "biography": response.data["bio"]
-                };
+    StorageServer.getUserInformation(
+        userID,
+        (response) => {
+            const newData = {
+                "profilePicture": response.data["avatar_url"],
+                "fullName": `${response.data["first_name"]} ${response.data["last_name"]}`,
+                "firstName": response.data["first_name"],
+                "lastName": response.data["last_name"],
+                "email": response.data["email"],
+                "phoneNumber": response.data["phone_number"],
+                "biography": response.data["bio"]
+            };
 
-                if (JSON.stringify(userInformation) !== JSON.stringify(newData)) {
-                    setUserInformation(newData);
-                }
+            if (JSON.stringify(userInformation) !== JSON.stringify(newData)) {
+                setUserInformation(newData);
             }
-        )
-        .catch(
-            error => {
-            }
-        );
+        },
+    );
 
 
     return (
