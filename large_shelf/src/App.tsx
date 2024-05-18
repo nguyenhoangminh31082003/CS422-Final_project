@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import PAGE_ID from './PageID';
+import SpeechServer from './SpeechServer';
 import BookPage from './components/BookPage';
 import HomePage from './components/HomePage';
 import VoicePage from './components/VoicePage';
@@ -55,6 +56,14 @@ function App() {
             console.log(error);
         });  
     
+    if (userID.length > 0) {
+        SpeechServer.convertTextToSpeech(
+            userID, 
+            "4JVOFy4SLQs9my0OLhEw", 
+            "Welcome to the library!", 
+            "welcome.mp3"
+        );
+    }
 
     if (pageID === PAGE_ID["WELCOME_PAGE"]) {
         return (

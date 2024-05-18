@@ -24,6 +24,10 @@ python manage.py runserver
 
 http://127.0.0.1:8000/admin/
 
+# Back end API
+
+http://103.82.194.67:8000/docs#/default
+
 # Authenticate request (log in request)
 
 Request
