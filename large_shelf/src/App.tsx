@@ -57,8 +57,9 @@ function App() {
         });  
     
     if (userID.length > 0) {
+        console.log("Converting text to speech!!!!!!!!!!!!!!!!");
         SpeechServer.convertTextToSpeech(
-            userID, 
+            "dummy", 
             "4JVOFy4SLQs9my0OLhEw", 
             "Welcome to the library!", 
             "welcome.mp3"
