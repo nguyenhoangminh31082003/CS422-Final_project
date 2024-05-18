@@ -2,6 +2,7 @@ import { Fragment, MouseEvent, useState } from "react";
 import axios from "axios";
 import PAGE_ID from "../PageID";
 import "../styles/book_page_styles.css";
+import StorageServer from "../StorageServer";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
 
@@ -40,17 +41,15 @@ function PropertiesPart(
 ) {
     var [bookInformation, setBookInformation] = useState<any>({});
 
-    axios.get("http://127.0.0.1:8000/books")
-        .then((response) => {
+    StorageServer.getBooksOrderedByRating(
+        (response) => { 
             const bookData = response.data.find((book: any) => book.id === bookID);
 
             if (JSON.stringify(bookData) !== JSON.stringify(bookInformation)) {
                 setBookInformation(bookData);
             }
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+        }
+    );
 
     return (
         <div
@@ -129,30 +128,29 @@ function PagePairPart(
     var [leftPageContent, setLeftPageContent] = useState<string>("");
     var [rightPageContent, setRightPageContent] = useState<string>("");
 
-    axios.get(`http://127.0.0.1:8000/books/content/${bookID}/${currentPage}`)
-        .then((response) => {   
+    StorageServer.getBookPage(
+        bookID,
+        currentPage,
+        (response) => {
             const newLeftPageContent = response.data[`content_page_${currentPage}`].replace(/\r\n|\n|\r/g, '<br/>');
 
             if (newLeftPageContent !== leftPageContent) {
                 setLeftPageContent(newLeftPageContent);
             }
+        }
+    );
 
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-
-    axios.get(`http://127.0.0.1:8000/books/content/${bookID}/${currentPage + 1}`)
-        .then((response) => {  
-            const newRightPageContent = response.data[`content_page_${currentPage + 1}`];
+    StorageServer.getBookPage(
+        bookID,
+        currentPage + 1,
+        (response) => {
+            const newRightPageContent = response.data[`content_page_${currentPage + 1}`].replace(/\r\n|\n|\r/g, '<br/>');
 
             if (newRightPageContent !== rightPageContent) {
                 setRightPageContent(newRightPageContent);
             }
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+        }
+    );
 
     return (
         <div
@@ -201,17 +199,17 @@ function InteractionPart(
 
     var [currentPage, setCurrentPage] = useState<number>(1);
 
-    axios.get(`http://127.0.0.1:8000/readingprocess/${userID}/${bookID}/`)
-        .then((response) => {
+    StorageServer.getUserReadingProcess(
+        userID, 
+        bookID,
+        (response) => {
             const newCurrentPage = response.data["current_page"];
 
             if (newCurrentPage !== currentPage) {
                 setCurrentPage(newCurrentPage);
             }
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+        }
+    );
 
     return (
         <>
@@ -224,31 +222,25 @@ function InteractionPart(
                 bookID = {bookID}
                 currentPage = {currentPage}
                 onBackwardButtonClick = {() => {
-                    axios.post(`http://127.0.0.1:8000/readingprocess/`, {
-                        user_id: userID,
-                        book_id: bookID,
-                        current_page: Math.max(0, currentPage - 2)
-                    })
-                    .then((response) => {
-                        setCurrentPage(Math.max(0, currentPage - 2));
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
+                    StorageServer.updateUserReadingProcess(
+                        userID,
+                        bookID,
+                        Math.max(0, currentPage - 2),
+                        (response) => {
+                            setCurrentPage(Math.max(0, currentPage - 2));
+                        }
+                    );
                 }}
 
                 onForwardButtonClick = {() => {
-                    axios.post(`http://127.0.0.1:8000/readingprocess/`, {
-                        user_id: userID,
-                        book_id: bookID,
-                        current_page: currentPage + 2
-                    })
-                    .then((response) => {
-                        setCurrentPage(currentPage + 2);
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
+                    StorageServer.updateUserReadingProcess(
+                        userID,
+                        bookID,
+                        Math.min(currentPage + 2, 100),
+                        (response) => {
+                            setCurrentPage(Math.min(currentPage + 2, 100));
+                        }
+                    );
                 }}
             />
         </>

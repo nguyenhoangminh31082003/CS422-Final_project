@@ -42,6 +42,8 @@ id=ucTq4wzRNSiqJDhpxhUO
 Sue - fantastic for all uses
 A young female british. A pleasant voice fantastic for all uses
 
+https://github.com/trnthienphc2003/Backend-Project-CS422
+
 # Authenticate request (log in request)
 
 Request

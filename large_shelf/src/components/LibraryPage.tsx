@@ -2,6 +2,7 @@ import { Fragment, useState, MouseEvent } from "react";
 import axios from "axios";
 import PAGE_ID from "../PageID";
 import "../styles/library_page_styles.css";
+import StorageServer from "../StorageServer";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
 import InfinieScroll from "react-infinite-scroll-component";
@@ -187,26 +188,24 @@ function BookOptionListPart(
     var [allBooks, setAllBooks] = useState<any[]>([]);
 
     function getBooksWithRatingAsOrder() {
-        axios.get("http://127.0.0.1:8000/books")
-        .then((response) => {
-            const newData = response.data.map((item: any) => {
-                return {
-                    "bookID": item["id"],
-                    "imageLinkOfBookCover": item["image_url"],
-                    "title": item["title"],
-                    "authorName": item["author"],
-                    "averageRating": item["rating"],
-                    "genre": item["genre"]
-                }
-            });
+        StorageServer.getBooksOrderedByRating(
+            (response) => {
+                const newData = response.data.map((item: any) => {
+                    return {
+                        "bookID": item["id"],
+                        "imageLinkOfBookCover": item["image_url"],
+                        "title": item["title"],
+                        "authorName": item["author"],
+                        "averageRating": item["rating"],
+                        "genre": item["genre"]
+                    }
+                });
 
-            if (JSON.stringify(allBooks) !== JSON.stringify(newData)) {
-                setAllBooks(newData);
+                if (JSON.stringify(allBooks) !== JSON.stringify(newData)) {
+                    setAllBooks(newData);
+                }
             }
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+        );
     }
 
     function getBooksWithPopularityAsOrder() {

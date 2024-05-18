@@ -69,13 +69,13 @@ function AudioFileOption(
                     >
                         {audioFileName}
                     </h1>
-
+                    {/*
                     <p
                         className = "audio-file-length-in-audio-folder-page"
                     >
                         {audioFileLength}
                     </p>
-
+                    */}
                     <img
                         className = "audio-file-decorator-in-audio-folder-page"
                         src = {AudioFileDecorator}

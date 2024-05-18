@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import PAGE_ID from './PageID';
-import SpeechServer from './SpeechServer';
+import StorageServer from './StorageServer';
 import BookPage from './components/BookPage';
 import HomePage from './components/HomePage';
 import VoicePage from './components/VoicePage';
@@ -44,28 +44,17 @@ function App() {
         setPageID(PAGE_ID["LIBRARY_PAGE"]);
     }
 
-    axios.get(`http://127.0.0.1:8000/readingprocess/recentbook/${userID}/`)
-        .then((response) => {
+    StorageServer.getMostRecentBook(
+        userID,
+        (response) => {
             if (response.status === 200) {
                 updateOtherData({
                     "mostRecentBook": response.data["book_id"]
                 });
             }
-        })
-        .catch((error) => {
-            console.log(error);
-        });  
+        }
+    );
     
-    if (userID.length > 0) {
-        console.log("Converting text to speech!!!!!!!!!!!!!!!!");
-        SpeechServer.convertTextToSpeech(
-            "dummy", 
-            "4JVOFy4SLQs9my0OLhEw", 
-            "Welcome to the library!", 
-            "welcome.mp3"
-        );
-    }
-
     if (pageID === PAGE_ID["WELCOME_PAGE"]) {
         return (
             <WelcomePage 
@@ -281,39 +270,37 @@ function App() {
 
                     onReadButtonClick = {
                         (bookID: string) => {
-                            setPageID(PAGE_ID["BOOK_PAGE"]);
                             
                             const responseAfterSettingCurrentPage = (response: any) => {
                                 updateOtherData({
                                     mostRecentBook: bookID
                                 });
+                            
+                                setPageID(PAGE_ID["BOOK_PAGE"]);
                             };
 
-                            axios.get(`http://127.0.0.1:8000/readingprocess/${userID}/${bookID}/`)
-                                .then((response) => {
+                            StorageServer.getUserReadingProcess(
+                                userID,
+                                bookID,
+                                (response) => {
                                     if (response.status === 200) {
-                                        axios.post(`http://127.0.0.1:8000/readingprocess/`, {
-                                            "user_id": userID,
-                                            "book_id": bookID,
-                                            "current_page": response.data["current_page"]
-                                        })
-                                        .then(responseAfterSettingCurrentPage)
-                                        .catch((error) => {
-                                            console.log(error);
-                                        });
+                                        StorageServer.updateUserReadingProcess(
+                                            userID,
+                                            bookID,
+                                            response.data["current_page"],
+                                            responseAfterSettingCurrentPage
+                                        );
                                     }
-                                })
-                                .catch((error) => {
-                                    axios.post(`http://127.0.0.1:8000/readingprocess/`, {
-                                            "user_id": userID,
-                                            "book_id": bookID,
-                                            "current_page": 0
-                                        })
-                                        .then(responseAfterSettingCurrentPage)
-                                        .catch((error) => {
-                                            console.log(error);
-                                        });
-                                });
+                                },
+                                (error) => {
+                                    StorageServer.updateUserReadingProcess(
+                                        userID,
+                                        bookID,
+                                        0,
+                                        responseAfterSettingCurrentPage
+                                    );
+                                }
+                            );
                         }
                     }
                 />
