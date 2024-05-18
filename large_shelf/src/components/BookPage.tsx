@@ -1,6 +1,7 @@
 import { Fragment, MouseEvent, useState } from "react";
 import PAGE_ID from "../PageID";
 import "../styles/book_page_styles.css";
+import SpeechServer from "../SpeechServer";
 import StorageServer from "../StorageServer";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
@@ -14,6 +15,7 @@ interface BookPageProps {
 }
 
 interface PropertiesPartProps {
+    userID: string;
     bookID: string | null | undefined;
     currentPage: number;
     onBackwardButtonClick: () => void;
@@ -30,10 +32,12 @@ interface InteractionPartProps {
 interface PagePairPartProps {
     bookID: string | null | undefined;
     currentPage: number;
+    listenMode: any;
 }
 
 function PropertiesPart(
     {
+        userID,
         bookID,
         currentPage,
         onBackwardButtonClick,
@@ -43,6 +47,24 @@ function PropertiesPart(
     }: PropertiesPartProps
 ) {
     var [bookInformation, setBookInformation] = useState<any>({});
+    var [userAudioFileList, setUserAudioFileList] = useState<any>([]);
+
+    StorageServer.getAllAudioFileLinkOfUser(
+        userID,
+        (response) => {
+            const newData = response.data.map((audioFile: any) => {
+                return {
+                    "id": audioFile["id"],
+                    "name": audioFile["name"],
+                    "type": "private"
+                }
+            });
+
+            if (JSON.stringify(newData) !== JSON.stringify(userAudioFileList)) {
+                setUserAudioFileList(newData);
+            }
+        }
+    )
 
     StorageServer.getBooksOrderedByRating(
         (response) => { 
@@ -129,12 +151,52 @@ function PropertiesPart(
                     className = "normal-text-detail-in-book-page"
                 >
                     {
-                        (listenMode["status"] === "off") ? "Start from your current page" : (
-                            <>
-                                Currently<br/>
-                                on page {listenMode["page"] + 1}
-                            </>
-                        )
+                        (() => {
+                            if (listenMode["status"] === "off") {
+                                return "Start from your current page";
+                            }
+                            if (listenMode["status"] === "on") {
+                                return (<>
+                                    Currently<br/>
+                                    on page {listenMode["page"] + 1}
+                                </>);
+                            }
+                            if (listenMode["status"] === "ready") {
+                                return (
+                                    <>
+                                        <form>
+                                            <label htmlFor = "chosen-voice-in-book-page">Choose a voice</label><br/>
+                                            <select 
+                                                name = "chosen-voice-in-book-page"
+                                                id = "voice-selection-in-book-page"
+                                            >
+                                                {
+                                                    (() => {
+                                                        let voiceList = SpeechServer.getFixedPublicVoiceList()
+                                                            .map((voice: any) => {
+                                                                voice["type"] = "public";
+                                                                return voice;
+                                                            })
+                                                            .concat(userAudioFileList);
+
+                                                        return voiceList.map((voice: any) => {
+                                                            return (
+                                                                <option
+                                                                    value = {`${voice["type"]}-${voice["id"]}`}
+                                                                >
+                                                                    {voice["name"]}
+                                                                </option>
+                                                            );
+                                                        });
+                                                    })()
+                                                }
+                                            </select>
+                                        </form>
+                                    </>
+                                );
+                            }
+                            return "";
+                        })()
                     }
                     <br/>
                     <button
@@ -142,10 +204,27 @@ function PropertiesPart(
                         onClick = {() => {
                             if (listenMode["status"] === "off") {
                                 setListenMode({
-                                    "status": "on",
+                                    "status": "ready",
                                     "page": currentPage
                                 });
-                            } else {
+                            } else if (listenMode["status"] === "ready") {
+                                setListenMode({
+                                    "status": "on",
+                                    "page": currentPage,
+                                    "client-status": "download-result-audio-file",
+                                    "voice": (
+                                        function() {
+                                            let voiceSelection = document.getElementById("voice-selection-in-book-page") as HTMLSelectElement;
+                                            let selectedVoice = voiceSelection.value.split("-");
+                                            
+                                            return {
+                                                "type": selectedVoice[0],
+                                                "id": selectedVoice[1]
+                                            };
+                                        }
+                                    )()
+                                }); 
+                            } else if (listenMode["status"] === "on") {
                                 setListenMode({
                                     "status": "off",
                                     "page": -1
@@ -154,7 +233,17 @@ function PropertiesPart(
                         }}
                     >
                         {
-                            (listenMode["status"] === "off") ? "Star listening" : "Stop"
+                            (() => {
+                                if (listenMode["status"] === "off") {
+                                    return "Listen";
+                                }
+                                if (listenMode["status"] === "on") {
+                                    return "Stop";
+                                }
+                                if (listenMode["status"] === "ready") {
+                                    return "Start";
+                                }
+                            })()
                         }
                     </button>
                 </p>
@@ -166,6 +255,7 @@ function PropertiesPart(
 
 function PagePairPart(
     {
+        listenMode,
         bookID,
         currentPage
     }: PagePairPartProps
@@ -173,6 +263,28 @@ function PagePairPart(
 
     var [leftPageContent, setLeftPageContent] = useState<string>("");
     var [rightPageContent, setRightPageContent] = useState<string>("");
+
+    if (listenMode["status"] === "on") {
+        if (listenMode["client-status"] === "download-result-audio-file") {
+            let content = "";
+            if (currentPage === listenMode["page"]) {
+                content = leftPageContent;
+            } else {
+                content = rightPageContent;
+            }
+            content = content.replaceAll("<br/>", "");
+
+            if (content != "") {
+                //console.log(content);
+                SpeechServer.convertTextToSpeech(
+                    "dummy",
+                    listenMode["voice"]["id"],
+                    content,
+                    "../cache/audio.mp3"
+                );
+            }
+        }
+    }
 
     StorageServer.getBookPage(
         bookID,
@@ -197,6 +309,8 @@ function PagePairPart(
             }
         }
     );
+
+    
 
     return (
         <div
@@ -266,9 +380,11 @@ function InteractionPart(
             <PagePairPart
                 bookID={bookID}
                 currentPage={currentPage}
-                />
+                listenMode={listenMode}
+            />
 
             <PropertiesPart
+                userID = {userID}
                 bookID = {bookID}
                 currentPage = {currentPage}
                 onBackwardButtonClick = {() => {

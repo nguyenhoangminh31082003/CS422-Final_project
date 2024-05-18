@@ -21,7 +21,27 @@ const SpeechServer = (function() {
                 "text": text
             })
             .then((response) => {
-                console.log(response);
+                // Extract the audio data from the response
+                const binaryData = response.data;
+
+                //console.log(binaryData);
+
+                const length = binaryData.length;
+                const uint8Array = new Uint8Array(length);
+                for (let i = 0; i < length; i++) {
+                    uint8Array[i] = binaryData.charCodeAt(i);
+                }
+
+                // Write the Uint8Array to a file
+                const blob = new Blob([uint8Array]);
+                const url = URL.createObjectURL(blob);
+
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = outputFileName;
+                link.click();
+
+                URL.revokeObjectURL(url);
             })
             .catch((error) => {
                 console.log("Error in convertTextToSpeech");
@@ -30,7 +50,22 @@ const SpeechServer = (function() {
             });
         },
 
-
+        "getFixedPublicVoiceList": function() {
+            return [
+                {
+                    "id": "4JVOFy4SLQs9my0OLhEw",
+                    "name": "Luca"
+                },
+                {
+                    "id": "j9jfwdrw7BRfcR43Qohk",
+                    "name": "Frederick Surrey"
+                },
+                {
+                    "id": "ucTq4wzRNSiqJDhpxhUO",
+                    "name": "Sue"
+                }
+            ];
+        }  
     }
 })();
 
