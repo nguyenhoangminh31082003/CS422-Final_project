@@ -30,6 +30,7 @@ interface InteractionPartProps {
 }
 
 interface PagePairPartProps {
+    setListenMode: any;
     bookID: string | null | undefined;
     currentPage: number;
     listenMode: any;
@@ -225,10 +226,16 @@ function PropertiesPart(
                                     )()
                                 }); 
                             } else if (listenMode["status"] === "on") {
-                                setListenMode({
-                                    "status": "off",
-                                    "page": -1
-                                });
+                                const newListenMode =
+                                    {
+                                        ...listenMode
+                                    };
+                                
+                                newListenMode["audio"].pause();
+                                newListenMode["audio"].currentTime = 0;
+                                newListenMode["status"] = "off";
+
+                                setListenMode(newListenMode);
                             }
                         }}
                     >
@@ -255,9 +262,10 @@ function PropertiesPart(
 
 function PagePairPart(
     {
+        setListenMode,
+        currentPage,
         listenMode,
         bookID,
-        currentPage
     }: PagePairPartProps
 ) {
 
@@ -269,19 +277,52 @@ function PagePairPart(
             let content = "";
             if (currentPage === listenMode["page"]) {
                 content = leftPageContent;
-            } else {
+            } else if (currentPage + 1 === listenMode["page"]) {
                 content = rightPageContent;
             }
             content = content.replaceAll("<br/>", "");
 
             if (content != "") {
-                //console.log(content);
                 SpeechServer.convertTextToSpeech(
                     "dummy",
                     listenMode["voice"]["id"],
-                    content,
-                    "../cache/audio.mp3"
-                );
+                    content
+                )
+                .then((url) => {
+                    console.log(url);
+
+                    let newListenMode = 
+                        {
+                            ...listenMode
+                        };
+
+                    newListenMode["client-status"] = "play-audio-file";
+                    newListenMode["audio-url"] = url;
+                    newListenMode["audio"] = new Audio(url);
+
+                    newListenMode["audio"].addEventListener("ended", () => {
+                        let anotherListenMode = 
+                            {
+                                ...listenMode
+                            };
+
+                        if (anotherListenMode["page"] === currentPage) {
+                            anotherListenMode["client-status"] = "download-result-audio-file"
+                            anotherListenMode["page"] = currentPage + 1;
+                        } else {
+                            anotherListenMode["status"] = "off";
+                        }
+
+                        setListenMode(anotherListenMode);
+                    });
+
+                    newListenMode["audio"].play();
+
+                    setListenMode(newListenMode);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
             }
         }
     }
@@ -379,8 +420,9 @@ function InteractionPart(
         <>
             <PagePairPart
                 bookID={bookID}
-                currentPage={currentPage}
                 listenMode={listenMode}
+                currentPage={currentPage}
+                setListenMode={setListenMode}
             />
 
             <PropertiesPart
