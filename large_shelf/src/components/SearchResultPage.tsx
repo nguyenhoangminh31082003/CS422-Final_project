@@ -29,6 +29,7 @@ interface BookListPartProps {
 }
 
 interface TitlePartProps {
+    searchInput?: string | null;
     onSelectedOptionChange: (selectedOption: string) => void;
 }
 
@@ -138,6 +139,7 @@ function BookOption(
 
 function TitlePart(
     {
+        searchInput,
         onSelectedOptionChange
     }: TitlePartProps
 ) {
@@ -145,6 +147,7 @@ function TitlePart(
         <div 
             id = "title-bar-in-search-result-page"
         >
+            {/*
             <form
                 id = "order-option-selection-in-search-result-page"
             >
@@ -156,7 +159,6 @@ function TitlePart(
                         }
                     }
                 >Sort by&nbsp;</label>
-
                 <select 
                     name = "orders" 
                     id = "order-option-in-search-result-page"
@@ -170,6 +172,17 @@ function TitlePart(
                 </select>
 
             </form>
+            */}
+            <p
+                style = {
+                    {
+                        fontSize: "large",
+                        color: "#7D4230" 
+                    }
+                }
+            >
+            Search result of "<div style = {{"whiteSpace": "nowrap", "display": "inline", "fontWeight": "bold", "fontStyle": "italic"}}>{searchInput}</div>"
+            </p>
             
         </div>
     );
@@ -323,6 +336,8 @@ function BookListPart(
                         setSelectedOption(selectedOption);
                     }
                 }
+
+                searchInput = {searchInput}
             />
 
             <BookOptionListPart 
