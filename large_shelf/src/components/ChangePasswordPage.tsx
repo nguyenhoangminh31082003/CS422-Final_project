@@ -115,7 +115,7 @@ function NewPasswordCreationPart(
                             return;
                         }
 
-                        axios.post(`http://127.0.0.1:8000/reader/change-password/`, {
+                        axios.post(`https://mybackend-project-cs422-version6.onrender.com/reader/change-password/`, {
                             "user_id": userID,
                             "old_password": oldPassword,
                             "new_password": newlyChosenPassword

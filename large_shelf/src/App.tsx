@@ -343,7 +343,6 @@ function App() {
 
                 onAudioFileOptionClick = {
                     (fileID: string) => {
-                        setPageID(PAGE_ID["BOOK_PAGE"]);
                         updateOtherData({
                             fileID: fileID
                         });

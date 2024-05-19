@@ -285,14 +285,14 @@ function PagePairPart(
     
             if (content !== "") {
               SpeechServer.convertTextToSpeech("dummy", listenMode["voice"]["id"], content)
-                .then((outputFile) => {
+                .then((url) => {
                   let newListenMode = {
                     ...listenMode,
                   };
     
                   newListenMode["client-status"] = "play-audio-file";
-                  audioFile.current = outputFile;
-    
+                  audioFile.current = new Audio(url);
+
                   audioFile.current.addEventListener("ended", () => {
                     if (listenMode["status"] === "off") {
                       return;

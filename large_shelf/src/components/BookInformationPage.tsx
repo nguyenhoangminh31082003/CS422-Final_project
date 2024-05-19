@@ -37,7 +37,7 @@ function BookDescriptionPart(
         "summary": ""
     });
 
-    axios.get(`http://127.0.0.1:8000/books/${bookID}/`)
+    axios.get(`https://mybackend-project-cs422-version6.onrender.com/books/${bookID}/`)
         .then((response) => {
                 const bookData = {
                     "bookCoverImage": response.data["image_url"],
@@ -55,7 +55,7 @@ function BookDescriptionPart(
 
     var [userRating, setUserRating] = useState(0);
 
-    axios.get(`http://127.0.0.1:8000/ratings/${userID}/${bookID}/`)
+    axios.get(`https://mybackend-project-cs422-version6.onrender.com/ratings/${userID}/${bookID}/`)
         .then((response) => {
             const rating = response.data["rating"];
             if (rating !== userRating) {

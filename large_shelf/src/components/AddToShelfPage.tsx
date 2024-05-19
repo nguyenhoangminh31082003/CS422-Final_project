@@ -5,6 +5,7 @@ import "../styles/add_to_shelf_page_styles.css";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
 import backButtonIcon from "../assets/back_button_icon.svg";
+import StorageServer from "../StorageServer";
 
 interface AddToShelfPageProps {
     onSearchButtonClick: (searchText: string) => void;
@@ -39,40 +40,38 @@ function AddToShelfPart(
     var [allChosenShelves, setAllChosenShelves] = useState<any[]>([]);
     var [allShelves, setAllShelves] = useState<any[]>([]);
 
-    axios.get(`http://127.0.0.1:8000/shelf/${userID}/`)
-        .then((response) => {
+    StorageServer.getShelvesOfUser(
+        userID,
+        (response) => {
             if (JSON.stringify(allShelves) !== JSON.stringify(response.data)) {
                 setAllShelves(response.data);
             }
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+        }
+    );
 
-    axios.get(`http://127.0.0.1:8000/books/${bookID}/`)
-        .then((response) => {
-                const bookData = {
-                    "bookCoverImage": response.data["image_url"],
-                    "bookTitle": response.data["title"],
-                    "authorName": response.data["author"],
-                    "summary": response.data["summary"]
-                };
-            if (JSON.stringify(bookInformation) !== JSON.stringify(bookData)) {
-                setBookInformation(bookData);
-            }
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+    StorageServer.getBookInformation(
+        bookID,
+        (response) => {
+            const bookData = {
+                "bookCoverImage": response.data["image_url"],
+                "bookTitle": response.data["title"],
+                "authorName": response.data["author"],
+                "summary": response.data["summary"]
+            };
+        if (JSON.stringify(bookInformation) !== JSON.stringify(bookData)) {
+            setBookInformation(bookData);
+        }
+    });
 
-    axios.get(`http://127.0.0.1:8000/shelves-containing-book/${userID}/${bookID}/`)
-        .then((response) => {
+    StorageServer.getListOfShelvesContainingGivenBook(
+        userID,
+        bookID,
+        (response) => {
             if (JSON.stringify(response.data) !== JSON.stringify(allChosenShelves)) {
                 setAllChosenShelves(response.data);
             }
-        })
-        .catch((error) => { 
-        });
+        }
+    );
 
     return (
         <div
@@ -151,21 +150,18 @@ function AddToShelfPart(
                                             onChange={
                                                 (event) => {
                                                     if (event.target.checked) {
-                                                        axios.post(`http://127.0.0.1:8000/addedbooks/`, {
-                                                            "shelf_id": shelf["id"],
-                                                            "user_id": userID,
-                                                            "book_id": bookID
-                                                        })
-                                                        .then((response) => {
-                                                            allChosenShelves.push({
-                                                                "id": shelf["id"],
-                                                            });
-                                                        })
-                                                        .catch((error) => {
-                                                            console.log(error);
-                                                        });
+                                                        StorageServer.addBookToShelf(
+                                                            userID,
+                                                            bookID,
+                                                            shelf["id"],
+                                                            (response) => {
+                                                                allChosenShelves.push({
+                                                                    "id": shelf["id"],
+                                                                });
+                                                            }
+                                                        )
                                                     } else {
-                                                        axios.delete(`http://127.0.0.1:8000/addedbook/delete/${shelf["id"]}/${userID}/${bookID}/`)
+                                                        axios.delete(`https://mybackend-project-cs422-version6.onrender.com/addedbook/delete/${shelf["id"]}/${userID}/${bookID}/`)
                                                         .then((response) => {
                                                             setAllChosenShelves(allChosenShelves.filter((chosenShelf) => chosenShelf["id"] !== shelf["id"]));
                                                         })
@@ -198,7 +194,7 @@ function AddToShelfPart(
                                         onChange={
                                             (event) => {
                                                 if (event.target.checked) {
-                                                    axios.post(`http://127.0.0.1:8000/addedbooks/`, {
+                                                    axios.post(`https://mybackend-project-cs422-version6.onrender.com/addedbooks/`, {
                                                         "shelf_id": shelf["id"],
                                                         "user_id": userID,
                                                         "book_id": bookID
@@ -212,7 +208,7 @@ function AddToShelfPart(
                                                         console.log(error);
                                                     });
                                                 } else {
-                                                    axios.delete(`http://127.0.0.1:8000/addedbook/delete/${shelf["id"]}/${userID}/${bookID}/`)
+                                                    axios.delete(`https://mybackend-project-cs422-version6.onrender.com/addedbook/delete/${shelf["id"]}/${userID}/${bookID}/`)
                                                     .then((response) => {
                                                         setAllChosenShelves(allChosenShelves.filter((chosenShelf) => chosenShelf["id"] !== shelf["id"]));
                                                     })

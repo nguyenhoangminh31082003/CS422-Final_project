@@ -260,7 +260,7 @@ function ShelfBookOptionListPart(
 ) {
     var [allBooks, setAllBooks] = useState<any[]>([]);
 
-    axios.get(`http://127.0.0.1:8000/addedbooks/${userID}/${shelfID}/`)
+    axios.get(`https://mybackend-project-cs422-version6.onrender.com/addedbooks/${userID}/${shelfID}/`)
     .then(async (response) => {
         const bookPromises = response.data.map(async (item: any) => {
             let book = {
@@ -275,7 +275,7 @@ function ShelfBookOptionListPart(
             };
 
             try {
-                const processResponse = await axios.get(`http://127.0.0.1:8000/readingprocess/${userID}/${item.book_id}/`);
+                const processResponse = await axios.get(`https://mybackend-project-cs422-version6.onrender.com/readingprocess/${userID}/${item.book_id}/`);
                 book.userProcess = processResponse.data.percentage;
             } catch (error) {
                 console.log(error);

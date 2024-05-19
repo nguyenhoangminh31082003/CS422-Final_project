@@ -1,5 +1,4 @@
 import { Fragment, MouseEvent, useState } from "react";
-import axios from "axios";
 import PAGE_ID from "../PageID";
 import "../styles/account_page_styles.css";
 import StorageServer from "../StorageServer";
@@ -136,20 +135,12 @@ function DetailedProfileInformationPart(
                         requestData["font_size"] = 0;
                         requestData["font_style"] = "?";
 
-                        axios.post(
-                            "http://127.0.0.1:8000/readerinfo/",
-                            requestData
-                        )
-                            .then(
-                                response => {
-                                    alert("Successfully saved your modification");
-                                }
-                            )
-                            .catch(
-                                error => {
-                                    console.log(error);
-                                }
-                            );
+                        StorageServer.updateUserInformation(
+                            requestData,
+                            (response) => {
+                                alert("Successfully saved your modification");
+                            }
+                        );
                     }
                 }
             >

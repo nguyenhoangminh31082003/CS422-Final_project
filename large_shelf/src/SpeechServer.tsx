@@ -14,29 +14,22 @@ const SpeechServer = (function() {
             userID: string,
             voiceID: string,
             text: string
-        ): Promise<any> {
-        
-            let audio = new Audio();
-
-            audio.src = "https://samplelib.com/lib/preview/mp3/sample-3s.mp3";
-
-            return audio;
+        ): Promise<string> {
 
             try {
 
-                const response = await axios.post(`${host}/txt2speech`, {
+                const response = await axios.post(`${host}/txt2speech/url`, {
                     user_id: userID,
                     voice_id: voiceID,
                     text: "This message is used to test"//text
                 });
         
-                const blob = new Blob([response.data], { type: "audio/mpeg" });
-                const url = URL.createObjectURL(blob);
+                console.log(response);
 
-                return new Audio(url);
+                return response.data;
             } catch (error) {
                 console.log(error);
-                return new Audio(TrainSound);
+                return TrainSound;
             }
         },
 

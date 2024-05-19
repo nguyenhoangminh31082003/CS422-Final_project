@@ -127,7 +127,7 @@ function VoiceSettingPart() {
             <h1>
                 Voice setting
             </h1>
-
+            {/*
             <form
                 id = "voice-setting-form-in-voice-page"
             >
@@ -142,7 +142,8 @@ function VoiceSettingPart() {
                     placeholder = "Not set"
                 />
             </form>
-
+            */}
+            You are seeing your audio folders.
         </div>
     );
 }
@@ -186,7 +187,7 @@ function AudioFolderOptionListPart(
 ) {
     const [allAudioFolderOptionList, setAllAudioFolderOptionList] = useState<any>([]);
 
-    axios.get(`http://127.0.0.1:8000/audiofolders/${userID}/`)
+    axios.get(`https://mybackend-project-cs422-version6.onrender.com/audiofolders/${userID}/`)
         .then(async (response) => {
 
             const newData = await Promise.all(response.data.map(async (item: any) => {
@@ -198,7 +199,7 @@ function AudioFolderOptionListPart(
                 record["audioFileCount"] = 0;
     
                 try {
-                    const audioFilesResponse = await axios.get(`http://127.0.0.1:8000/audiofiles/${userID}/${item["id"]}/`);
+                    const audioFilesResponse = await axios.get(`https://mybackend-project-cs422-version6.onrender.com/audiofiles/${userID}/${item["id"]}/`);
                     record["audioFileCount"] = audioFilesResponse.data.length;
                 } catch (error) {
                     console.log(error);

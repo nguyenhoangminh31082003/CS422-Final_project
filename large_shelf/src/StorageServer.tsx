@@ -1,8 +1,9 @@
 import axios from "axios";
 
 const StorageServer = (function() {
-    const host = 'http://127.0.0.1:8000';
-    
+    //const host = 'http://127.0.0.1:8000';
+    const host = "https://mybackend-project-cs422-version6.onrender.com/";
+
     const printError = function(error: any) {
         console.log(error);
     }
@@ -238,7 +239,87 @@ const StorageServer = (function() {
             .catch((error) => {
                 onError(error);
             });
-        }
+        },
+
+        "updateUserInformation": function(
+            newInformation: any,
+            onSuccess: (response: any) => void,
+            onError: (error: any) => void = printError
+        ) {
+            axios.post(
+                `${host}/readerinfo/`,
+                newInformation
+            )
+            .then((response) => {
+                onSuccess(response);
+            })
+            .catch((error) => {
+                onError(error);
+            });
+        },
+
+        "getShelvesOfUser": function(
+            userID: string,
+            onSuccess: (response: any) => void,
+            onError: (error: any) => void = printError
+        ) {
+            axios.get(`${host}/shelf/${userID}/`)
+            .then((response) => {
+                onSuccess(response);
+            })
+            .catch((error) => {
+                onError(error);
+            });
+        },
+
+        "getBookInformation": function(
+            bookID: string,
+            onSuccess: (response: any) => void,
+            onError: (error: any) => void = printError
+        ) {
+            axios.get(`${host}/books/${bookID}/`)
+            .then((response) => {
+                onSuccess(response);
+            })
+            .catch((error) => {
+                onError(error);
+            });
+        },
+
+        "getListOfShelvesContainingGivenBook": function(
+            userID: string,
+            bookID: string,
+            onSuccess: (response: any) => void,
+            onError: (error: any) => void = printError
+        ) {
+            axios.get(`${host}/shelves-containing-book/${userID}/${bookID}/`)
+            .then((response) => {
+                onSuccess(response);
+            })
+            .catch((error) => {
+                onError(error);
+            });
+        },
+
+        "addBookToShelf": function(
+            userID: string,
+            bookID: string,
+            shelfID: string,
+            onSuccess: (response: any) => void,
+            onError: (error: any) => void = printError
+        ) {
+            axios.post(`${host}/addedbooks/`, {
+                "shelf_id": shelfID,
+                "user_id": userID,
+                "book_id": bookID
+            })
+            .then((response) => {
+                onSuccess(response);
+            })
+            .catch((error) => {
+                onError(error);
+            });
+        },
     }
 })();
 

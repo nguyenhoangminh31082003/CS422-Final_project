@@ -209,7 +209,7 @@ function BookOptionListPart(
     }
 
     function getBooksWithPopularityAsOrder() {
-        axios.get("http://127.0.0.1:8000/books/popular/")
+        axios.get("https://mybackend-project-cs422-version6.onrender.com/books/popular/")
         .then((response) => {
             console.log(response);
             const newData = response.data.map((item: any) => {
@@ -233,7 +233,7 @@ function BookOptionListPart(
     }
 
     function getBooksBySearching() {
-        axios.get(`http://127.0.0.1:8000/books/search/?q=${searchInput}`)
+        axios.get(`https://mybackend-project-cs422-version6.onrender.com/books/search/?q=${searchInput}`)
         .then((response) => {
             console.log(response);
             const newData = response.data.map((item: any) => {

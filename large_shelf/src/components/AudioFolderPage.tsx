@@ -116,7 +116,7 @@ function VoiceSettingPart() {
             <h1>
                 Voice setting
             </h1>
-
+            {/*
             <form
                 id = "voice-setting-form-in-voice-page"
             >
@@ -131,7 +131,8 @@ function VoiceSettingPart() {
                     placeholder = "Not set"
                 />
             </form>
-
+            */}
+            You are seeing audio files in the folder
         </div>
     );
 }
@@ -194,7 +195,7 @@ function AudioFileOptionListPart(
 ) {
     var [allAudioFiles, setAllAudioFiles] = useState<any[]>([]);
 
-    axios.get(`http://127.0.0.1:8000/audiofiles/${userID}/${folderID}/`)
+    axios.get(`https://mybackend-project-cs422-version6.onrender.com/audiofiles/${userID}/${folderID}/`)
     .then((response) => {
         const newAudioFiles = response.data.map((item: any) => {
             let audioFile = {
