@@ -378,7 +378,7 @@ const StorageServer = (function() {
             onSuccess: (response: any) => void,
             onError: (error: any) => void = printError
         ) {
-            axios.get(`${host}/books/search/${searchKey}/`)
+            axios.get(`${host}/books/search/?q=${searchKey}/`)
             .then((response) => {
                 onSuccess(response);
             })

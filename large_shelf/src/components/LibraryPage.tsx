@@ -11,7 +11,6 @@ interface LibraryPageProps {
     onSearchButtonClick: (searchQuery: string) => void;
     onPageOptionClick: (pageID: number) => void;
     onBookOptionClick: (bookID: string) => void;
-    searchInput?: string | null;
 }
 
 interface BookOptionProps {
@@ -24,7 +23,6 @@ interface BookOptionProps {
 }
 
 interface BookListPartProps {
-    searchInput?: string | null;
     onBookOptionClick: (shelfID: string) => void;
 }
 
@@ -33,7 +31,6 @@ interface TitlePartProps {
 }
 
 interface BookOptionListPartProps {
-    searchInput?: string | null;
     selectedOption: string;
     onBookOptionClick: (bookID: string) => void;
 }
@@ -179,7 +176,6 @@ function TitlePart(
 function BookOptionListPart(
     {
         selectedOption,
-        searchInput,
         onBookOptionClick
     }: BookOptionListPartProps
 ) {
@@ -228,34 +224,10 @@ function BookOptionListPart(
         );
     }
 
-    function getBooksBySearching() {
-        StorageServer.searchBooks(
-            searchInput,
-            (response) => {
-                console.log(response);
-                const newData = response.data.map((item: any) => {
-                    return {
-                        "bookID": item["id"],
-                        "imageLinkOfBookCover": item["image_url"],
-                        "title": item["title"],
-                        "authorName": item["author"],
-                        "averageRating": item["rating"],
-                        "genre": item["genre"]
-                    }
-                });
-
-                if (JSON.stringify(allBooks) !== JSON.stringify(newData)) {
-                    setAllBooks(newData);
-            }
-        });
-    }
-
     if (selectedOption === "highly-rated") {
         getBooksWithRatingAsOrder();
     } else if (selectedOption === "most-popular") {
         getBooksWithPopularityAsOrder();
-    } else if (selectedOption === "search-result") {
-        getBooksBySearching();
     }
 
     const numberOfBooks = allBooks.length;
@@ -264,6 +236,25 @@ function BookOptionListPart(
 
     if (JSON.stringify(bookOptionList) !== JSON.stringify(allBooks)) {
         setBookOptionList(allBooks);
+    }
+
+    if (bookOptionList.length === 0) {
+        return (
+            <div
+                id = "book-option-list"
+            >
+                <p
+                    style = {
+                        {
+                            textAlign: "center",
+                            color: "#7D4230"
+                        }
+                    }
+                >
+                    There is no book
+                </p>
+            </div>
+        );
     }
 
     return (
@@ -335,7 +326,6 @@ function BookOptionListPart(
 
 function BookListPart(
     {
-        searchInput,
         onBookOptionClick
     }: BookListPartProps
 ) {
@@ -356,7 +346,6 @@ function BookListPart(
 
             <BookOptionListPart 
                 selectedOption = {selectedOption}
-                searchInput = {searchInput}
                 onBookOptionClick = {onBookOptionClick}
             />
         </div>
@@ -367,8 +356,7 @@ export default function LibraryPage(
     {
         onSearchButtonClick,
         onPageOptionClick,
-        onBookOptionClick,
-        searchInput
+        onBookOptionClick
     }: LibraryPageProps
 ) {
     return (
@@ -386,14 +374,13 @@ export default function LibraryPage(
             >
                 <VerticalPageBar
                     chosenPageID = {
-                        PAGE_ID.LIBRARY_PAGE
+                        PAGE_ID["LIBRARY_PAGE"]
                     }
                     onOptionClick = {
                         onPageOptionClick    
                     }
                 />
                 <BookListPart
-                    searchInput = {searchInput}
 
                     onBookOptionClick = {
                         onBookOptionClick

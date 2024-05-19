@@ -24,26 +24,27 @@
 }
 
 #search-bar {
-    width: calc(100% * 580 / 1600);
-    height: calc(100% * 50 / 80);
+    display: flex;
     margin-left: auto;
     margin-right: 1%;
     color: #FFE9C5;
-    border-radius: 8px;
-    border-color: #FFE9C5;
     border-width: 4px;
-    background-color: #E29675;
+    border-radius: 8px;
     border-style: solid;
-    display: flex;
     flex-direction: row;
-    justify-content: flex-start;
     align-items: center;
+    border-color: #FFE9C5;
+    background-color: #E29675;
+    justify-content: flex-start;
+    height: calc(100% * 50 / 80);
+    width: calc(100% * 580 / 1600);
 }
 
 #search-bar-input {
     background-color: #E29675;
     border-width: 0px;
     color: #FFE9C5;
+    width: 100%;
 }
 
 #search-bar-input::placeholder {

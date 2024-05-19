@@ -1,4 +1,4 @@
-#library-page {
+#search-result-page {
     width: 100%;
     height: 100vh;
 }
@@ -20,7 +20,7 @@
     height: calc(100% * (900 - 80) / 900);
 }
 
-#title-bar-in-library-page {
+#title-bar-in-search-result-page {
     width: 100%;
     height: 8%;
     color:#7D4230;
@@ -48,14 +48,14 @@
     background-color: #E29675;
 }
 
-.book-option-in-library-page {
+.book-option-in-search-result-page {
     width: 100%;
     padding: 1%;
     background-color:#FFE9C5;
     border-width: 0px;
 }
 
-.book-option-detail-in-library-page {
+.book-option-detail-in-search-result-page {
     color: black;
     border-style: solid;
     width: 100%;    
@@ -69,14 +69,14 @@
     box-shadow: inset 0 0 4px black;
 }
 
-.book-option-detail-in-library-page:hover {
+.book-option-detail-in-search-result-page:hover {
     background-color: #E29675;
     color:#FFE9C5;
     box-shadow: 4px 8px 4px #888888;
     margin-top: 1%;
 }
 
-.cover-image-of-book-in-library-page {
+.cover-image-of-book-in-search-result-page {
     width: 80%;
     aspect-ratio: 5 / 7;
     border-radius: 4%;
@@ -85,25 +85,25 @@
     border-style: solid;
 }   
 
-.detail-cell-in-library-page {
+.detail-cell-in-search-result-page {
     padding: 1%;
     width: 12%;
     align-items: center;
 }
 
-.title-of-book-in-library-page {
+.title-of-book-in-search-result-page {
     font-size: 120%;
     font-weight: bold;
     font-family: "Inter", sans-serif;
 }
 
-.detail-of-book-in-library-page {
+.detail-of-book-in-search-result-page {
     font-size: 120%;
     font-style: italic;
     font-family: "Inter", sans-serif;
 }
 
-#order-option-in-library-page {
+#order-option-in-search-result-page {
     background-color: rgba(0, 0, 0, 0);
     border-radius: 4px;
     border-width: 0px;
@@ -114,6 +114,6 @@
     transition: border-width 0.5s;
 }
 
-#order-option-in-library-page:hover {
+#order-option-in-search-result-page:hover {
     border-width: 1px;
 }

@@ -1,13 +1,13 @@
 import { Fragment, useState, MouseEvent } from "react";
 import PAGE_ID from "../PageID";
-import "../styles/library_page_styles.css";
 import StorageServer from "../StorageServer";
 import VerticalPageBar from "./VerticalPageBar";
+import "../styles/search_result_page_styles.css";
 import TopHorizontalBar from "./TopHorizontalBar";
 import InfinieScroll from "react-infinite-scroll-component";
 import defaultBookCoverImage from "../assets/default_book_cover_image.png";
 
-interface LibraryPageProps {
+interface SearchPageProps {
     onSearchButtonClick: (searchQuery: string) => void;
     onPageOptionClick: (pageID: number) => void;
     onBookOptionClick: (bookID: string) => void;
@@ -15,12 +15,12 @@ interface LibraryPageProps {
 }
 
 interface BookOptionProps {
+    onClick: (event: MouseEvent) => void;
     imageLinkOfBookCover: string;
     averageRating: number;
     authorName: string;
     title: string;
     genre: string;
-    onClick: (event: MouseEvent) => void;
 }
 
 interface BookListPartProps {
@@ -50,17 +50,17 @@ function BookOption(
 ) {
     return (
         <div
-            className = "book-option-in-library-page"
+            className = "book-option-in-search-result-page"
         >
             <button
-                className = "book-option-detail-in-library-page"
+                className = "book-option-detail-in-search-result-page"
                 onClick = {onClick}
             >
                 <div
-                    className = "detail-cell-in-library-page"
+                    className = "detail-cell-in-search-result-page"
                 >
                     <img
-                        className = "cover-image-of-book-in-library-page"
+                        className = "cover-image-of-book-in-search-result-page"
                         src = {imageLinkOfBookCover}
                         alt = "Book cover"
                         onError={
@@ -72,60 +72,60 @@ function BookOption(
                 </div>
 
                 <div
-                    className = "detail-cell-in-library-page"
+                    className = "detail-cell-in-search-result-page"
                 >
                     <h1
-                        className = "title-of-book-in-library-page"
+                        className = "title-of-book-in-search-result-page"
                     >
                         Title
                     </h1>
                     <p
-                        className = "detail-of-book-in-library-page"
+                        className = "detail-of-book-in-search-result-page"
                     >
                         {title}
                     </p>
                 </div>
 
                 <div
-                    className = "detail-cell-in-library-page"
+                    className = "detail-cell-in-search-result-page"
                 >
                     <h1
-                        className = "title-of-book-in-library-page"
+                        className = "title-of-book-in-search-result-page"
                     >
                         Author
                     </h1>
                     <p
-                        className = "detail-of-book-in-library-page"
+                        className = "detail-of-book-in-search-result-page"
                     >
                         {authorName}
                     </p>
                 </div>
 
                 <div
-                    className = "detail-cell-in-library-page"
+                    className = "detail-cell-in-search-result-page"
                 >
                     <h1
-                        className = "title-of-book-in-library-page"
+                        className = "title-of-book-in-search-result-page"
                     >
                         Average rating
                     </h1>
                     <p
-                        className = "detail-of-book-in-library-page"
+                        className = "detail-of-book-in-search-result-page"
                     >
                         {averageRating}/5 stars
                     </p>
                 </div>
 
                 <div
-                    className = "detail-cell-in-library-page"
+                    className = "detail-cell-in-search-result-page"
                 >
                     <h1
-                        className = "title-of-book-in-library-page"
+                        className = "title-of-book-in-search-result-page"
                     >
                         Genre
                     </h1>
                     <p
-                        className = "detail-of-book-in-library-page"
+                        className = "detail-of-book-in-search-result-page"
                     >
                         {genre}
                     </p>
@@ -143,10 +143,10 @@ function TitlePart(
 ) {
     return (
         <div 
-            id = "title-bar-in-library-page"
+            id = "title-bar-in-search-result-page"
         >
             <form
-                id = "order-option-selection-in-library-page"
+                id = "order-option-selection-in-search-result-page"
             >
                 <label 
                     htmlFor = "orders"
@@ -159,15 +159,14 @@ function TitlePart(
 
                 <select 
                     name = "orders" 
-                    id = "order-option-in-library-page"
+                    id = "order-option-in-search-result-page"
                     onChange = {
                         (event) => {
                             onSelectedOptionChange(event.target.value);
                         }
                     }
                 >
-                    <option value = "highly-rated">Highly rated</option>
-                    <option value = "most-popular">Most popular</option>
+                    <option value = "search-result">Search result</option>
                 </select>
 
             </form>
@@ -184,49 +183,6 @@ function BookOptionListPart(
     }: BookOptionListPartProps
 ) {
     var [allBooks, setAllBooks] = useState<any[]>([]);
-
-    function getBooksWithRatingAsOrder() {
-        StorageServer.getBooksOrderedByRating(
-            (response) => {
-                const newData = response.data.map((item: any) => {
-                    return {
-                        "bookID": item["id"],
-                        "imageLinkOfBookCover": item["image_url"],
-                        "title": item["title"],
-                        "authorName": item["author"],
-                        "averageRating": item["rating"],
-                        "genre": item["genre"]
-                    }
-                });
-
-                if (JSON.stringify(allBooks) !== JSON.stringify(newData)) {
-                    setAllBooks(newData);
-                }
-            }
-        );
-    }
-
-    function getBooksWithPopularityAsOrder() {
-        StorageServer.getBooksOrderedByPopularity(
-                (response) => {
-                console.log(response);
-                const newData = response.data.map((item: any) => {
-                    return {
-                        "bookID": item["id"],
-                        "imageLinkOfBookCover": item["image_url"],
-                        "title": item["title"],
-                        "authorName": item["author"],
-                        "averageRating": item["rating"],
-                        "genre": item["genre"]
-                    }
-                });
-
-                if (JSON.stringify(allBooks) !== JSON.stringify(newData)) {
-                    setAllBooks(newData);
-                }
-            }
-        );
-    }
 
     function getBooksBySearching() {
         StorageServer.searchBooks(
@@ -250,11 +206,7 @@ function BookOptionListPart(
         });
     }
 
-    if (selectedOption === "highly-rated") {
-        getBooksWithRatingAsOrder();
-    } else if (selectedOption === "most-popular") {
-        getBooksWithPopularityAsOrder();
-    } else if (selectedOption === "search-result") {
+    if (selectedOption === "search-result") {
         getBooksBySearching();
     }
 
@@ -265,6 +217,25 @@ function BookOptionListPart(
     if (JSON.stringify(bookOptionList) !== JSON.stringify(allBooks)) {
         setBookOptionList(allBooks);
     }
+
+    if (bookOptionList.length === 0) {
+        return (
+            <div
+                id = "book-option-list"
+            >
+                <p
+                    style = {
+                        {
+                            textAlign: "center",
+                            color: "#7D4230"
+                        }
+                    }
+                >
+                    No suitable book is found
+                </p>
+            </div>
+        );
+    };
 
     return (
         <div
@@ -340,7 +311,7 @@ function BookListPart(
     }: BookListPartProps
 ) {
 
-    var [selectedOption, setSelectedOption] = useState("highly-rated");
+    var [selectedOption, setSelectedOption] = useState("search-result");
 
     return (
         <div
@@ -363,17 +334,17 @@ function BookListPart(
     );
 }
 
-export default function LibraryPage(
+export default function SearchPage(
     {
         onSearchButtonClick,
         onPageOptionClick,
         onBookOptionClick,
         searchInput
-    }: LibraryPageProps
+    }: SearchPageProps
 ) {
     return (
         <div
-            id = "library-page"
+            id = "search-result-page"
         >
             <TopHorizontalBar
                 onSearchButtonClick = {
@@ -386,7 +357,7 @@ export default function LibraryPage(
             >
                 <VerticalPageBar
                     chosenPageID = {
-                        PAGE_ID.LIBRARY_PAGE
+                        PAGE_ID["LIBRARY_PAGE"]
                     }
                     onOptionClick = {
                         onPageOptionClick    

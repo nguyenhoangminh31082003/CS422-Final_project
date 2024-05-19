@@ -12,6 +12,7 @@ import AddToShelfPage               from './components/AddToShelfPage';
 import AudioFolderPage              from './components/AudioFolderPage';
 import AddAudioFilePage             from './components/AddAudioFilePage';
 import RegistrationPage             from './components/RegistrationPage';
+import SearchResultPage             from './components/SearchResultPage';
 import CreateNewShelfPage           from './components/CreateNewShelfPage';
 import ChangePasswordPage           from './components/ChangePasswordPage';
 import BookInformationPage          from './components/BookInformationPage';
@@ -42,7 +43,7 @@ function App() {
             searchInput: searchQuery
         });
 
-        setPageID(PAGE_ID["LIBRARY_PAGE"]);
+        setPageID(PAGE_ID["SEARCH_RESULT_PAGE"]);
     }
 
     StorageServer.getMostRecentBook(
@@ -172,14 +173,37 @@ function App() {
                         }
                     }
 
-                    searchInput = {
-                        (otherData.searchInput)
-                    }
-
                     onSearchButtonClick={
                         onSearchButtonClick
                     }
                 />
+        );
+    }
+
+    if (pageID === PAGE_ID["SEARCH_RESULT_PAGE"]) {
+        return (
+            <SearchResultPage
+                onPageOptionClick = {
+                    onPageOptionClick
+                }
+
+                onBookOptionClick = {
+                    (bookID: string) => {
+                        setPageID(PAGE_ID["BOOK_INFORMATION_PAGE"]);
+                        updateOtherData({
+                            bookID: bookID
+                        });
+                    }
+                }
+
+                searchInput = {
+                    otherData.searchInput
+                }
+
+                onSearchButtonClick={
+                    onSearchButtonClick
+                }
+            />
         );
     }
     
