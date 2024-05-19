@@ -1,6 +1,6 @@
 import { Fragment, MouseEvent, useState } from "react";
-import axios from "axios";
 import PAGE_ID from "../PageID";
+import StorageServer from "../StorageServer";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
 import "../styles/book_information_page_styles.css";
@@ -37,34 +37,33 @@ function BookDescriptionPart(
         "summary": ""
     });
 
-    axios.get(`https://mybackend-project-cs422-version6.onrender.com/books/${bookID}/`)
-        .then((response) => {
-                const bookData = {
-                    "bookCoverImage": response.data["image_url"],
-                    "bookTitle": response.data["title"],
-                    "authorName": response.data["author"],
-                    "summary": response.data["summary"]
-                };
+    StorageServer.getBookInformation(
+        bookID,
+        (response) => {
+            const bookData = {
+                "bookCoverImage": response.data["image_url"],
+                "bookTitle": response.data["title"],
+                "authorName": response.data["author"],
+                "summary": response.data["summary"]
+            };
             if (JSON.stringify(bookInformation) !== JSON.stringify(bookData)) {
                 setBookInformation(bookData);
             }
-        })
-        .catch((error) => {
-            
-        });
+        }
+    );
 
     var [userRating, setUserRating] = useState(0);
 
-    axios.get(`https://mybackend-project-cs422-version6.onrender.com/ratings/${userID}/${bookID}/`)
-        .then((response) => {
+    StorageServer.getUserRatingOnABook(
+        userID,
+        bookID,
+        (response) => {
             const rating = response.data["rating"];
             if (rating !== userRating) {
                 setUserRating(rating);
             }
-        })
-        .catch((error) => {
-            
-        });
+        }
+    );
 
     return (
         <div
@@ -101,17 +100,11 @@ function BookDescriptionPart(
 
                                 setUserRating(newStartCount);
 
-                                axios.post("http://127.0.0.1:8000/ratings/", {
-                                    "user_id": Number.parseInt(userID),
-                                    "book_id": Number.parseInt(bookID),
-                                    "rating": newStartCount
-                                })
-                                .then((response) => {
-                                    console.log(response);
-                                })
-                                .catch((error) => {
-                                    console.log(error);
-                                });
+                                StorageServer.updateUserRating(
+                                    Number.parseInt(userID),
+                                    Number.parseInt(bookID),
+                                    newStartCount,
+                                )
                             }
                         }
                     />

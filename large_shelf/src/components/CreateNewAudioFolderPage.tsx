@@ -1,5 +1,4 @@
 import { Fragment, MouseEvent, useState } from "react";
-import axios from "axios";
 import PAGE_ID from "../PageID";
 import StorageServer from "../StorageServer";
 import VerticalPageBar from "./VerticalPageBar";

@@ -1,6 +1,6 @@
 import { Fragment, MouseEvent, useState } from "react";
-import axios from "axios";
 import PAGE_ID from "../PageID";
+import StorageServer from "../StorageServer";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
 import "../styles/change_password_page_styles.css";
@@ -115,15 +115,14 @@ function NewPasswordCreationPart(
                             return;
                         }
 
-                        axios.post(`https://mybackend-project-cs422-version6.onrender.com/reader/change-password/`, {
-                            "user_id": userID,
-                            "old_password": oldPassword,
-                            "new_password": newlyChosenPassword
-                        })
-                            .then((response) => {
+                        StorageServer.changePassword(
+                            userID,
+                            oldPassword,
+                            newlyChosenPassword,
+                            (response) => {
                                 onPageOptionClick(PAGE_ID.ACCOUNT_PAGE);
-                            })
-                            .catch((error) => {
+                            },
+                            (error) => {
                                 if (error.response) {
                                     if (error.response.status === 400) {
                                         setMessage("The old password is incorrect");
@@ -132,7 +131,7 @@ function NewPasswordCreationPart(
                                         console.log(error);
                                     }
                                 }
-                            });
+                        });
 
                         
                     }

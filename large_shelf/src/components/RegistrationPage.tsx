@@ -1,5 +1,4 @@
 import { Fragment, MouseEvent, useState } from "react";
-import axios from "axios";
 import StorageServer from "../StorageServer";
 import "../styles/registration_page_styles.css";
 import logo from "../assets/large_shelf_logo.svg";

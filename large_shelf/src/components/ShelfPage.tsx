@@ -2,11 +2,13 @@ import { Fragment, useState, MouseEvent } from "react";
 import axios from "axios";
 import PAGE_ID from "../PageID";
 import "../styles/shelf_page_styles.css";
+import StorageServer from "../StorageServer";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
 import InfinieScroll from "react-infinite-scroll-component";
 import backButtonIcon from "../assets/back_button_icon.svg";
 import RemoveButtonIcon from "../assets/remove_button_icon.svg";
+
 
 interface ShelfPageProps {
     userID: string;
@@ -260,7 +262,7 @@ function ShelfBookOptionListPart(
 ) {
     var [allBooks, setAllBooks] = useState<any[]>([]);
 
-    axios.get(`https://mybackend-project-cs422-version6.onrender.com/addedbooks/${userID}/${shelfID}/`)
+    axios.get(`${StorageServer.getHost()}/addedbooks/${userID}/${shelfID}/`)
     .then(async (response) => {
         const bookPromises = response.data.map(async (item: any) => {
             let book = {
@@ -275,7 +277,7 @@ function ShelfBookOptionListPart(
             };
 
             try {
-                const processResponse = await axios.get(`https://mybackend-project-cs422-version6.onrender.com/readingprocess/${userID}/${item.book_id}/`);
+                const processResponse = await axios.get(`${StorageServer.getHost()}/readingprocess/${userID}/${item.book_id}/`);
                 book.userProcess = processResponse.data.percentage;
             } catch (error) {
                 console.log(error);
@@ -386,16 +388,17 @@ function ShelfBookOptionListPart(
                                     }
                                     onRemoveButtonClick = {
                                         () => {
-                                            axios.delete(`http://127.0.0.1:8000/addedbook/delete/${shelfID}/${userID}/${item.bookID}/`)
-                                                .then((response) => {
-                                                    if (response.status === 200) {
-                                                        const newBooks = shelfBookOptionList.filter((book) => book.bookID !== item.bookID);
-                                                        setShelfBookOptionList(newBooks);                       
+                                                StorageServer.deleteBookFromShelf(
+                                                    userID,
+                                                    shelfID,
+                                                    item.bookID,
+                                                    (response) => {
+                                                        if (response.status === 200) {
+                                                            const newBooks = shelfBookOptionList.filter((book) => book.bookID !== item.bookID);
+                                                            setShelfBookOptionList(newBooks);                       
+                                                        }
                                                     }
-                                                })
-                                                .catch((error) => {
-                                                    console.log(error);
-                                                });
+                                                );
                                         }
                                     }    
                                 />
@@ -421,8 +424,9 @@ function ShelfBookListPart(
         "shelf_name": "Shelf name"
     });
 
-    axios.get(`http://127.0.0.1:8000/shelf/${userID}/`)
-        .then((response) => {
+    StorageServer.getShelvesOfUser(
+        userID,
+        (response) => {
             const shelf = response.data.filter((item: any) => item["id"] === shelfID)[0];
 
             const newData = {
@@ -433,10 +437,8 @@ function ShelfBookListPart(
             if (JSON.stringify(newData) !== JSON.stringify(shelfInformation)) {
                 setShelfInformation(newData);
             }
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+        }
+    );
 
     return (
         <div

@@ -256,7 +256,7 @@ function ListPart(
 ) {
     var [allShelves, setAllShelves] = useState<any>([]);
 
-    axios.get(`http://localhost:8000/shelf/${userID}/`)
+    axios.get(`${StorageServer.getHost()}/shelf/${userID}/`)
         .then(async (response) => {
             if (response.status == 200) {
                 const newData = await Promise.all(response.data.map(async (shelf: any) => {
@@ -264,7 +264,7 @@ function ListPart(
                     let books: any[] = [];
 
                     try {
-                        const bookResponse = await axios.get(`http://localhost:8000/addedbooks/${userID}/${shelf["id"]}/`);
+                        const bookResponse = await axios.get(`${StorageServer.getHost()}/addedbooks/${userID}/${shelf["id"]}/`);
                         if (bookResponse.status == 200) {
                             books = bookResponse.data;
                         }

@@ -1,5 +1,4 @@
 import { Fragment, useState, MouseEvent } from "react";
-import axios from "axios";
 import PAGE_ID from "../PageID";
 import StorageServer from "../StorageServer";
 import "../styles/audio_folder_page_styles.css";
@@ -195,25 +194,25 @@ function AudioFileOptionListPart(
 ) {
     var [allAudioFiles, setAllAudioFiles] = useState<any[]>([]);
 
-    axios.get(`https://mybackend-project-cs422-version6.onrender.com/audiofiles/${userID}/${folderID}/`)
-    .then((response) => {
-        const newAudioFiles = response.data.map((item: any) => {
-            let audioFile = {
-                "audioFileID": item["id"],
-                "audioFileName": item["name"],  
-                "audioFileLength": "0 seconds"
+    StorageServer.getAudioFileOfFolder(
+        userID,
+        folderID,
+        (response) => {
+            const newAudioFiles = response.data.map((item: any) => {
+                let audioFile = {
+                    "audioFileID": item["id"],
+                    "audioFileName": item["name"],  
+                    "audioFileLength": "0 seconds"
+                }
+                
+                return audioFile;
+            });
+    
+            if (JSON.stringify(newAudioFiles) !== JSON.stringify(allAudioFiles)) {
+                setAllAudioFiles(newAudioFiles);
             }
-            
-            return audioFile;
-        });
-
-        if (JSON.stringify(newAudioFiles) !== JSON.stringify(allAudioFiles)) {
-            setAllAudioFiles(newAudioFiles);
         }
-    })
-    .catch((error) => {
-        console.log(error);
-    });
+    );
 
     const numberOfFiles = allAudioFiles.length;
     
@@ -283,17 +282,16 @@ function AudioFileOptionListPart(
 
                                     onRemoveButtonClick={
                                         () => {
-                                            axios.delete(`http://127.0.0.1:8000/audiofile/delete/${item.audioFileID}/`)
-                                                .then((response) => {
+                                            StorageServer.deleteAudioFile(
+                                                item.audioFileID,
+                                                (response) => {
                                                     if (response.status === 200) {
                                                         const newAudioFileOptionList = audioFileOptionList.filter((audioFile) => audioFile.audioFileID !== item.audioFileID);
 
                                                         setAudioFileOptionList(newAudioFileOptionList);    
                                                     }
-                                                })
-                                                .catch((error) => {
-                                                    console.log(error);
-                                                });
+                                                }
+                                            );
                                         }
                                     }
                                 />
@@ -319,8 +317,9 @@ function AudioFolderListPart(
         "folder_name": "Folder name"
     });
 
-    axios.get(`http://127.0.0.1:8000/audiofolders/${userID}/`)
-        .then((response) => {
+    StorageServer.getAudioFoldersOfUser(
+        userID,
+        (response) => {
             const audioFolder = response.data.find((folder: any) => folder["id"] === folderID);
 
             const newData = {
@@ -331,10 +330,8 @@ function AudioFolderListPart(
             if (JSON.stringify(newData) !== JSON.stringify(folderInformation)) {
                 setFolderInformation(newData);
             }
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+        }
+    );
 
     return (
         <div

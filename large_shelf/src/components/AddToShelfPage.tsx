@@ -1,11 +1,10 @@
 import { Fragment, MouseEvent, useState } from "react";
-import axios from "axios";
 import PAGE_ID from "../PageID";
+import StorageServer from "../StorageServer";
 import "../styles/add_to_shelf_page_styles.css";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
 import backButtonIcon from "../assets/back_button_icon.svg";
-import StorageServer from "../StorageServer";
 
 interface AddToShelfPageProps {
     onSearchButtonClick: (searchText: string) => void;
@@ -161,13 +160,14 @@ function AddToShelfPart(
                                                             }
                                                         )
                                                     } else {
-                                                        axios.delete(`https://mybackend-project-cs422-version6.onrender.com/addedbook/delete/${shelf["id"]}/${userID}/${bookID}/`)
-                                                        .then((response) => {
-                                                            setAllChosenShelves(allChosenShelves.filter((chosenShelf) => chosenShelf["id"] !== shelf["id"]));
-                                                        })
-                                                        .catch((error) => {
-                                                            console.log(error);
-                                                        });
+                                                        StorageServer.deleteBookFromShelf(
+                                                            userID,
+                                                            bookID,
+                                                            shelf["id"],
+                                                            (response) => {
+                                                                setAllChosenShelves(allChosenShelves.filter((chosenShelf) => chosenShelf["id"] !== shelf["id"]));
+                                                            }
+                                                        );
                                                     }
                                                 }
                                             }
@@ -194,27 +194,25 @@ function AddToShelfPart(
                                         onChange={
                                             (event) => {
                                                 if (event.target.checked) {
-                                                    axios.post(`https://mybackend-project-cs422-version6.onrender.com/addedbooks/`, {
-                                                        "shelf_id": shelf["id"],
-                                                        "user_id": userID,
-                                                        "book_id": bookID
-                                                    })
-                                                    .then((response) => {
-                                                        allChosenShelves.push({
-                                                            "id": shelf["id"],
-                                                        });
-                                                    })
-                                                    .catch((error) => {
-                                                        console.log(error);
-                                                    });
+                                                    StorageServer.addBookToShelf(
+                                                        userID,
+                                                        bookID,
+                                                        shelf["id"],
+                                                        (response) => {
+                                                            allChosenShelves.push({
+                                                                "id": shelf["id"],
+                                                            });
+                                                        }
+                                                    );
                                                 } else {
-                                                    axios.delete(`https://mybackend-project-cs422-version6.onrender.com/addedbook/delete/${shelf["id"]}/${userID}/${bookID}/`)
-                                                    .then((response) => {
-                                                        setAllChosenShelves(allChosenShelves.filter((chosenShelf) => chosenShelf["id"] !== shelf["id"]));
-                                                    })
-                                                    .catch((error) => {
-                                                        console.log(error);
-                                                    });
+                                                    StorageServer.deleteBookFromShelf(
+                                                        userID,
+                                                        bookID,
+                                                        shelf["id"],
+                                                        (response) => {
+                                                            setAllChosenShelves(allChosenShelves.filter((chosenShelf) => chosenShelf["id"] !== shelf["id"]));
+                                                        }
+                                                    );
                                                 }
                                             }
                                         }

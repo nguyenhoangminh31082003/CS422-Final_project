@@ -1,5 +1,4 @@
 import { Fragment, useState, MouseEvent } from "react";
-import axios from "axios";
 import PAGE_ID from "../PageID";
 import "../styles/library_page_styles.css";
 import StorageServer from "../StorageServer";
@@ -209,50 +208,46 @@ function BookOptionListPart(
     }
 
     function getBooksWithPopularityAsOrder() {
-        axios.get("https://mybackend-project-cs422-version6.onrender.com/books/popular/")
-        .then((response) => {
-            console.log(response);
-            const newData = response.data.map((item: any) => {
-                return {
-                    "bookID": item["id"],
-                    "imageLinkOfBookCover": item["image_url"],
-                    "title": item["title"],
-                    "authorName": item["author"],
-                    "averageRating": item["rating"],
-                    "genre": item["genre"]
-                }
-            });
+        StorageServer.getBooksOrderedByPopularity(
+                (response) => {
+                console.log(response);
+                const newData = response.data.map((item: any) => {
+                    return {
+                        "bookID": item["id"],
+                        "imageLinkOfBookCover": item["image_url"],
+                        "title": item["title"],
+                        "authorName": item["author"],
+                        "averageRating": item["rating"],
+                        "genre": item["genre"]
+                    }
+                });
 
-            if (JSON.stringify(allBooks) !== JSON.stringify(newData)) {
-                setAllBooks(newData);
+                if (JSON.stringify(allBooks) !== JSON.stringify(newData)) {
+                    setAllBooks(newData);
+                }
             }
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+        );
     }
 
     function getBooksBySearching() {
-        axios.get(`https://mybackend-project-cs422-version6.onrender.com/books/search/?q=${searchInput}`)
-        .then((response) => {
-            console.log(response);
-            const newData = response.data.map((item: any) => {
-                return {
-                    "bookID": item["id"],
-                    "imageLinkOfBookCover": item["image_url"],
-                    "title": item["title"],
-                    "authorName": item["author"],
-                    "averageRating": item["rating"],
-                    "genre": item["genre"]
-                }
-            });
+        StorageServer.searchBooks(
+            searchInput,
+            (response) => {
+                console.log(response);
+                const newData = response.data.map((item: any) => {
+                    return {
+                        "bookID": item["id"],
+                        "imageLinkOfBookCover": item["image_url"],
+                        "title": item["title"],
+                        "authorName": item["author"],
+                        "averageRating": item["rating"],
+                        "genre": item["genre"]
+                    }
+                });
 
-            if (JSON.stringify(allBooks) !== JSON.stringify(newData)) {
-                setAllBooks(newData);
+                if (JSON.stringify(allBooks) !== JSON.stringify(newData)) {
+                    setAllBooks(newData);
             }
-        })
-        .catch((error) => {
-            console.log(error);
         });
     }
 
