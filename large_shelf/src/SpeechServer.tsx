@@ -15,6 +15,9 @@ const SpeechServer = (function() {
             voiceID: string,
             text: string
         ): Promise<string> {
+
+            return TrainSound;
+
             try {
                 const response = await axios.post(`${host}/txt2speech`, {
                     user_id: userID,

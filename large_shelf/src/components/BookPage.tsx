@@ -1,4 +1,4 @@
-import { Fragment, MouseEvent, useState } from "react";
+import { Fragment, MouseEvent, useState, useRef, useEffect } from "react";
 import PAGE_ID from "../PageID";
 import "../styles/book_page_styles.css";
 import SpeechServer from "../SpeechServer";
@@ -15,13 +15,14 @@ interface BookPageProps {
 }
 
 interface PropertiesPartProps {
-    userID: string;
     bookID: string | null | undefined;
-    currentPage: number;
     onBackwardButtonClick: () => void;
     onForwardButtonClick: () => void;
-    listenMode: any;
+    currentPage: number;
     setListenMode: any;
+    listenMode: any;
+    userID: string;
+    
 }
 
 interface InteractionPartProps {
@@ -30,9 +31,9 @@ interface InteractionPartProps {
 }
 
 interface PagePairPartProps {
-    setListenMode: any;
     bookID: string | null | undefined;
     currentPage: number;
+    setListenMode: any;
     listenMode: any;
 }
 
@@ -40,11 +41,11 @@ function PropertiesPart(
     {
         userID,
         bookID,
-        currentPage,
-        onBackwardButtonClick,
-        onForwardButtonClick,
         listenMode,
-        setListenMode
+        currentPage,
+        setListenMode,
+        onForwardButtonClick,
+        onBackwardButtonClick
     }: PropertiesPartProps
 ) {
     var [bookInformation, setBookInformation] = useState<any>({});
@@ -226,16 +227,14 @@ function PropertiesPart(
                                     )()
                                 }); 
                             } else if (listenMode["status"] === "on") {
-                                const newListenMode =
+                                let anotherListenMode =
                                     {
                                         ...listenMode
                                     };
-                                
-                                newListenMode["audio"].pause();
-                                newListenMode["audio"].currentTime = 0;
-                                newListenMode["status"] = "off";
 
-                                setListenMode(newListenMode);
+                                anotherListenMode["status"] = "off";
+
+                                setListenMode(anotherListenMode);
                             }
                         }}
                     >
@@ -269,89 +268,88 @@ function PagePairPart(
     }: PagePairPartProps
 ) {
 
-    var [leftPageContent, setLeftPageContent] = useState<string>("");
-    var [rightPageContent, setRightPageContent] = useState<string>("");
+    var [leftPageContent,   setLeftPageContent]     = useState<string>("");
+    var [rightPageContent,  setRightPageContent]    = useState<string>("");
+    var audioFile                                   = useRef<any>(null);
 
-    if (listenMode["status"] === "on") {
-        if (listenMode["client-status"] === "download-result-audio-file") {
+    useEffect(() => {
+        if (listenMode["status"] === "on") {
+          if (listenMode["client-status"] === "download-result-audio-file") {
             let content = "";
             if (currentPage === listenMode["page"]) {
-                content = leftPageContent;
+              content = leftPageContent;
             } else if (currentPage + 1 === listenMode["page"]) {
-                content = rightPageContent;
+              content = rightPageContent;
             }
             content = content.replaceAll("<br/>", "");
-
-            if (content != "") {
-                SpeechServer.convertTextToSpeech(
-                    "dummy",
-                    listenMode["voice"]["id"],
-                    content
-                )
+    
+            if (content !== "") {
+              SpeechServer.convertTextToSpeech("dummy", listenMode["voice"]["id"], content)
                 .then((url) => {
-                    console.log(url);
-
-                    let newListenMode = 
-                        {
-                            ...listenMode
-                        };
-
-                    newListenMode["client-status"] = "play-audio-file";
-                    newListenMode["audio-url"] = url;
-                    newListenMode["audio"] = new Audio(url);
-
-                    newListenMode["audio"].addEventListener("ended", () => {
-                        let anotherListenMode = 
-                            {
-                                ...listenMode
-                            };
-
-                        if (anotherListenMode["page"] === currentPage) {
-                            anotherListenMode["client-status"] = "download-result-audio-file"
-                            anotherListenMode["page"] = currentPage + 1;
-                        } else {
-                            anotherListenMode["status"] = "off";
-                        }
-
-                        setListenMode(anotherListenMode);
-                    });
-
-                    newListenMode["audio"].play();
-
-                    setListenMode(newListenMode);
+                  console.log(url);
+    
+                  let newListenMode = {
+                    ...listenMode,
+                  };
+    
+                  newListenMode["client-status"] = "play-audio-file";
+                  newListenMode["audio-url"] = url;
+                  audioFile.current = new Audio(url);
+    
+                  audioFile.current.addEventListener("ended", () => {
+                    if (listenMode["status"] === "off") {
+                      return;
+                    }
+    
+                    let anotherListenMode = {
+                      ...listenMode,
+                    };
+    
+                    if (anotherListenMode["page"] === currentPage) {
+                      anotherListenMode["client-status"] = "download-result-audio-file";
+                      anotherListenMode["page"] = currentPage + 1;
+                    } else {
+                      anotherListenMode["status"] = "off";
+                    }
+    
+                    setListenMode(anotherListenMode);
+                  });
+    
+                  audioFile.current.play();
+    
+                  setListenMode(newListenMode);
                 })
                 .catch((error) => {
-                    console.log(error);
+                  console.log(error);
                 });
             }
+          }
+        } else if (listenMode["status"] === "off") {
+          if (audioFile.current !== null) {
+            audioFile.current.pause();
+            audioFile.current.currentTime = 0; // Reset playback position
+            audioFile.current = null; // Clear the audio file reference
+          }
         }
-    }
-
-    StorageServer.getBookPage(
-        bookID,
-        currentPage,
-        (response) => {
-            const newLeftPageContent = response.data[`content_page_${currentPage}`].replace(/\r\n|\n|\r/g, '<br/>');
-
-            if (newLeftPageContent !== leftPageContent) {
-                setLeftPageContent(newLeftPageContent);
-            }
-        }
-    );
-
-    StorageServer.getBookPage(
-        bookID,
-        currentPage + 1,
-        (response) => {
-            const newRightPageContent = response.data[`content_page_${currentPage + 1}`].replace(/\r\n|\n|\r/g, '<br/>');
-
-            if (newRightPageContent !== rightPageContent) {
-                setRightPageContent(newRightPageContent);
-            }
-        }
-    );
-
+      }, [listenMode, currentPage, leftPageContent, rightPageContent, setListenMode]);
     
+      useEffect(() => {
+        StorageServer.getBookPage(bookID, currentPage, (response) => {
+          const newLeftPageContent = response.data[`content_page_${currentPage}`].replace(/\r\n|\n|\r/g, "<br/>");
+    
+          if (newLeftPageContent !== leftPageContent) {
+            setLeftPageContent(newLeftPageContent);
+          }
+        });
+    
+        StorageServer.getBookPage(bookID, currentPage + 1, (response) => {
+          const newRightPageContent = response.data[`content_page_${currentPage + 1}`].replace(/\r\n|\n|\r/g, "<br/>");
+    
+          if (newRightPageContent !== rightPageContent) {
+            setRightPageContent(newRightPageContent);
+          }
+        });
+      }, [bookID, currentPage, leftPageContent, rightPageContent]);
 
     return (
         <div
@@ -419,10 +417,10 @@ function InteractionPart(
     return (
         <>
             <PagePairPart
-                bookID={bookID}
-                listenMode={listenMode}
-                currentPage={currentPage}
-                setListenMode={setListenMode}
+                bookID = {bookID}
+                listenMode = {listenMode}
+                currentPage = {currentPage}
+                setListenMode = {setListenMode}
             />
 
             <PropertiesPart
