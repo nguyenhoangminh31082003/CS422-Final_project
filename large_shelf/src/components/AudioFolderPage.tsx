@@ -1,6 +1,7 @@
 import { Fragment, useState, MouseEvent } from "react";
 import axios from "axios";
 import PAGE_ID from "../PageID";
+import StorageServer from "../StorageServer";
 import "../styles/audio_folder_page_styles.css";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
@@ -11,8 +12,9 @@ import RemoveButtonIcon from "../assets/remove_button_icon.svg";
 import AudioFileDecorator from "../assets/audio_file_decorator.svg";
 
 interface AudioFolderPageProps {
-    onSearchButtonClick: (searchQuery: string) => void;
     onAudioFileOptionClick: (audioFolderID: string) => void;
+    onAddAudioFileButtonClick: (folderID: string) => void;
+    onSearchButtonClick: (searchQuery: string) => void;
     onPageOptionClick: (pageID: number) => void;
     onBackButtonClick: () => void;
     folderID: string;
@@ -22,20 +24,23 @@ interface AudioFolderPageProps {
 interface AudioFileOptionProps {
     audioFileName: string;
     audioFileLength: string;
-    onClick: (event: MouseEvent) => void;
     onRemoveButtonClick: () => void;
+    onClick: (event: MouseEvent) => void;
 }
 
 interface AudioFileListPartProps {
     onAudioFileOptionClick: (audioFolderID: string) => void;
+    onAddAudioFileButtonClick: (folderID: string) => void;
     onBackButtonClick: () => void;
     folderID: string;
     userID: string;
 }
 
 interface TitlePartProps {
+    onAddAudioFileButtonClick: (folderID: string) => void;
     onBackButtonClick: () => void;
     folderName: string;
+    folderID: string;
 }
 
 interface AudioFileOptionListPartProps {
@@ -69,13 +74,7 @@ function AudioFileOption(
                     >
                         {audioFileName}
                     </h1>
-                    {/*
-                    <p
-                        className = "audio-file-length-in-audio-folder-page"
-                    >
-                        {audioFileLength}
-                    </p>
-                    */}
+                    
                     <img
                         className = "audio-file-decorator-in-audio-folder-page"
                         src = {AudioFileDecorator}
@@ -139,8 +138,10 @@ function VoiceSettingPart() {
 
 function TitlePart(
     {
+        onAddAudioFileButtonClick,
         onBackButtonClick,
-        folderName
+        folderName,
+        folderID
     }: TitlePartProps
 ) {
     return (
@@ -168,6 +169,11 @@ function TitlePart(
 
             <button
                 id = "upload-new-file-button"
+                onClick = {
+                    () => {
+                        onAddAudioFileButtonClick(folderID);
+                    }
+                }
             >
                 <img
                     src = {AddButtonIcon}
@@ -300,6 +306,7 @@ function AudioFileOptionListPart(
 
 function AudioFolderListPart(
     {
+        onAddAudioFileButtonClick,
         onAudioFileOptionClick,
         onBackButtonClick,
         folderID,
@@ -340,6 +347,14 @@ function AudioFolderListPart(
                 folderName = {
                     folderInformation["folder_name"]
                 }
+
+                onAddAudioFileButtonClick = {
+                    onAddAudioFileButtonClick
+                }
+
+                folderID = {
+                    folderInformation["folder_id"]
+                }
             />
 
             <AudioFileOptionListPart
@@ -361,8 +376,9 @@ function AudioFolderListPart(
 
 export default function AudioFolderPage(
     {
-        onSearchButtonClick,
+        onAddAudioFileButtonClick,
         onAudioFileOptionClick,
+        onSearchButtonClick,
         onPageOptionClick,
         onBackButtonClick,
         folderID,
@@ -402,6 +418,10 @@ export default function AudioFolderPage(
                     }
 
                     userID = {userID}
+
+                    onAddAudioFileButtonClick = {
+                        onAddAudioFileButtonClick
+                    }
                 />
 
                 <VoiceSettingPart

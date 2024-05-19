@@ -1,4 +1,4 @@
-#create-new-shelf-page {
+#add-audio-file-page {
     width: 100%;
     height: 100vh;
 }
@@ -17,7 +17,7 @@
     box-shadow: inset 0 0 4px #7D4230;
 }
 
-#new-shelf-creation-part {
+#audio-file-add-part {
     font-family: "Inter", sans-serif;
     width: calc(100% * 1500 / 1600);
     height: calc(100% * (900 - 80) / 900);
@@ -29,9 +29,9 @@
     margin-top: 4%;
 }
 
-.new-shelf-creation-field-input-box {
+.audio-file-add-field-input-box {
     width: 100%;
-    height: 60%;
+    height: 30%;
     font-size: 140%;
     background-color: #FFE9C5;
     color:#7D4230;
@@ -44,24 +44,24 @@
     font-size: 100%;
 }
 
-.new-shelf-creation-field-input-box:focus {
+.audio-file-add-field-input-box:focus {
     outline: none;
     font-size: 100%;
 }
 
-.new-shelf-creation-field-input-box::placeholder {
+.audio-file-add-field-input-box::placeholder {
     font-family: "Inter", sans-serif;
     color: #7D4230;
     font-size: 140%;
     opacity: 0.8;
 }
 
-#new-shelf-creation-title {
+#audio-file-add-title {
     font-family: "Inter", sans-serif;
     font-weight: bold;
 }
 
-#new-shelf-form {
+#audio-file-add-form {
     font-family: "Inter", sans-serif;
     font-size: 140%;
     color:#7D4230;
@@ -69,27 +69,27 @@
     width: 40%;
 }
 
-#create-new-shelf-button-in-create-new-shelf-page {
+#add-audio-file-button-in-add-audio-file-page {
     width: 40%;
     height: 8%;
-    align-items: center;
-    justify-content: center;
     color: #FFE9C5;
-    margin-top: 1%;
+    margin-top: 4%;
     font-size: 140%;
     border-width: 0px;
     border-radius: 12px;
     border-style: solid;
+    align-items: center;
+    justify-content: center;
     background-color: #7D4230;
     transition: color 1s, background-color 1s;
 }
 
-#create-new-shelf-button-in-create-new-shelf-page:hover {
+#add-audio-file-button-in-add-audio-file-page:hover {
     background-color: #E29675;
     color: #FFE9C5;
 }
 
-#response-message-to-create-new-shelf-request {
+#response-message-to-add-audio-file-request {
     font-family: "Inter", sans-serif;
     font-size: 140%;
     color: red;
@@ -97,7 +97,7 @@
     opacity: 0.8;
 }
 
-#back-button-in-create-new-shelf-page {
+#back-button-in-add-audio-file-page {
     position: fixed;
     left: calc(100% * 120 / 1600);
     top: calc(100% * 100 / 900);
@@ -109,7 +109,7 @@
     transition: opacity 1s, background-color 1s, border-width ease 1s;
 }
 
-#back-button-in-create-new-shelf-page:hover {
+#back-button-in-add-audio-file-page:hover {
     opacity: 0.8;
     background-color:#E29675;
     border-width: 4px;

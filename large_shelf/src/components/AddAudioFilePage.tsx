@@ -1,69 +1,83 @@
 import { Fragment, MouseEvent, useState } from "react";
 import axios from "axios";
 import PAGE_ID from "../PageID";
+import StorageServer from "../StorageServer";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
-import "../styles/create_new_shelf_page_styles.css";
+import "../styles/add_audio_file_page_styles.css";
 import backButtonIcon from "../assets/back_button_icon.svg";
+import { on } from "events";
 
-interface CreateNewShelfPageProps {
+interface AddAudioFilePageProps {
     onSearchButtonClick: (searchQuery: string) => void;
     onPageOptionClick: (pageID: number) => void;
+    folderID: string;
     userID: string;
 }
 
-interface NewShelfCreationPartProps {
+interface AudioFileAddPartProps {
     onPageOptionClick: (pageID: number) => void;
+    folderID: string;
     userID: string;
 }
 
-function NewShelfCreationPart(
+function AudioFileAddPart(
     {
         onPageOptionClick,
+        folderID,
         userID
-    }: NewShelfCreationPartProps
+    }: AudioFileAddPartProps
 ) {
     const [message, setMessage] = useState<string>("");
     
-    //console.log(`User ID: ${userID}`);
-
     return (
         <div
-            id = "new-shelf-creation-part"
+            id = "audio-file-add-part"
         >
 
             <button
-                id = "back-button-in-create-new-shelf-page"
+                id = "back-button-in-add-audio-file-page"
                 onClick = {
                     () => {
-                        onPageOptionClick(PAGE_ID.HOME_PAGE);
+                        onPageOptionClick(PAGE_ID["VOICE_PAGE"]);
                     }
                 }
             >
                     <img
-                        id = "back-button-in-create-new-shelf-page"
+                        id = "back-button-in-create-add-audio-file-page"
                         src = {backButtonIcon}
                         alt = "Back"
                     />
             </button>
 
             <h1
-                id = "new-shelf-creation-title"
+                id = "audio-file-add-title"
             >
-                Create your new shelf!
+                Add your audio file
             </h1>
 
             <form
-                id = "new-shelf-form"
+                id = "audio-file-add-form"
             >
                 <label
-                    className = "new-shelf-creation-field-label"
+                    className = "audio-file-add-field-label"
                 >
-                    Please enter the name of the shelf
+                    Please enter the name of your audio file
                 </label><br/>
                 <input
-                    id = "name-of-the-new-shelf-input-box"
-                    className = "new-shelf-creation-field-input-box"
+                    id = "name-of-the-audio-file-add-input-box"
+                    className = "audio-file-add-field-input-box"
+                    type = "text"
+                />
+
+                <label
+                    className = "audio-file-add-field-label"
+                >
+                    Please enter the url of your audio file
+                </label><br/>
+                <input
+                    id = "url-of-the-audio-file-add-input-box"
+                    className = "audio-file-add-field-input-box"
                     type = "text"
                 />
 
@@ -71,51 +85,52 @@ function NewShelfCreationPart(
             </form>
 
             <button
-                id = "create-new-shelf-button-in-create-new-shelf-page"
+                id = "add-audio-file-button-in-add-audio-file-page"
                 onClick = {
                     (event: MouseEvent<HTMLButtonElement>) => {
-                        const shelfName = (document.getElementById("name-of-the-new-shelf-input-box") as HTMLInputElement).value;
+                        const audioFileName = (document.getElementById("name-of-the-audio-file-add-input-box") as HTMLInputElement).value;
+                        const audioFileURL = (document.getElementById("url-of-the-audio-file-add-input-box") as HTMLInputElement).value;
 
-                        if (typeof(shelfName) !== "string") {
-                            setMessage("The shelf name is invalid");
+                        if (typeof(audioFileName) !== "string") {
+                            setMessage("The audio file name is invalid");
                             return;
                         }
 
-                        if (shelfName.length === 0) {
-                            setMessage("The shelf name should not be empty");
+                        if (typeof(audioFileURL) !== "string") {
+                            setMessage("The audio file URL is invalid");
                             return;
                         }
 
-                        //console.log(`User ID: ${userID}`);
-                        //console.log(Number.parseInt(userID));
+                        if (audioFileName.length === 0) {
+                            setMessage("The audio file name should not be empty");
+                            return;
+                        }
 
-                        /*
-                        console.log({ 
-                            "name": shelfName,
-                            "user_id": Number.parseInt(userID)
-                        });
-                        */
+                        if (audioFileURL.length === 0) {
+                            setMessage("The audio file URL should not be empty");
+                            return;
+                        }
 
-                        axios.post("http://127.0.0.1:8000/shelf/", { 
-                            "name": shelfName,
-                            "user_id": Number.parseInt(userID)
-                        })
-                            .then(response => {
-                                if (response.status == 201) {
-                                    onPageOptionClick(PAGE_ID.HOME_PAGE);
-                                }
-                            })
-                            .catch(error => {
-                                setMessage("The shelf name is invalid");
-                            });
+                        StorageServer.addAudioFile(
+                            audioFileName,
+                            folderID,
+                            userID,
+                            audioFileURL,
+                            (response) => {
+                                onPageOptionClick(PAGE_ID["AUDIO_FOLDER_PAGE"]);
+                            },
+                            (error) => {
+                                setMessage("Something is not right");
+                            }
+                        );
                     }
                 }
             >
-                Create new shelf
+                Add audio file
             </button>
         
             <div
-                id = "response-message-to-create-new-shelf-request"
+                id = "response-message-to-add-audio-file-request"
             >
                 {message}
             </div>
@@ -123,16 +138,17 @@ function NewShelfCreationPart(
     );
 }
 
-export default function CreateNewShelfPage(
+export default function AddAudioFilePage(
     {
         onSearchButtonClick,
         onPageOptionClick,
+        folderID,
         userID
-    }: CreateNewShelfPageProps
+    }: AddAudioFilePageProps
 ) {
     return (
         <div
-            id = "create-new-shelf-page"
+            id = "add-audio-file-page"
         >
             <TopHorizontalBar 
                 onSearchButtonClick = {
@@ -144,20 +160,24 @@ export default function CreateNewShelfPage(
             >
                 <VerticalPageBar
                     chosenPageID = {
-                        PAGE_ID.HOME_PAGE
+                        PAGE_ID["VOICE_PAGE"]
                     }
                     onOptionClick = {
                         onPageOptionClick    
                     }
                 />
 
-                <NewShelfCreationPart
+                <AudioFileAddPart
                     onPageOptionClick = {
                         onPageOptionClick
                     }
 
                     userID = {
                         userID
+                    }
+
+                    folderID = {
+                        folderID
                     }
                 />
             </div>

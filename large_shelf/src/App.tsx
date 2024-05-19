@@ -10,6 +10,7 @@ import AccountPage from './components/AccountPage';
 import WelcomePage from './components/WelcomePage';
 import AddToShelfPage from './components/AddToShelfPage';
 import AudioFolderPage from './components/AudioFolderPage';
+import AddAudioFilePage from './components/AddAudioFilePage';
 import RegistrationPage from './components/RegistrationPage';
 import CreateNewShelfPage from './components/CreateNewShelfPage';
 import ChangePasswordPage from './components/ChangePasswordPage';
@@ -139,10 +140,10 @@ function App() {
 
                 onAudioFolderOptionClick = {
                     (folderID: string) => {
-                        setPageID(PAGE_ID["AUDIO_FOLDER_PAGE"]);
                         updateOtherData({
                             folderID: folderID
                         });
+                        setPageID(PAGE_ID["AUDIO_FOLDER_PAGE"]);
                     }
                 }
 
@@ -360,6 +361,15 @@ function App() {
                 onSearchButtonClick={
                     onSearchButtonClick
                 }
+
+                onAddAudioFileButtonClick={
+                    (folderID) => {
+                        updateOtherData({
+                            folderID: folderID
+                        });
+                        setPageID(PAGE_ID["ADD_AUDIO_FILE_PAGE"]);
+                    }
+                }
             />
         );
     }
@@ -388,6 +398,28 @@ function App() {
                 }
 
                 userID = {userID}
+
+                onSearchButtonClick={
+                    onSearchButtonClick
+                }
+            />
+        );
+    }
+
+    if (pageID === PAGE_ID["ADD_AUDIO_FILE_PAGE"]) {
+        return (
+            <AddAudioFilePage 
+                onPageOptionClick = {
+                    onPageOptionClick
+                }
+
+                folderID = {
+                    otherData.folderID
+                }
+
+                userID = {
+                    userID
+                }
 
                 onSearchButtonClick={
                     onSearchButtonClick

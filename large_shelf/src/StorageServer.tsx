@@ -216,6 +216,28 @@ const StorageServer = (function() {
             .catch((error) => {
                 onError(error);
             });
+        },
+
+        "addAudioFile": function(
+            audioFileName: string,
+            folderID: string,
+            userID: string,
+            url: string,
+            onSuccess: (response: any) => void,
+            onError: (error: any) => void = printError
+        ) {
+            axios.post(`${host}/audiofiles/`, {
+                name: audioFileName,
+                folder_id: folderID,
+                user_id: userID,
+                file_url: url
+            })
+            .then((response) => {
+                onSuccess(response);
+            })
+            .catch((error) => {
+                onError(error);
+            });
         }
     }
 })();
