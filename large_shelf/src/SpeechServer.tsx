@@ -14,32 +14,29 @@ const SpeechServer = (function() {
             userID: string,
             voiceID: string,
             text: string
-        ): Promise<string> {
+        ): Promise<any> {
+        
+            let audio = new Audio();
 
-            return TrainSound;
+            audio.src = "https://samplelib.com/lib/preview/mp3/sample-3s.mp3";
+
+            return audio;
 
             try {
+
                 const response = await axios.post(`${host}/txt2speech`, {
                     user_id: userID,
                     voice_id: voiceID,
-                    text: text
+                    text: "This message is used to test"//text
                 });
         
-                const binaryData = response.data;
-                const length = binaryData.length;
-                const uint8Array = new Uint8Array(length);
-        
-                for (let i = 0; i < length; i++) {
-                    uint8Array[i] = binaryData.charCodeAt(i);
-                }
-        
-                const blob = new Blob([uint8Array]);
+                const blob = new Blob([response.data], { type: "audio/mpeg" });
                 const url = URL.createObjectURL(blob);
-        
-                return url;
+
+                return new Audio(url);
             } catch (error) {
                 console.log(error);
-                return TrainSound;
+                return new Audio(TrainSound);
             }
         },
 
