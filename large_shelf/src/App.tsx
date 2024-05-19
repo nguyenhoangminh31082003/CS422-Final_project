@@ -1,27 +1,27 @@
-import { useState } from 'react';
-import PAGE_ID from './PageID';
-import StorageServer from './StorageServer';
-import BookPage from './components/BookPage';
-import HomePage from './components/HomePage';
-import VoicePage from './components/VoicePage';
-import ShelfPage from './components/ShelfPage';
-import LibraryPage from './components/LibraryPage';
-import AccountPage from './components/AccountPage';
-import WelcomePage from './components/WelcomePage';
-import AddToShelfPage from './components/AddToShelfPage';
-import AudioFolderPage from './components/AudioFolderPage';
-import AddAudioFilePage from './components/AddAudioFilePage';
-import RegistrationPage from './components/RegistrationPage';
-import CreateNewShelfPage from './components/CreateNewShelfPage';
-import ChangePasswordPage from './components/ChangePasswordPage';
-import BookInformationPage from './components/BookInformationPage';
-import CreateNewAudioFolderPage from './components/CreateNewAudioFolderPage';
+import { useState }                 from 'react';
+import PAGE_ID                      from './PageID';
+import StorageServer                from './StorageServer';
+import BookPage                     from './components/BookPage';
+import HomePage                     from './components/HomePage';
+import VoicePage                    from './components/VoicePage';
+import ShelfPage                    from './components/ShelfPage';
+import LibraryPage                  from './components/LibraryPage';
+import AccountPage                  from './components/AccountPage';
+import WelcomePage                  from './components/WelcomePage';
+import AddToShelfPage               from './components/AddToShelfPage';
+import AudioFolderPage              from './components/AudioFolderPage';
+import AddAudioFilePage             from './components/AddAudioFilePage';
+import RegistrationPage             from './components/RegistrationPage';
+import CreateNewShelfPage           from './components/CreateNewShelfPage';
+import ChangePasswordPage           from './components/ChangePasswordPage';
+import BookInformationPage          from './components/BookInformationPage';
+import CreateNewAudioFolderPage     from './components/CreateNewAudioFolderPage';
 
 
 function App() {
-    const [pageID, setPageID] = useState(PAGE_ID["WELCOME_PAGE"]);
-    var [userID, setUserID] = useState("");
-    var [otherData, setOtherData] = useState<any>({});
+    var [pageID, setPageID]         = useState(PAGE_ID["WELCOME_PAGE"]);
+    var [userID, setUserID]         = useState("");
+    var [otherData, setOtherData]   = useState<any>({});
     
     const updateOtherData = (newData: any) => {
         let newOtherData = otherData;

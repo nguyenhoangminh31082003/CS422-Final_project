@@ -20,14 +20,6 @@ https://github.com/TranLeQuoc/project
 
 https://docs.google.com/document/d/1S_qeJBNLeycAXmFpauPEtQh77vGPaOFHV_rONrXj2WI/edit
 
-python manage.py makemigrations
-
-python manage.py migrate
-
-python manage.py runserver
-
-http://127.0.0.1:8000/admin/
-
 # Back end (Speech)
 
 http://103.82.194.67:8000/docs#/default

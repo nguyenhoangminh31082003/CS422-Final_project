@@ -2,7 +2,7 @@ import axios from "axios";
 import { on } from "events";
 
 const StorageServer = (function() {
-    const host = "https://mybackend-project-cs422-version6.onrender.com/";
+    const host = "https://mybackend-project-cs422-version6.onrender.com";
 
     const printError = function(error: any) {
         console.log(error);

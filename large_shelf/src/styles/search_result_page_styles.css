@@ -1,0 +1,119 @@
+#library-page {
+    width: 100%;
+    height: 100vh;
+}
+
+#content-part {
+    position: fixed;
+    top: calc(100% * 80 / 900);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background: #FFE9C5;
+    margin-left: auto;
+}
+
+#book-list-part {
+    width: calc(100% * 1500 / 1600);
+    height: calc(100% * (900 - 80) / 900);
+}
+
+#title-bar-in-library-page {
+    width: 100%;
+    height: 8%;
+    color:#7D4230;
+    padding: 1%;
+}
+
+#book-option-list {
+    width: 100%;
+    height: 92%;
+    overflow: auto;
+}
+
+#book-option-list::-webkit-scrollbar {
+    background-color: #FFE9C5;
+    width: 8px;
+}
+
+#book-option-list::-webkit-scrollbar-thumb {
+    background-color: #7D4230;
+    border-radius: 20px;
+    transition: background-color 1s;
+}
+
+#book-option-list::-webkit-scrollbar-thumb:hover {
+    background-color: #E29675;
+}
+
+.book-option-in-library-page {
+    width: 100%;
+    padding: 1%;
+    background-color:#FFE9C5;
+    border-width: 0px;
+}
+
+.book-option-detail-in-library-page {
+    color: black;
+    border-style: solid;
+    width: 100%;    
+    display: flex;
+    flex-direction: row;
+    border-radius: 4px;
+    border-color:#7D4230;
+    box-shadow: 4px 4px 12px #888888;
+    transition: background-color 1s, color 1s, margin-top 1s, box-shadow 1s;
+    background-color: #FFE9C5;
+    box-shadow: inset 0 0 4px black;
+}
+
+.book-option-detail-in-library-page:hover {
+    background-color: #E29675;
+    color:#FFE9C5;
+    box-shadow: 4px 8px 4px #888888;
+    margin-top: 1%;
+}
+
+.cover-image-of-book-in-library-page {
+    width: 80%;
+    aspect-ratio: 5 / 7;
+    border-radius: 4%;
+    background-color: #E29675;
+    border-color: #FFE9C5;
+    border-style: solid;
+}   
+
+.detail-cell-in-library-page {
+    padding: 1%;
+    width: 12%;
+    align-items: center;
+}
+
+.title-of-book-in-library-page {
+    font-size: 120%;
+    font-weight: bold;
+    font-family: "Inter", sans-serif;
+}
+
+.detail-of-book-in-library-page {
+    font-size: 120%;
+    font-style: italic;
+    font-family: "Inter", sans-serif;
+}
+
+#order-option-in-library-page {
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 4px;
+    border-width: 0px;
+    color: #7D4230;
+    font-family: "Inter", sans-serif;
+    font-style: italic;
+    border-color:#7D4230;
+    transition: border-width 0.5s;
+}
+
+#order-option-in-library-page:hover {
+    border-width: 1px;
+}

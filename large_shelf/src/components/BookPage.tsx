@@ -49,25 +49,7 @@ function PropertiesPart(
     }: PropertiesPartProps
 ) {
     var [bookInformation, setBookInformation] = useState<any>({});
-    var [userAudioFileList, setUserAudioFileList] = useState<any>([]);
-
-    StorageServer.getAllAudioFileLinkOfUser(
-        userID,
-        (response) => {
-            const newData = response.data.map((audioFile: any) => {
-                return {
-                    "id": audioFile["id"],
-                    "name": audioFile["name"],
-                    "type": "private"
-                }
-            });
-
-            if (JSON.stringify(newData) !== JSON.stringify(userAudioFileList)) {
-                setUserAudioFileList(newData);
-            }
-        }
-    )
-
+    
     StorageServer.getBooksOrderedByRating(
         (response) => { 
             const bookData = response.data.find((book: any) => book.id === bookID);
@@ -178,8 +160,7 @@ function PropertiesPart(
                                                             .map((voice: any) => {
                                                                 voice["type"] = "public";
                                                                 return voice;
-                                                            })
-                                                            .concat(userAudioFileList);
+                                                            });
 
                                                         return voiceList.map((voice: any) => {
                                                             return (

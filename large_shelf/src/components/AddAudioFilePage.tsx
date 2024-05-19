@@ -110,6 +110,11 @@ function AudioFileAddPart(
                             return;
                         }
 
+                        console.log(audioFileName);
+                        console.log(audioFileURL);
+                        console.log(folderID);
+                        console.log(userID);
+
                         StorageServer.addAudioFile(
                             audioFileName,
                             folderID,

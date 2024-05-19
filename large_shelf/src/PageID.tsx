@@ -14,6 +14,7 @@ const PAGE_ID = {
     ADD_TO_SHELF_PAGE: 12,
     CREATE_NEW_AUDIO_FOLDER_PAGE: 13,
     ADD_AUDIO_FILE_PAGE: 14,
+    SEARCH_RESULT_PAGE: 15,
 };
 
 export default PAGE_ID;

@@ -223,6 +223,27 @@ function AudioFileOptionListPart(
         setAudioFileOptionList(allAudioFiles);
     }
 
+    if (allAudioFiles.length === 0) {
+        return (
+            <div
+                id = "audio-file-option-list"
+            >
+                <p
+                    style = {
+                        {
+                            fontWeight: "bold",
+                            fontSize: "larger",
+                            textAlign: "center",
+                            color: "#7D4230"
+                        }
+                    }
+                >
+                    There is no audio file in this folder
+                </p>
+            </div>
+        );
+    }
+
     return (
         <div
                 id = "audio-file-option-list"
