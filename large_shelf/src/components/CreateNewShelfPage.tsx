@@ -1,6 +1,7 @@
 import { Fragment, MouseEvent, useState } from "react";
 import axios from "axios";
 import PAGE_ID from "../PageID";
+import StorageServer from "../StorageServer";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
 import "../styles/create_new_shelf_page_styles.css";
@@ -86,28 +87,18 @@ function NewShelfCreationPart(
                             return;
                         }
 
-                        //console.log(`User ID: ${userID}`);
-                        //console.log(Number.parseInt(userID));
-
-                        /*
-                        console.log({ 
-                            "name": shelfName,
-                            "user_id": Number.parseInt(userID)
-                        });
-                        */
-
-                        axios.post("http://127.0.0.1:8000/shelf/", { 
-                            "name": shelfName,
-                            "user_id": Number.parseInt(userID)
-                        })
-                            .then(response => {
+                        StorageServer.createNewShelf(
+                            userID,
+                            shelfName,
+                            (response) => {
                                 if (response.status == 201) {
-                                    onPageOptionClick(PAGE_ID.HOME_PAGE);
+                                    onPageOptionClick(PAGE_ID["HOME_PAGE"]);
                                 }
-                            })
-                            .catch(error => {
+                            },
+                            (error) => {
                                 setMessage("The shelf name is invalid");
-                            });
+                            }
+                        );
                     }
                 }
             >

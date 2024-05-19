@@ -1,69 +1,68 @@
 import { Fragment, MouseEvent, useState } from "react";
 import axios from "axios";
 import PAGE_ID from "../PageID";
+import StorageServer from "../StorageServer";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
-import "../styles/create_new_shelf_page_styles.css";
+import "../styles/create_new_audio_folder_page_styles.css";
 import backButtonIcon from "../assets/back_button_icon.svg";
 
-interface CreateNewShelfPageProps {
+interface CreateNewAudioFolderPageProps {
     onSearchButtonClick: (searchQuery: string) => void;
     onPageOptionClick: (pageID: number) => void;
     userID: string;
 }
 
-interface NewShelfCreationPartProps {
+interface NewAudioFolderCreationPartProps {
     onPageOptionClick: (pageID: number) => void;
     userID: string;
 }
 
-function NewShelfCreationPart(
+function NewAudioFolderCreationPart(
     {
         onPageOptionClick,
         userID
-    }: NewShelfCreationPartProps
+    }: NewAudioFolderCreationPartProps
 ) {
     const [message, setMessage] = useState<string>("");
     
-    //console.log(`User ID: ${userID}`);
-
     return (
         <div
-            id = "new-shelf-creation-part"
+            id = "new-audio-folder-creation-part"
         >
 
             <button
-                id = "back-button-in-create-new-shelf-page"
+                id = "back-button-in-create-new-audio-folder-page"
                 onClick = {
                     () => {
-                        onPageOptionClick(PAGE_ID.HOME_PAGE);
+                        onPageOptionClick(PAGE_ID["VOICE_PAGE"]);
                     }
                 }
             >
                     <img
-                        id = "back-button-in-create-new-shelf-page"
+                        id = "back-button-in-create-new-audio-folder-page"
                         src = {backButtonIcon}
                         alt = "Back"
                     />
             </button>
 
             <h1
-                id = "new-shelf-creation-title"
+                id = "new-audio-folder-creation-title"
             >
-                Create your new shelf!
+                Create your new audio folder!
             </h1>
 
             <form
-                id = "new-shelf-form"
+                id = "new-audio-folder-form"
             >
                 <label
-                    className = "new-shelf-creation-field-label"
+                    className = "new-audio-folder-creation-field-label"
                 >
-                    Please enter the name of the shelf
+                    Please enter the name of the audio folder
                 </label><br/>
                 <input
-                    id = "name-of-the-new-shelf-input-box"
-                    className = "new-shelf-creation-field-input-box"
+                    id = "name-of-the-new-audio-folder-input-box"
+                    className = "new-audio-folder-creation-field-input-box"
                     type = "text"
                 />
 
@@ -71,51 +70,41 @@ function NewShelfCreationPart(
             </form>
 
             <button
-                id = "create-new-shelf-button-in-create-new-shelf-page"
+                id = "create-new-audio-folder-button-in-create-new-audio-folder-page"
                 onClick = {
                     (event: MouseEvent<HTMLButtonElement>) => {
-                        const shelfName = (document.getElementById("name-of-the-new-shelf-input-box") as HTMLInputElement).value;
+                        const audioFolderName = (document.getElementById("name-of-the-new-audio-folder-input-box") as HTMLInputElement).value;
 
-                        if (typeof(shelfName) !== "string") {
-                            setMessage("The shelf name is invalid");
+                        if (typeof(audioFolderName) !== "string") {
+                            setMessage("The audio folder name is invalid");
                             return;
                         }
 
-                        if (shelfName.length === 0) {
-                            setMessage("The shelf name should not be empty");
+                        if (audioFolderName.length === 0) {
+                            setMessage("The audio folder name should not be empty");
                             return;
                         }
 
-                        //console.log(`User ID: ${userID}`);
-                        //console.log(Number.parseInt(userID));
-
-                        /*
-                        console.log({ 
-                            "name": shelfName,
-                            "user_id": Number.parseInt(userID)
-                        });
-                        */
-
-                        axios.post("http://127.0.0.1:8000/shelf/", { 
-                            "name": shelfName,
-                            "user_id": Number.parseInt(userID)
-                        })
-                            .then(response => {
+                        StorageServer.createNewAudioFolder(
+                            userID,
+                            audioFolderName,
+                            (response) => {
                                 if (response.status == 201) {
-                                    onPageOptionClick(PAGE_ID.HOME_PAGE);
+                                    onPageOptionClick(PAGE_ID["VOICE_PAGE"]);
                                 }
-                            })
-                            .catch(error => {
-                                setMessage("The shelf name is invalid");
-                            });
+                            },
+                            (error) => {
+                                setMessage("The audio folder name is invalid");
+                            }
+                        );
                     }
                 }
             >
-                Create new shelf
+                Create new audio folder
             </button>
         
             <div
-                id = "response-message-to-create-new-shelf-request"
+                id = "response-message-to-create-new-audio-folder-request"
             >
                 {message}
             </div>
@@ -123,16 +112,16 @@ function NewShelfCreationPart(
     );
 }
 
-export default function CreateNewShelfPage(
+export default function CreateNewAudioFolderPage(
     {
         onSearchButtonClick,
         onPageOptionClick,
         userID
-    }: CreateNewShelfPageProps
+    }: CreateNewAudioFolderPageProps
 ) {
     return (
         <div
-            id = "create-new-shelf-page"
+            id = "create-new-audio-folder-page"
         >
             <TopHorizontalBar 
                 onSearchButtonClick = {
@@ -144,14 +133,14 @@ export default function CreateNewShelfPage(
             >
                 <VerticalPageBar
                     chosenPageID = {
-                        PAGE_ID.HOME_PAGE
+                        PAGE_ID["VOICE_PAGE"]
                     }
                     onOptionClick = {
                         onPageOptionClick    
                     }
                 />
 
-                <NewShelfCreationPart
+                <NewAudioFolderCreationPart
                     onPageOptionClick = {
                         onPageOptionClick
                     }

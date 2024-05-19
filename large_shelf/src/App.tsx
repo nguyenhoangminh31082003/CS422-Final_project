@@ -14,6 +14,7 @@ import RegistrationPage from './components/RegistrationPage';
 import CreateNewShelfPage from './components/CreateNewShelfPage';
 import ChangePasswordPage from './components/ChangePasswordPage';
 import BookInformationPage from './components/BookInformationPage';
+import CreateNewAudioFolderPage from './components/CreateNewAudioFolderPage';
 
 
 function App() {
@@ -142,6 +143,12 @@ function App() {
                         updateOtherData({
                             folderID: folderID
                         });
+                    }
+                }
+
+                onCreateNewAudioFolderButtonClick = {
+                    () => {
+                        setPageID(PAGE_ID["CREATE_NEW_AUDIO_FOLDER_PAGE"]);
                     }
                 }
             />
@@ -360,6 +367,22 @@ function App() {
     if (pageID === PAGE_ID["CREATE_NEW_SHELF_PAGE"]) {
         return (
             <CreateNewShelfPage 
+                onPageOptionClick = {
+                    onPageOptionClick
+                }
+
+                userID = {userID}
+
+                onSearchButtonClick={
+                    onSearchButtonClick
+                }
+            />
+        );
+    }
+
+    if (pageID === PAGE_ID["CREATE_NEW_AUDIO_FOLDER_PAGE"]) {
+        return (
+            <CreateNewAudioFolderPage
                 onPageOptionClick = {
                     onPageOptionClick
                 }

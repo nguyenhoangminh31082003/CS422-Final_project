@@ -2,6 +2,7 @@ import { Fragment, useState, MouseEvent } from "react";
 import axios from "axios";
 import PAGE_ID from "../PageID";
 import "../styles/home_page_styles.css";
+import StorageServer from "../StorageServer";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
 import AddButtonIcon from "../assets/add_button_icon.svg";
@@ -93,15 +94,14 @@ function ShelfOption(
                                 (event: MouseEvent) => {
                                     event.stopPropagation();
 
-                                    axios.delete(`http://127.0.0.1:8000/shelf/delete/${shelfID}/`)
-                                        .then((response) => {
-                                            if (response.status === 200) {
+                                    StorageServer.deleteShelf(
+                                        shelfID,
+                                        (response) => {
+                                            if (response.status == 200) {
                                                 onRemoveButtonClick(event);
                                             }
-                                        })
-                                        .catch((error) => {
-                                            console.log(error);
-                                        });
+                                        }
+                                    );
                                 }
                             }
                         >

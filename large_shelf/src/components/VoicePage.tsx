@@ -2,6 +2,7 @@ import { Fragment, useState, MouseEvent } from "react";
 import axios from "axios";
 import PAGE_ID from "../PageID";
 import "../styles/voice_page_styles.css";
+import StorageServer from "../StorageServer";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
 import AddButtonIcon from "../assets/add_button_icon.svg";
@@ -10,20 +11,24 @@ import backButtonIcon from "../assets/back_button_icon.svg";
 import RemoveButtonIcon from "../assets/remove_button_icon.svg";
 
 interface VoicePageProps {
-    onSearchButtonClick: (searchQuery: string) => void;
     onAudioFolderOptionClick: (audioFolderID: string) => void;
+    onSearchButtonClick: (searchQuery: string) => void;
+    onCreateNewAudioFolderButtonClick: () => void;
     onPageOptionClick: (pageID: number) => void;
     userID: string;
 }
 
 interface AudioFolderOptionProps {
-    folderCoverImageLink: string;
     folderName: string;
+    audioFolderID: string;
     audioFileCount: number;
+    folderCoverImageLink: string;
     onClick: (event: MouseEvent) => void;
+    onRemoveButtonClick: (event: MouseEvent) => void;
 }
 
 interface AudioFolderListPartProps {
+    onCreateNewAudioFolderButtonClick: () => void;
     onAudioFolderOptionClick: (audioFolderID: string) => void;
     userID: string;
 }
@@ -33,11 +38,17 @@ interface AudioFolderOptionListPartProps {
     userID: string;
 }
 
+interface TitlePartProps {
+    onCreateNewAudioFolderButtonClick: () => void;
+}
+
 function AudioFolderOption(
     {
         folderCoverImageLink,
-        folderName,
+        onRemoveButtonClick,
         audioFileCount,
+        audioFolderID,
+        folderName,
         onClick  
     }: AudioFolderOptionProps
 ) {
@@ -70,6 +81,15 @@ function AudioFolderOption(
                             onClick = {
                                 (event: MouseEvent) => {
                                     event.stopPropagation();
+
+                                    StorageServer.deleteAudioFolder(
+                                        audioFolderID,
+                                        (response) => {
+                                            if (response.status == 200) {
+                                                onRemoveButtonClick(event);
+                                            }
+                                        }
+                                    );
                                 }
                             }
                         >
@@ -127,7 +147,11 @@ function VoiceSettingPart() {
     );
 }
 
-function TitlePart() {
+function TitlePart(
+    {
+        onCreateNewAudioFolderButtonClick
+    }: TitlePartProps
+) {
     return (
         <div
             id = "title-bar-in-audio-folder-list-part"
@@ -140,6 +164,9 @@ function TitlePart() {
 
             <button
                 id = "create-new-folder-button"
+                onClick = {
+                    onCreateNewAudioFolderButtonClick
+                }
             >
                 <img
                     src = {AddButtonIcon}
@@ -249,9 +276,22 @@ function AudioFolderOptionListPart(
                                     folderCoverImageLink = {item.folderCoverImageLink}
                                     folderName = {item.name}
                                     audioFileCount = {item.audioFileCount}
+                                    
                                     onClick = {
                                         (event: MouseEvent) => {
                                             onAudioFolderOptionClick(item.folderID);
+                                        }
+                                    }
+
+                                    audioFolderID = {item.folderID}
+                                    
+                                    onRemoveButtonClick={
+                                        (event: MouseEvent) => {
+                                            const newAudioFolderOptionList = audioFolderOptionList.filter((folder) => {
+                                                return folder.id !== item.id;
+                                            });
+
+                                            setAudioFolderOptionList(newAudioFolderOptionList);
                                         }
                                     }
                                 />
@@ -265,6 +305,7 @@ function AudioFolderOptionListPart(
 
 function AudioFolderListPart(
     {
+        onCreateNewAudioFolderButtonClick,
         onAudioFolderOptionClick,
         userID
     }: AudioFolderListPartProps
@@ -273,7 +314,11 @@ function AudioFolderListPart(
         <div
             id = "audio-folder-list-part"
         >
-            <TitlePart />
+            <TitlePart 
+                onCreateNewAudioFolderButtonClick = {
+                    onCreateNewAudioFolderButtonClick
+                }
+            />
 
             <AudioFolderOptionListPart 
                 onAudioFolderOptionClick = {
@@ -287,6 +332,7 @@ function AudioFolderListPart(
 
 export default function VoicePage(
     {
+        onCreateNewAudioFolderButtonClick,
         onAudioFolderOptionClick,
         onSearchButtonClick,
         onPageOptionClick,
@@ -317,6 +363,10 @@ export default function VoicePage(
 
                     onAudioFolderOptionClick = {
                         onAudioFolderOptionClick
+                    }
+                
+                    onCreateNewAudioFolderButtonClick = {
+                        onCreateNewAudioFolderButtonClick
                     }
                 />
 
