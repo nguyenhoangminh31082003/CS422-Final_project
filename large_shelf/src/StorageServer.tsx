@@ -1,5 +1,4 @@
 import axios from "axios";
-import { on } from "events";
 
 const StorageServer = (function() {
     const host = "https://mybackend-project-cs422-version6.onrender.com";

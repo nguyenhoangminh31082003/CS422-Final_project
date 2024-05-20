@@ -1,4 +1,4 @@
-import { useState }                 from 'react';
+import { useState, useEffect }      from 'react';
 import PAGE_ID                      from './PageID';
 import StorageServer                from './StorageServer';
 import BookPage                     from './components/BookPage';
@@ -20,6 +20,10 @@ import CreateNewAudioFolderPage     from './components/CreateNewAudioFolderPage'
 
 
 function App(): JSX.Element {
+    useEffect(() => {
+        document.title = "Large Shelf";
+      }, []);
+
     var [pageID, setPageID]         = useState(PAGE_ID["WELCOME_PAGE"]);
     var [userID, setUserID]         = useState("");
     var [otherData, setOtherData]   = useState<any>({});
