@@ -481,6 +481,7 @@ function App(): JSX.Element {
 
     return (
         <>
+            Comming soon
         </>
     )
 }
