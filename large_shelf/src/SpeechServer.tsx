@@ -21,7 +21,7 @@ const SpeechServer = (function() {
                 const response = await axios.post(`${host}/txt2speech/url`, {
                     user_id: userID,
                     voice_id: voiceID,
-                    text: "Hello, World!"//text
+                    text: text
                 });
         
                 console.log(response);
