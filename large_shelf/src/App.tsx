@@ -19,7 +19,7 @@ import BookInformationPage          from './components/BookInformationPage';
 import CreateNewAudioFolderPage     from './components/CreateNewAudioFolderPage';
 
 
-function App() {
+function App(): JSX.Element {
     var [pageID, setPageID]         = useState(PAGE_ID["WELCOME_PAGE"]);
     var [userID, setUserID]         = useState("");
     var [otherData, setOtherData]   = useState<any>({});
@@ -478,6 +478,11 @@ function App() {
             />
         );
     }
+
+    return (
+        <>
+        </>
+    )
 }
 
 export default App;
