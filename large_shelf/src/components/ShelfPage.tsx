@@ -159,7 +159,7 @@ function ShelfBookOption(
                     <p
                         className = "detail-of-shelf-book-in-shelf-page"
                     >
-                        {averageRating}/5 stars
+                        {Math.round(averageRating*100)/100}/5 stars
                     </p>
                 </div>
 

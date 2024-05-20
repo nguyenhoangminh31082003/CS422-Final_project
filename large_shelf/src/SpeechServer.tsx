@@ -21,7 +21,7 @@ const SpeechServer = (function() {
                 const response = await axios.post(`${host}/txt2speech/url`, {
                     user_id: userID,
                     voice_id: voiceID,
-                    text: text.slice(0, Math.min(text.length, 150))
+                    text: text
                 });
         
                 console.log(response);
