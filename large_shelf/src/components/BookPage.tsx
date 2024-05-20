@@ -36,6 +36,7 @@ interface PagePairPartProps {
     currentPage: number;
     setListenMode: any;
     listenMode: any;
+    userID: string;
 }
 
 function PropertiesPart(
@@ -75,7 +76,7 @@ function PropertiesPart(
                         audioFile["file_url"],
                         ""
                     );
-                    return { ...audioFile, voice_id: voiceResponse?.data };
+                    return { ...audioFile, "voice_id": voiceResponse?.data };
                 }));
 
                 if (JSON.stringify(audioFilesWithVoiceIds) !== JSON.stringify(allUserAudioFiles)) {
@@ -268,6 +269,7 @@ function PagePairPart(
         currentPage,
         listenMode,
         bookID,
+        userID
     }: PagePairPartProps
 ) {
 
@@ -287,7 +289,11 @@ function PagePairPart(
             content = content.replaceAll("<br/>", "");
     
             if (content !== "") {
-              SpeechServer.convertTextToSpeech("dummy", listenMode["voice"]["id"], content)
+              SpeechServer.convertTextToSpeech(
+                userID, 
+                listenMode["voice"]["id"], 
+                content
+            )
                 .then((url) => {
                   let newListenMode = {
                     ...listenMode,
@@ -417,6 +423,7 @@ function InteractionPart(
     return (
         <>
             <PagePairPart
+                userID = {userID}
                 bookID = {bookID}
                 listenMode = {listenMode}
                 currentPage = {currentPage}
