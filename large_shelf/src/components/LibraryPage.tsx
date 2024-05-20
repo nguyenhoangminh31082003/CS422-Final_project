@@ -109,7 +109,7 @@ function BookOption(
                     <p
                         className = "detail-of-book-in-library-page"
                     >
-                        {averageRating}/5 stars
+                        {Math.round(averageRating*100)/100}/5 stars
                     </p>
                 </div>
 
