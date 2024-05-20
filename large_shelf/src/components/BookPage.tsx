@@ -1,4 +1,5 @@
 import { Fragment, MouseEvent, useState, useRef, useEffect } from "react";
+import axios, { all } from "axios";
 import PAGE_ID from "../PageID";
 import "../styles/book_page_styles.css";
 import SpeechServer from "../SpeechServer";
@@ -49,7 +50,8 @@ function PropertiesPart(
     }: PropertiesPartProps
 ) {
     var [bookInformation, setBookInformation] = useState<any>({});
-    
+    var [allUserAudioFiles, setAllUserAudioFiles] = useState<any>([]);
+
     StorageServer.getBooksOrderedByRating(
         (response) => { 
             const bookData = response.data.find((book: any) => book.id === bookID);
@@ -59,6 +61,33 @@ function PropertiesPart(
             }
         }
     );
+
+    useEffect(() => {
+        const fetchAndSetAudioFiles = async () => {
+            try {
+                const response = await axios.get(`${StorageServer.getHost()}/audiofiles/${userID}/`);
+                const audioFiles = response.data;
+
+                const audioFilesWithVoiceIds = await Promise.all(audioFiles.map(async (audioFile: any) => {
+                    const voiceResponse = await SpeechServer.addVoiceURL(
+                        userID,
+                        audioFile["name"],
+                        audioFile["file_url"],
+                        ""
+                    );
+                    return { ...audioFile, voice_id: voiceResponse?.data };
+                }));
+
+                if (JSON.stringify(audioFilesWithVoiceIds) !== JSON.stringify(allUserAudioFiles)) {
+                    setAllUserAudioFiles(audioFilesWithVoiceIds);
+                }
+            } catch (error) {
+                console.error('Error fetching or setting audio files:', error);
+            }
+        };
+
+        fetchAndSetAudioFiles();
+    }, [userID]);
 
     return (
         <div
@@ -156,26 +185,15 @@ function PropertiesPart(
                                             >
                                                 {
                                                     (() => {
-                                                        let voiceList = SpeechServer.getUserVoiceList(userID);
-
-                                                        console.log(voiceList);
-
-                                                        return (
-                                                            <>
-                                                            </>
-                                                        );
-
-                                                        /*
-                                                        return voiceList.map((voice: any) => {
+                                                        return allUserAudioFiles.map((voice: any) => {
                                                             return (
                                                                 <option
-                                                                    value = {`${voice["type"]}-${voice["id"]}`}
+                                                                    value = {`audio-file-of-user-${userID}-with-voice-id-${voice["voice_id"]}`}
                                                                 >
                                                                     {voice["name"]}
                                                                 </option>
                                                             );
                                                         });
-                                                        */
                                                     })()
                                                 }
                                             </select>
@@ -206,8 +224,7 @@ function PropertiesPart(
                                             let selectedVoice = voiceSelection.value.split("-");
                                             
                                             return {
-                                                "type": selectedVoice[0],
-                                                "id": selectedVoice[1]
+                                                "id": selectedVoice[8]
                                             };
                                         }
                                     )()
@@ -310,8 +327,8 @@ function PagePairPart(
         } else if (listenMode["status"] === "off") {
           if (audioFile.current !== null) {
             audioFile.current.pause();
-            audioFile.current.currentTime = 0; // Reset playback position
-            audioFile.current = null; // Clear the audio file reference
+            audioFile.current.currentTime = 0; 
+            audioFile.current = null; 
           }
         }
       }, [listenMode, currentPage, leftPageContent, rightPageContent, setListenMode]);

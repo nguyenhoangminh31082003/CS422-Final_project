@@ -110,31 +110,18 @@ function AudioFileAddPart(
                             return;
                         }
 
-                        SpeechServer.addVoiceURL(
-                            userID,
+                        StorageServer.addAudioFile(
                             audioFileName,
+                            folderID,
+                            userID,
                             audioFileURL,
-                            ""
-                        )
-                        .then((voiceID) => {
-                            if (voiceID === null) {
-                                console.log("Something is not right");
-                                return;
+                            (response) => {
+                                onPageOptionClick(PAGE_ID["AUDIO_FOLDER_PAGE"]);
+                            },
+                            (error) => {
+                                setMessage("Something is not right");
                             }
-
-                            StorageServer.addAudioFile(
-                                audioFileName,
-                                folderID,
-                                userID,
-                                voiceID,
-                                (response) => {
-                                    onPageOptionClick(PAGE_ID["AUDIO_FOLDER_PAGE"]);
-                                },
-                                (error) => {
-                                    setMessage("Something is not right");
-                                }
-                            );
-                        })
+                        );
                     }
                 }
             >
