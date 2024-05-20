@@ -1,11 +1,11 @@
 import { Fragment, MouseEvent, useState } from "react";
 import PAGE_ID from "../PageID";
+import SpeechServer from "../SpeechServer";
 import StorageServer from "../StorageServer";
 import VerticalPageBar from "./VerticalPageBar";
 import TopHorizontalBar from "./TopHorizontalBar";
 import "../styles/add_audio_file_page_styles.css";
 import backButtonIcon from "../assets/back_button_icon.svg";
-import { on } from "events";
 
 interface AddAudioFilePageProps {
     onSearchButtonClick: (searchQuery: string) => void;
@@ -110,23 +110,31 @@ function AudioFileAddPart(
                             return;
                         }
 
-                        console.log(audioFileName);
-                        console.log(audioFileURL);
-                        console.log(folderID);
-                        console.log(userID);
-
-                        StorageServer.addAudioFile(
-                            audioFileName,
-                            folderID,
+                        SpeechServer.addVoiceURL(
                             userID,
+                            audioFileName,
                             audioFileURL,
-                            (response) => {
-                                onPageOptionClick(PAGE_ID["AUDIO_FOLDER_PAGE"]);
-                            },
-                            (error) => {
-                                setMessage("Something is not right");
+                            ""
+                        )
+                        .then((voiceID) => {
+                            if (voiceID === null) {
+                                console.log("Something is not right");
+                                return;
                             }
-                        );
+
+                            StorageServer.addAudioFile(
+                                audioFileName,
+                                folderID,
+                                userID,
+                                voiceID,
+                                (response) => {
+                                    onPageOptionClick(PAGE_ID["AUDIO_FOLDER_PAGE"]);
+                                },
+                                (error) => {
+                                    setMessage("Something is not right");
+                                }
+                            );
+                        })
                     }
                 }
             >

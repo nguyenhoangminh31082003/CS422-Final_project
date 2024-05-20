@@ -156,12 +156,16 @@ function PropertiesPart(
                                             >
                                                 {
                                                     (() => {
-                                                        let voiceList = SpeechServer.getFixedPublicVoiceList()
-                                                            .map((voice: any) => {
-                                                                voice["type"] = "public";
-                                                                return voice;
-                                                            });
+                                                        let voiceList = SpeechServer.getUserVoiceList(userID);
 
+                                                        console.log(voiceList);
+
+                                                        return (
+                                                            <>
+                                                            </>
+                                                        );
+
+                                                        /*
                                                         return voiceList.map((voice: any) => {
                                                             return (
                                                                 <option
@@ -171,6 +175,7 @@ function PropertiesPart(
                                                                 </option>
                                                             );
                                                         });
+                                                        */
                                                     })()
                                                 }
                                             </select>

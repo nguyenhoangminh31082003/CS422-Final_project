@@ -24,16 +24,4 @@ https://docs.google.com/document/d/1S_qeJBNLeycAXmFpauPEtQh77vGPaOFHV_rONrXj2WI/
 
 http://103.82.194.67:8000/docs#/default
 
-id=4JVOFy4SLQs9my0OLhEw
-Luca - calm, soothing, steady
-A young adult American male with a calm, almost sober, slightly breathy way of talking. Great for voiceovers and narrations of all kinds.
-
-id=j9jfwdrw7BRfcR43Qohk
-Frederick Surrey - Professional, calm, well spoken
-Professional, calm, well spoken British narrator full of intrigue and wonder. Suitable for Nature, Science, Mystery & History documentaries or audio books & narration projects that need a smooth & velvety tone.
-
-id=ucTq4wzRNSiqJDhpxhUO
-Sue - fantastic for all uses
-A young female british. A pleasant voice fantastic for all uses
-
 https://github.com/trnthienphc2003/Backend-Project-CS422

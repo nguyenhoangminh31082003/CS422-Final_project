@@ -32,23 +32,37 @@ const SpeechServer = (function() {
                 return TrainSound;
             }
         },
+        
+        "getUserVoiceList": async function getUserVoiceList(userID: string): Promise<any> {
+            try {
+                const response = await axios.get(`${host}/voices/${userID}`);
+                return response.data;
+            } catch (error) {
+                console.log(error);
+                return [];
+            }
+        },
 
-        "getFixedPublicVoiceList": function() {
-            return [
-                {
-                    "id": "4JVOFy4SLQs9my0OLhEw",
-                    "name": "Luca"
-                },
-                {
-                    "id": "j9jfwdrw7BRfcR43Qohk",
-                    "name": "Frederick Surrey"
-                },
-                {
-                    "id": "ucTq4wzRNSiqJDhpxhUO",
-                    "name": "Sue"
-                }
-            ];
-        }  
+        "addVoiceURL": async function addVoice(
+            userID: string,
+            name: string,
+            url: string,
+            description: string
+        ): Promise<any> {
+            try {
+                const response = await axios.post(`${host}/voices/url`, {
+                    "user_id": userID,
+                    "voice_name": name,
+                    "voice_sample_url": url,
+                    "description": description
+                });
+
+                return response;
+            } catch (error) {
+                console.log(error);
+                return null;
+            }
+        }
     }
 })();
 
