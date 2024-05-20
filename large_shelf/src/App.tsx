@@ -21,12 +21,6 @@ import CreateNewAudioFolderPage     from './components/CreateNewAudioFolderPage'
 
 function App(): JSX.Element {
     useEffect(() => {
-        //<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-        let link = document.createElement("meta");
-        link.setAttribute("http-equiv", "Content-Security-Policy");
-        link.setAttribute("content", "upgrade-insecure-requests");
-        document.head.appendChild(link);
-
         document.title = "Large Shelf";
     }, []);
 

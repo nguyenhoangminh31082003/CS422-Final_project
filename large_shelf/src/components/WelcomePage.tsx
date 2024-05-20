@@ -96,7 +96,7 @@ function LoginPart(
                 type="button"
                 id = "forgot-password-button"
             >
-                Forgot your password?
+                {/*Forgot your password?*/}
             </button>
 
             <button 
