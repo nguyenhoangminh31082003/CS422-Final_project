@@ -81,6 +81,7 @@ function PropertiesPart(
 
                 if (JSON.stringify(audioFilesWithVoiceIds) !== JSON.stringify(allUserAudioFiles)) {
                     setAllUserAudioFiles(audioFilesWithVoiceIds);
+                    console.log(audioFilesWithVoiceIds);
                 }
             } catch (error) {
                 console.error('Error fetching or setting audio files:', error);
@@ -281,13 +282,15 @@ function PagePairPart(
         if (listenMode["status"] === "on") {
           if (listenMode["client-status"] === "download-result-audio-file") {
             let content = "";
+
             if (currentPage === listenMode["page"]) {
               content = leftPageContent;
             } else if (currentPage + 1 === listenMode["page"]) {
               content = rightPageContent;
             }
+            
             content = content.replaceAll("<br/>", "");
-    
+
             if (content !== "") {
               SpeechServer.convertTextToSpeech(
                 userID, 
@@ -299,10 +302,11 @@ function PagePairPart(
                     ...listenMode,
                   };
     
-                  newListenMode["client-status"] = "play-audio-file";
-                  audioFile.current = new Audio(url);
+                    newListenMode["client-status"] = "play-audio-file";
 
-                  audioFile.current.addEventListener("ended", () => {
+                    audioFile.current = new Audio(url);
+
+                    audioFile.current.addEventListener("ended", () => {
                     if (listenMode["status"] === "off") {
                       return;
                     }
